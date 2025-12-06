@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@plugin "daisyui"{
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  /* BASE (Background / Surface) */
+  --color-base-100: #DAD7CD; /* main background */
+  --color-base-200: #C9C6BD; 
+  --color-base-300: #B8B5AE; 
+  --color-base-content: #2B2B21; /* text on base */
+
+  /* PRIMARY (main brand color) */
+  --color-primary: #97A87A;
+  --color-primary-content: #F5F6F1; /* readable text on primary */
+
+  /* SECONDARY (a slightly darker green for contrast) */
+  --color-secondary: #7E9163;
+  --color-secondary-content: #F5F6F1;
+
+  /* ACCENT (a complementary muted earthy tone) */
+  --color-accent: #A3B98F;
+  --color-accent-content: #F5F6F1;
+
+  /* NEUTRAL (text + dark surfaces) */
+  --color-neutral: #3F4430;
+  --color-neutral-content: #F4F4F0;
+
+  /* INFO (soft blue-green for informational UI) */
+  --color-info: #7BA7A1;
+  --color-info-content: #F0FBFA;
+
+  /* SUCCESS (pleasant green, not too bright) */
+  --color-success: #6BA96A;
+  --color-success-content: #EFFAEE;
+
+  /* WARNING (soft earthy yellow/gold) */
+  --color-warning: #D9BE6A;
+  --color-warning-content: #2F290F;
+
+  /* ERROR (muted red that matches earth tone theme) */
+  --color-error: #C97A68;
+  --color-error-content: #FDF4F2;
+}
