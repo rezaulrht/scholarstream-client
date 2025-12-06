@@ -1,5 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
-@plugin "daisyui"{
+@plugin "daisyui" {
   themes: light --default;
 }
 
@@ -7,40 +8,53 @@
   name: "light";
   default: true;
   /* BASE (Background / Surface) */
-  --color-base-100: #DAD7CD; /* main background */
-  --color-base-200: #C9C6BD; 
-  --color-base-300: #B8B5AE; 
-  --color-base-content: #2B2B21; /* text on base */
+  --color-base-100: #f5f4f0; /* main background */
+  --color-base-200: #eceae3;
+  --color-base-300: #e3e1d9;
+  --color-base-content: #2b2b21; /* text on base */
 
   /* PRIMARY (main brand color) */
-  --color-primary: #97A87A;
-  --color-primary-content: #F5F6F1; /* readable text on primary */
+  --color-primary: #97a87a;
+  --color-primary-content: #f5f6f1; /* readable text on primary */
 
   /* SECONDARY (a slightly darker green for contrast) */
-  --color-secondary: #7E9163;
-  --color-secondary-content: #F5F6F1;
+  --color-secondary: #6d7d56;
+  --color-secondary-content: #f5f6f1;
 
   /* ACCENT (a complementary muted earthy tone) */
-  --color-accent: #A3B98F;
-  --color-accent-content: #F5F6F1;
+  --color-accent: #a3b98f;
+  --color-accent-content: #f5f6f1;
 
   /* NEUTRAL (text + dark surfaces) */
-  --color-neutral: #3F4430;
-  --color-neutral-content: #F4F4F0;
+  --color-neutral: #3f4430;
+  --color-neutral-content: #f4f4f0;
 
   /* INFO (soft blue-green for informational UI) */
-  --color-info: #7BA7A1;
-  --color-info-content: #F0FBFA;
+  --color-info: #7ba7a1;
+  --color-info-content: #f0fbfa;
 
   /* SUCCESS (pleasant green, not too bright) */
-  --color-success: #6BA96A;
-  --color-success-content: #EFFAEE;
+  --color-success: #6ba96a;
+  --color-success-content: #effaee;
 
   /* WARNING (soft earthy yellow/gold) */
-  --color-warning: #D9BE6A;
-  --color-warning-content: #2F290F;
+  --color-warning: #d9be6a;
+  --color-warning-content: #2f290f;
 
   /* ERROR (muted red that matches earth tone theme) */
-  --color-error: #C97A68;
-  --color-error-content: #FDF4F2;
+  --color-error: #c97a68;
+  --color-error-content: #fdf4f2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "DM Sans", sans-serif;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
 }
