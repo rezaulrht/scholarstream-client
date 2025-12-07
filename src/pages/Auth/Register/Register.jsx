@@ -9,8 +9,10 @@ import {
   HiCamera,
 } from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
-import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import useAuth from "../../../hooks/useAuth";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -19,9 +21,33 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const { registerUser, updateUserProfile } = useAuth();
 
   const handleRegister = (data) => {
     console.log(data);
+    const profilePic = data.photo[0];
+    registerUser(data.email, data.password).then(() => {
+      const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
+      const formData = new FormData();
+      formData.append("image", profilePic);
+
+      const image_api_url = `https://api.imgbb.com/1/upload?key=${imgbb_api}`;
+
+      axios.post(image_api_url, formData).then((result) => {
+        const photoURL = result.data.data.url;
+        const profile = {
+          displayName: data.name,
+          photoURL: photoURL,
+        };
+        updateUserProfile(profile)
+          .then(() => {
+            console.log("User profile updated");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    });
   };
 
   return (
@@ -165,12 +191,7 @@ const Register = () => {
         <div className="flex-1 h-px bg-neutral/20"></div>
       </div>
 
-      <div className="space-y-3">
-        <button className="w-full py-2.5 sm:py-3 border-2 border-neutral/20 rounded-xl font-medium text-neutral hover:bg-base-100 transition-all duration-300 flex items-center justify-center gap-3 text-sm sm:text-base">
-          <FaGoogle />
-          Continue with Google
-        </button>
-      </div>
+      <SocialLogin />
 
       <p className="mt-4 lg:mt-6 text-center text-neutral/70 text-sm sm:text-base">
         Already have an account?{" "}

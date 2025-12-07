@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { HiMail, HiLockClosed, HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
-import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Login = () => {
   const {
@@ -114,12 +114,7 @@ const Login = () => {
         <div className="flex-1 h-px bg-neutral/20"></div>
       </div>
 
-      <div className="space-y-3">
-        <button className="w-full py-3 border-2 border-neutral/20 rounded-xl font-medium text-neutral hover:bg-base-100 transition-all duration-300 flex items-center justify-center gap-3">
-          <FaGoogle />
-          Continue with Google
-        </button>
-      </div>
+      <SocialLogin />
 
       <p className="mt-6 text-center text-neutral/70">
         Don't have an account?{" "}
