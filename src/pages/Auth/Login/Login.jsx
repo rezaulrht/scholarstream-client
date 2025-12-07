@@ -4,6 +4,7 @@ import { HiMail, HiLockClosed, HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
 import { useForm } from "react-hook-form";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import useAuth from "../../../hooks/useAuth";
 
 const Login = () => {
   const {
@@ -12,9 +13,18 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  
+  const { signInUser} = useAuth();
 
   const handleLogin = (data) => {
     console.log(data);
+    signInUser(data.email, data.password)
+      .then((result) => {
+        console.log("Login successful:", result.user);
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+      });
   };
 
   return (
