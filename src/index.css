@@ -9,8 +9,8 @@
   default: true;
   /* BASE (Background / Surface) */
   --color-base-100: #f5f4f0; /* main background */
-  --color-base-200: #eceae3;
-  --color-base-300: #e3e1d9;
+  --color-base-200: #faf9f7;
+  --color-base-300: #fdfcfb;
   --color-base-content: #2b2b21; /* text on base */
 
   /* PRIMARY (main brand color) */
