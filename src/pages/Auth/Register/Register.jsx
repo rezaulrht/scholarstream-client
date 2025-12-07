@@ -1,11 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { HiMail, HiLockClosed, HiEye, HiEyeOff, HiUser } from "react-icons/hi";
+import {
+  HiMail,
+  HiLockClosed,
+  HiEye,
+  HiEyeOff,
+  HiUser,
+  HiCamera,
+} from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
 import { FaGoogle } from "react-icons/fa";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleRegister = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="w-full">
@@ -13,14 +30,19 @@ const Register = () => {
         <Logo />
       </div>
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral mb-2">Create Account</h1>
-        <p className="text-neutral/70">
+      <div className="mb-6 lg:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-neutral mb-2">
+          Create Account
+        </h1>
+        <p className="text-sm sm:text-base text-neutral/70">
           Join thousands of students pursuing their dreams
         </p>
       </div>
 
-      <form className="space-y-6">
+      <form
+        onSubmit={handleSubmit(handleRegister)}
+        className="space-y-4 lg:space-y-6"
+      >
         <div>
           <label
             htmlFor="name"
@@ -32,13 +54,14 @@ const Register = () => {
             <HiUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
             <input
               type="text"
-              id="name"
-              name="name"
+              {...register("name", { required: true })}
               placeholder="Enter your full name"
-              className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
-              required
+              className="w-full pl-12 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
             />
           </div>
+          {errors.name && (
+            <p className="text-sm text-error mt-1">Name is required</p>
+          )}
         </div>
 
         <div>
@@ -52,11 +75,31 @@ const Register = () => {
             <HiMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
             <input
               type="email"
-              id="email"
-              name="email"
+              {...register("email", { required: true })}
               placeholder="Enter your email"
-              className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
-              required
+              className="w-full pl-12 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+            />
+          </div>
+          {errors.email && (
+            <p className="text-sm text-error mt-1">Email is required</p>
+          )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="photo"
+            className="block text-sm font-medium text-neutral mb-2"
+          >
+            Profile Photo
+          </label>
+          <div className="relative">
+            <HiCamera className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50 z-10 pointer-events-none" />
+            <input
+              type="file"
+              id="photo"
+              {...register("photo")}
+              accept="image/*"
+              className="file-input file-input-bordered w-full pl-12 rounded-xl border-2 border-neutral/20 focus:border-primary hover:border-primary transition-colors text-sm sm:text-base"
             />
           </div>
         </div>
@@ -72,11 +115,13 @@ const Register = () => {
             <HiLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
             <input
               type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
+              {...register("password", {
+                required: true,
+                minLength: 8,
+                pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
+              })}
               placeholder="Create a password"
-              className="w-full pl-12 pr-12 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
-              required
+              className="w-full pl-12 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
             />
             <button
               type="button"
@@ -90,56 +135,44 @@ const Register = () => {
               )}
             </button>
           </div>
-        </div>
-
-        <div>
-          <label className="flex items-start gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              className="w-4 h-4 mt-1 rounded border-neutral/20 text-primary focus:ring-primary"
-              required
-            />
-            <span className="text-sm text-neutral/70">
-              I agree to the{" "}
-              <Link
-                to="/terms"
-                className="text-primary hover:text-secondary transition-colors"
-              >
-                Terms & Conditions
-              </Link>{" "}
-              and{" "}
-              <Link
-                to="/privacy"
-                className="text-primary hover:text-secondary transition-colors"
-              >
-                Privacy Policy
-              </Link>
-            </span>
-          </label>
+          {errors.password?.type === "required" && (
+            <p className="text-sm text-error mt-1">Password is required</p>
+          )}
+          {errors.password?.type === "minLength" && (
+            <p className="text-sm text-error mt-1">
+              Password must be at least 8 characters
+            </p>
+          )}
+          {errors.password?.type === "pattern" && (
+            <p className="text-sm text-error mt-1">
+              Password must include uppercase, lowercase, number, and special
+              character
+            </p>
+          )}
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 bg-primary text-primary-content font-semibold rounded-xl hover:bg-secondary transition-all duration-300 shadow-md hover:shadow-lg"
+          className="w-full py-2.5 sm:py-3 bg-primary text-primary-content font-semibold rounded-xl hover:bg-secondary transition-all duration-300 shadow-md hover:shadow-lg text-sm sm:text-base"
         >
           Create Account
         </button>
       </form>
 
-      <div className="my-6 flex items-center gap-4">
+      <div className="my-4 lg:my-6 flex items-center gap-4">
         <div className="flex-1 h-px bg-neutral/20"></div>
         <span className="text-sm text-neutral/60">or</span>
         <div className="flex-1 h-px bg-neutral/20"></div>
       </div>
 
       <div className="space-y-3">
-        <button className="w-full py-3 border-2 border-neutral/20 rounded-xl font-medium text-neutral hover:bg-base-100 transition-all duration-300 flex items-center justify-center gap-3">
+        <button className="w-full py-2.5 sm:py-3 border-2 border-neutral/20 rounded-xl font-medium text-neutral hover:bg-base-100 transition-all duration-300 flex items-center justify-center gap-3 text-sm sm:text-base">
           <FaGoogle />
           Continue with Google
         </button>
       </div>
 
-      <p className="mt-6 text-center text-neutral/70">
+      <p className="mt-4 lg:mt-6 text-center text-neutral/70 text-sm sm:text-base">
         Already have an account?{" "}
         <Link
           to="/login"

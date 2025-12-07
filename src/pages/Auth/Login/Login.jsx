@@ -3,9 +3,19 @@ import { Link } from "react-router";
 import { HiMail, HiLockClosed, HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
 import { FaGoogle } from "react-icons/fa";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="w-full">
@@ -20,7 +30,7 @@ const Login = () => {
         </p>
       </div>
 
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
         <div>
           <label
             htmlFor="email"
@@ -32,13 +42,14 @@ const Login = () => {
             <HiMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
             <input
               type="email"
-              id="email"
-              name="email"
+              {...register("email", { required: true })}
               placeholder="Enter your email"
               className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
-              required
             />
           </div>
+          {errors.email && (
+            <p className="text-sm text-error mt-1">Email is required</p>
+          )}
         </div>
 
         <div>
@@ -52,11 +63,9 @@ const Login = () => {
             <HiLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
             <input
               type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
+              {...register("password", { required: true })}
               placeholder="Enter your password"
               className="w-full pl-12 pr-12 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
-              required
             />
             <button
               type="button"
@@ -70,6 +79,9 @@ const Login = () => {
               )}
             </button>
           </div>
+          {errors.password && (
+            <p className="text-sm text-error mt-1">Password is required</p>
+          )}
         </div>
 
         <div className="flex items-center justify-between">
