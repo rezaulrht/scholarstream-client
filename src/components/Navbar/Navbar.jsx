@@ -59,6 +59,21 @@ const Navbar = () => {
           All Scholarships
         </NavLink>
       </li>
+      {user && (
+        <li>
+          <NavLink
+            to="/add-scholarship"
+            onClick={closeMenu}
+            className={({ isActive }) =>
+              `font-medium transition-colors duration-300 hover:text-primary ${
+                isActive ? "text-primary" : "text-neutral"
+              }`
+            }
+          >
+            Add Scholarship
+          </NavLink>
+        </li>
+      )}
     </>
   );
 

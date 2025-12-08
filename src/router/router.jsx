@@ -6,6 +6,7 @@ import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import AddScholarship from "../pages/Dashboard/AddScholarship";
+import AllScholarships from "../pages/AllScholarships/AllScholarships";
 
 export const router = createBrowserRouter([
   {
@@ -17,9 +18,17 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
+        path: "/all-scholarships",
+        Component: AllScholarships,
+      },
+      {
         path: "/add-scholarship",
-        element: <ProtectedRoute><AddScholarship></AddScholarship></ProtectedRoute>
-      }
+        element: (
+          <ProtectedRoute>
+            <AddScholarship></AddScholarship>
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
