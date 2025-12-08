@@ -4,6 +4,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
+import ProtectedRoute from "./ProtectedRoute";
+import AddScholarship from "../pages/Dashboard/AddScholarship";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +16,10 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
+      {
+        path: "/add-scholarship",
+        element: <ProtectedRoute><AddScholarship></AddScholarship></ProtectedRoute>
+      }
     ],
   },
   {
@@ -27,7 +33,7 @@ export const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
-      }
+      },
     ],
   },
 ]);

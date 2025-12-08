@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000",
 });
 
 const useAxiosSecure = () => {
