@@ -83,6 +83,24 @@ const ScholarshipDetails = () => {
     }
   );
 
+  const handleApplyNow = () => {
+    navigate("/checkout", {
+      state: {
+        scholarshipId: id,
+        scholarshipName,
+        universityName,
+        universityImage,
+        universityCountry,
+        universityCity,
+        scholarshipCategory,
+        degree,
+        subjectCategory,
+        applicationFees,
+        serviceCharge,
+      },
+    });
+  };
+
   return (
     <div className="min-h-screen bg-base-100 py-4 md:py-8">
       <div className="container mx-auto px-3 md:px-4">
@@ -316,7 +334,10 @@ const ScholarshipDetails = () => {
                       </span>
                     </div>
 
-                    <button className="w-full py-3 md:py-4 bg-primary text-primary-content font-bold rounded-lg md:rounded-xl hover:bg-secondary hover:shadow-xl transition-all duration-300 text-base md:text-lg">
+                    <button
+                      onClick={handleApplyNow}
+                      className="w-full py-3 md:py-4 bg-primary text-primary-content font-bold rounded-lg md:rounded-xl hover:bg-secondary hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                    >
                       Apply Now
                     </button>
 

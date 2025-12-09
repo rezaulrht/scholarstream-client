@@ -8,6 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AddScholarship from "../pages/Dashboard/AddScholarship";
 import AllScholarships from "../pages/AllScholarships/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails/ScholarshipDetails";
+import Checkout from "../pages/Dashboard/Checkout/Checkout";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <AddScholarship></AddScholarship>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/checkout",
+        element: (
+          <ProtectedRoute>
+            <Checkout />
           </ProtectedRoute>
         ),
       },
