@@ -120,7 +120,7 @@ const ScholarshipCard = ({ scholarship }) => {
 
         {/* View Details Button */}
         <Link
-          to={`/scholarship/${_id}`}
+          to={`/scholarships/${_id}`}
           className="block w-full py-3 text-center bg-primary text-primary-content font-bold rounded-xl hover:bg-secondary hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
         >
           View Details

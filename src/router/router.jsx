@@ -7,6 +7,7 @@ import Register from "../pages/Auth/Register/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import AddScholarship from "../pages/Dashboard/AddScholarship";
 import AllScholarships from "../pages/AllScholarships/AllScholarships";
+import ScholarshipDetails from "../pages/ScholarshipDetails/ScholarshipDetails";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "/all-scholarships",
         Component: AllScholarships,
+      },
+      {
+        path: "/scholarships/:id",
+        Component: ScholarshipDetails,
       },
       {
         path: "/add-scholarship",
