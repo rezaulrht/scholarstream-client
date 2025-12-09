@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import {
   HiMail,
   HiLockClosed,
@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const {
@@ -22,32 +23,56 @@ const Register = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const { registerUser, updateUserProfile } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRegister = (data) => {
-    console.log(data);
+    const loadingToast = toast.loading("Creating your account...");
     const profilePic = data.photo[0];
-    registerUser(data.email, data.password).then(() => {
-      const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
-      const formData = new FormData();
-      formData.append("image", profilePic);
 
-      const image_api_url = `https://api.imgbb.com/1/upload?key=${imgbb_api}`;
+    registerUser(data.email, data.password)
+      .then(() => {
+        const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
+        const formData = new FormData();
+        formData.append("image", profilePic);
 
-      axios.post(image_api_url, formData).then((result) => {
-        const photoURL = result.data.data.url;
-        const profile = {
-          displayName: data.name,
-          photoURL: photoURL,
-        };
-        updateUserProfile(profile)
-          .then(() => {
-            console.log("User profile updated");
+        const image_api_url = `https://api.imgbb.com/1/upload?key=${imgbb_api}`;
+
+        axios
+          .post(image_api_url, formData)
+          .then((result) => {
+            const photoURL = result.data.data.url;
+            const profile = {
+              displayName: data.name,
+              photoURL: photoURL,
+            };
+            updateUserProfile(profile)
+              .then(() => {
+                toast.dismiss(loadingToast);
+                toast.success("Account created successfully! Welcome aboard!");
+                navigate(location.state || "/");
+              })
+              .catch((err) => {
+                toast.dismiss(loadingToast);
+                toast.error("Failed to update profile. Please try again!");
+                console.log(err);
+              });
           })
-          .catch((err) => {
-            console.log(err);
+          .catch(() => {
+            toast.dismiss(loadingToast);
+            toast.error("Failed to upload profile image!");
           });
+      })
+      .catch((error) => {
+        toast.dismiss(loadingToast);
+        if (error.code === "auth/email-already-in-use") {
+          toast.error("Email already in use! Please login instead.");
+        } else if (error.code === "auth/weak-password") {
+          toast.error("Password is too weak!");
+        } else {
+          toast.error("Registration failed. Please try again!");
+        }
       });
-    });
   };
 
   return (
@@ -197,6 +222,7 @@ const Register = () => {
         Already have an account?{" "}
         <Link
           to="/login"
+          state={location.state}
           className="text-primary font-semibold hover:text-secondary transition-colors"
         >
           Sign In

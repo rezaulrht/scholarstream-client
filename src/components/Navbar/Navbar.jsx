@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import Logo from "../Logo/Logo";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { user, logOut } = useAuth();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -21,14 +23,41 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logOut()
-      .then(() => {
-        console.log("User logged out successfully");
-        setIsProfileMenuOpen(false);
-      })
-      .catch((error) => {
-        console.error("Logout error:", error);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#6ba96a",
+      cancelButtonColor: "#c97a68",
+      confirmButtonText: "Yes, logout!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut()
+          .then(() => {
+            setIsProfileMenuOpen(false);
+            Swal.fire({
+              title: "Logged Out!",
+              text: "You have been successfully logged out.",
+              icon: "success",
+              confirmButtonColor: "#6ba96a",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+            navigate("/");
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Error!",
+              text: "Logout failed. Please try again.",
+              icon: "error",
+              confirmButtonColor: "#6ba96a",
+            });
+            console.error("Logout error:", error);
+          });
+      }
+    });
   };
 
   const navLinks = (

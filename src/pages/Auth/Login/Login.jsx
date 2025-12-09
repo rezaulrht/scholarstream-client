@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { HiMail, HiLockClosed, HiEye, HiEyeOff } from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
 import { useForm } from "react-hook-form";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -13,17 +14,30 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  
-  const { signInUser} = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { signInUser } = useAuth();
 
   const handleLogin = (data) => {
-    console.log(data);
+    const loadingToast = toast.loading("Signing in...");
     signInUser(data.email, data.password)
-      .then((result) => {
-        console.log("Login successful:", result.user);
+      .then(() => {
+        toast.dismiss(loadingToast);
+        toast.success("Login successful! Welcome back!");
+        navigate(location.state || "/");
       })
       .catch((error) => {
-        console.error("Login error:", error);
+        toast.dismiss(loadingToast);
+        if (error.code === "auth/invalid-credential") {
+          toast.error("Invalid email or password!");
+        } else if (error.code === "auth/user-not-found") {
+          toast.error("No account found with this email!");
+        } else if (error.code === "auth/wrong-password") {
+          toast.error("Incorrect password!");
+        } else {
+          toast.error("Login failed. Please try again!");
+        }
       });
   };
 
@@ -130,6 +144,7 @@ const Login = () => {
         Don't have an account?{" "}
         <Link
           to="/register"
+          state={location.state}
           className="text-primary font-semibold hover:text-secondary transition-colors"
         >
           Sign Up

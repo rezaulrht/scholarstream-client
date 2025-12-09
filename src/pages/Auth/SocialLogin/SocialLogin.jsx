@@ -1,16 +1,29 @@
 import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const SocialLogin = () => {
   const { googleSignIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleGoogleLogin = () => {
     googleSignIn()
-      .then((result) => {
-        console.log("Google login successful:", result.user);
+      .then(() => {
+        toast.success("Google login successful! Welcome!");
+        navigate(location.state || "/");
       })
       .catch((error) => {
-        console.error("Google login error:", error);
+        if (error.code === "auth/popup-closed-by-user") {
+          toast.error("Login cancelled!");
+        } else if (
+          error.code === "auth/account-exists-with-different-credential"
+        ) {
+          toast.error("Account exists with different login method!");
+        } else {
+          toast.error("Google login failed. Please try again!");
+        }
       });
   };
 

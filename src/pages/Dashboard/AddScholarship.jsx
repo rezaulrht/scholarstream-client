@@ -10,6 +10,9 @@ import {
   HiOfficeBuilding,
   HiUser,
 } from "react-icons/hi";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const AddScholarship = () => {
   const {
@@ -20,10 +23,12 @@ const AddScholarship = () => {
   } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const handleAddScholarship = async (data) => {
     try {
-      // Upload image to imgBB
+      // Upload image to imgBB with loading toast
+      const uploadToast = toast.loading("Uploading university image...");
       const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
       const formData = new FormData();
       formData.append("image", data.universityImage[0]);
@@ -32,6 +37,8 @@ const AddScholarship = () => {
 
       const imageResponse = await axios.post(image_api_url, formData);
       const universityImageURL = imageResponse.data.data.url;
+      toast.dismiss(uploadToast);
+      toast.success("Image uploaded successfully!");
 
       const scholarshipData = {
         scholarshipName: data.scholarshipName,
@@ -52,17 +59,30 @@ const AddScholarship = () => {
         scholarshipDescription: data.scholarshipDescription,
       };
 
-      console.log("Scholarship Data:", scholarshipData);
+      const addToast = toast.loading("Adding scholarship...");
+      await axiosSecure.post("/add-scholarship", scholarshipData);
+      toast.dismiss(addToast);
 
-      axiosSecure.post("/add-scholarship", scholarshipData).then((response) => {
-        console.log("Scholarship added:", response.data);
+      // Show success alert with SweetAlert2
+      Swal.fire({
+        title: "Success!",
+        text: "Scholarship has been added successfully!",
+        icon: "success",
+        confirmButtonColor: "#6ba96a",
+        confirmButtonText: "View All Scholarships",
+        showCancelButton: true,
+        cancelButtonText: "Add Another",
+        cancelButtonColor: "#c97a68",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/all-scholarships");
+        } else {
+          reset();
+        }
       });
-
-      alert("Scholarship added successfully!");
-      reset();
     } catch (error) {
       console.error("Error adding scholarship:", error);
-      alert("Failed to add scholarship. Please try again.");
+      toast.error("Failed to add scholarship. Please try again!");
     }
   };
 
