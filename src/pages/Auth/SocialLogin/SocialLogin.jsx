@@ -2,19 +2,40 @@ import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const SocialLogin = () => {
   const { googleSignIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
   const handleGoogleLogin = () => {
+    const loadingToast = toast.loading("Signing in with Google...");
+
     googleSignIn()
-      .then(() => {
-        toast.success("Google login successful! Welcome!");
-        navigate(location.state || "/");
+      .then((result) => {
+        const user = result.user;
+        const userInfo = {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        };
+
+        axiosSecure
+          .post("/users", userInfo)
+          .then(() => {
+            toast.dismiss(loadingToast);
+            toast.success("Google login successful! Welcome!");
+            navigate(location.state || "/");
+          })
+          .catch(() => {
+            toast.dismiss(loadingToast);
+            toast.error("Failed to save user data. Please try again!");
+          });
       })
       .catch((error) => {
+        toast.dismiss(loadingToast);
         if (error.code === "auth/popup-closed-by-user") {
           toast.error("Login cancelled!");
         } else if (

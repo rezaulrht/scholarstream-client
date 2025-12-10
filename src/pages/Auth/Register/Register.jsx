@@ -8,6 +8,7 @@ import {
   HiUser,
   HiCamera,
 } from "react-icons/hi";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Logo from "../../../components/Logo/Logo";
 import { useForm } from "react-hook-form";
 import SocialLogin from "../SocialLogin/SocialLogin";
@@ -25,6 +26,7 @@ const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
   const handleRegister = (data) => {
     const loadingToast = toast.loading("Creating your account...");
@@ -46,16 +48,39 @@ const Register = () => {
               displayName: data.name,
               photoURL: photoURL,
             };
+
             updateUserProfile(profile)
               .then(() => {
-                toast.dismiss(loadingToast);
-                toast.success("Account created successfully! Welcome aboard!");
-                navigate(location.state || "/");
+                const userInfo = {
+                  name: data.name,
+                  email: data.email,
+                  photoURL: photoURL,
+                };
+
+                axiosSecure
+                  .post("/users", userInfo)
+                  .then((res) => {
+                    if (res.data.insertedId) {
+                      toast.dismiss(loadingToast);
+                      toast.success(
+                        "Account created successfully! Welcome aboard!"
+                      );
+                      navigate(location.state || "/");
+                    } else {
+                      toast.dismiss(loadingToast);
+                      toast.error(
+                        "User created in Firebase but server save failed/exists."
+                      );
+                    }
+                  })
+                  .catch(() => {
+                    toast.dismiss(loadingToast);
+                    toast.error("Failed to save user data. Please try again!");
+                  });
               })
-              .catch((err) => {
+              .catch(() => {
                 toast.dismiss(loadingToast);
                 toast.error("Failed to update profile. Please try again!");
-                console.log(err);
               });
           })
           .catch(() => {
@@ -67,8 +92,12 @@ const Register = () => {
         toast.dismiss(loadingToast);
         if (error.code === "auth/email-already-in-use") {
           toast.error("Email already in use! Please login instead.");
-        } else if (error.code === "auth/weak-password") {
-          toast.error("Password is too weak!");
+        } else if (error.code === "auth/invalid-email") {
+          toast.error("Invalid email address!");
+        } else if (error.code === "auth/invalid-password") {
+          toast.error("Invalid password!");
+        } else if (error.code === "auth/user-not-found") {
+          toast.error("User not found!");
         } else {
           toast.error("Registration failed. Please try again!");
         }
