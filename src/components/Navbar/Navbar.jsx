@@ -1,26 +1,11 @@
-import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import Logo from "../Logo/Logo";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const toggleProfileMenu = () => {
-    setIsProfileMenuOpen(!isProfileMenuOpen);
-  };
 
   const handleLogout = () => {
     Swal.fire({
@@ -36,7 +21,6 @@ const Navbar = () => {
       if (result.isConfirmed) {
         logOut()
           .then(() => {
-            setIsProfileMenuOpen(false);
             Swal.fire({
               title: "Logged Out!",
               text: "You have been successfully logged out.",
@@ -65,7 +49,6 @@ const Navbar = () => {
       <li>
         <NavLink
           to="/"
-          onClick={closeMenu}
           className={({ isActive }) =>
             `font-medium transition-colors duration-300 hover:text-primary ${
               isActive ? "text-primary" : "text-neutral"
@@ -78,7 +61,6 @@ const Navbar = () => {
       <li>
         <NavLink
           to="/all-scholarships"
-          onClick={closeMenu}
           className={({ isActive }) =>
             `font-medium transition-colors duration-300 hover:text-primary ${
               isActive ? "text-primary" : "text-neutral"
@@ -89,19 +71,32 @@ const Navbar = () => {
         </NavLink>
       </li>
       {user && (
-        <li>
-          <NavLink
-            to="/add-scholarship"
-            onClick={closeMenu}
-            className={({ isActive }) =>
-              `font-medium transition-colors duration-300 hover:text-primary ${
-                isActive ? "text-primary" : "text-neutral"
-              }`
-            }
-          >
-            Add Scholarship
-          </NavLink>
-        </li>
+        <>
+          <li>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `font-medium transition-colors duration-300 hover:text-primary ${
+                  isActive ? "text-primary" : "text-neutral"
+                }`
+              }
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/add-scholarship"
+              className={({ isActive }) =>
+                `font-medium transition-colors duration-300 hover:text-primary ${
+                  isActive ? "text-primary" : "text-neutral"
+                }`
+              }
+            >
+              Add Scholarship
+            </NavLink>
+          </li>
+        </>
       )}
     </>
   );
@@ -128,37 +123,36 @@ const Navbar = () => {
           {/* Auth Buttons - Right Side */}
           <div className="hidden lg:flex items-center gap-3">
             {user ? (
-              <div className="relative">
-                <button
-                  onClick={toggleProfileMenu}
-                  className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary hover:border-secondary transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                  aria-label="User menu"
+              <div className="dropdown dropdown-end">
+                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                  <div className="w-10 rounded-full border-2 border-primary hover:border-secondary transition-all duration-300">
+                    <img
+                      src={user.photoURL || "https://via.placeholder.com/150"}
+                      alt={user.displayName || "User"}
+                    />
+                  </div>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-3 border border-base-300"
                 >
-                  <img
-                    src={user.photoURL || "https://via.placeholder.com/150"}
-                    alt={user.displayName || "User"}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-
-                {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-base-300 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-base-300">
-                      <p className="text-sm font-medium text-neutral truncate">
-                        {user.displayName || "User"}
-                      </p>
-                      <p className="text-xs text-neutral/60 truncate">
-                        {user.email}
-                      </p>
-                    </div>
+                  <li className="menu-title">
+                    <span className="text-sm font-medium text-neutral truncate">
+                      {user.displayName || "User"}
+                    </span>
+                    <span className="text-xs text-neutral/60 truncate">
+                      {user.email}
+                    </span>
+                  </li>
+                  <li>
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm text-error hover:bg-base-200 transition-colors duration-300"
+                      className="text-error hover:bg-error/10"
                     >
                       Logout
                     </button>
-                  </div>
-                )}
+                  </li>
+                </ul>
               </div>
             ) : (
               <>
@@ -180,62 +174,40 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden">
-            <button
-              onClick={toggleMenu}
-              className="p-2 rounded-lg text-neutral hover:bg-base-200 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              {isMenuOpen ? (
-                // Close Icon
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                // Hamburger Icon
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-              )}
-            </button>
+            <label htmlFor="mobile-drawer" className="btn btn-square btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </label>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu Dropdown */}
-        <div
-          id="mobile-menu"
-          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="py-4 space-y-3 border-t border-base-300">
+      {/* Mobile Drawer */}
+      <div className="drawer lg:hidden">
+        <input id="mobile-drawer" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-side z-50">
+          <label
+            htmlFor="mobile-drawer"
+            aria-label="close sidebar"
+            className="drawer-overlay"
+          ></label>
+          <div className="menu p-4 w-80 min-h-full bg-base-200">
             {/* Mobile Nav Links */}
-            <ul className="space-y-2">{navLinks}</ul>
+            <ul className="space-y-2 mb-4">{navLinks}</ul>
 
-            {/* Mobile Auth Buttons */}
+            {/* Mobile Auth Section */}
             <div className="pt-4 space-y-2 border-t border-base-300">
               {user ? (
                 <div className="space-y-3">
@@ -255,11 +227,8 @@ const Navbar = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => {
-                      handleLogout();
-                      closeMenu();
-                    }}
-                    className="block w-full px-6 py-2.5 text-center font-medium text-error border-2 border-error rounded-lg hover:bg-error hover:text-white transition-all duration-300 shadow-sm"
+                    onClick={handleLogout}
+                    className="btn btn-outline btn-error w-full"
                   >
                     Logout
                   </button>
@@ -268,16 +237,11 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/login"
-                    onClick={closeMenu}
-                    className="block w-full px-6 py-2.5 text-center font-medium text-primary border-2 border-primary rounded-lg hover:bg-primary hover:text-primary-content transition-all duration-300 shadow-sm"
+                    className="btn btn-outline btn-primary w-full"
                   >
                     Login
                   </Link>
-                  <Link
-                    to="/register"
-                    onClick={closeMenu}
-                    className="block w-full px-6 py-2.5 text-center font-medium bg-primary text-primary-content rounded-lg hover:bg-secondary hover:shadow-lg transition-all duration-300 shadow-md"
-                  >
+                  <Link to="/register" className="btn btn-primary w-full">
                     Register
                   </Link>
                 </>

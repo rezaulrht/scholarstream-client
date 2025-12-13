@@ -24,10 +24,16 @@ const SocialLogin = () => {
 
         axiosSecure
           .post("/users", userInfo)
-          .then(() => {
-            toast.dismiss(loadingToast);
-            toast.success("Google login successful! Welcome!");
-            navigate(location.state || "/");
+          .then((res) => {
+            if (res.data.insertedId || res.data.message === 'user already exists') {
+                toast.dismiss(loadingToast);
+                toast.success("Google login successful! Welcome!");
+                navigate(location.state || "/");
+            } else {
+                 toast.dismiss(loadingToast);
+                 toast.success("Google login successful!");
+                 navigate(location.state || "/");
+            }
           })
           .catch(() => {
             toast.dismiss(loadingToast);

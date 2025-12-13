@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
-import useAuth from "../../hooks/useAuth";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+
 import axios from "axios";
 import {
   HiAcademicCap,
@@ -13,6 +12,8 @@ import {
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddScholarship = () => {
   const {

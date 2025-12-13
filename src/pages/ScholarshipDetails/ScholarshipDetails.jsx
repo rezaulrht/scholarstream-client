@@ -84,19 +84,9 @@ const ScholarshipDetails = () => {
   );
 
   const handleApplyNow = () => {
-    navigate("/checkout", {
+    navigate(`/apply/${id}`, {
       state: {
-        scholarshipId: id,
-        scholarshipName,
-        universityName,
-        universityImage,
-        universityCountry,
-        universityCity,
-        scholarshipCategory,
-        degree,
-        subjectCategory,
-        applicationFees,
-        serviceCharge,
+        scholarship: scholarship,
       },
     });
   };
