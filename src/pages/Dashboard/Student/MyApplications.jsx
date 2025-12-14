@@ -204,10 +204,10 @@ const MyApplications = () => {
                 <td>
                   <span
                     className={`badge ${
-                      app.applicationStatus === "completed"
+                      app.applicationStatus === "accepted"
                         ? "bg-success/20 text-success border-success/30"
                         : app.applicationStatus === "processing"
-                        ? "bg-warning/20 text-warning border-warning/30"
+                        ? "bg-info/20 text-info border-info/30"
                         : app.applicationStatus === "rejected"
                         ? "bg-error/20 text-error border-error/30"
                         : "bg-warning/20 text-warning border-warning/30"
@@ -281,8 +281,8 @@ const MyApplications = () => {
                       </button>
                     )}
 
-                    {/* Add Review Button - Only if completed */}
-                    {app.applicationStatus === "completed" && (
+                    {/* Add Review Button - Only if accepted */}
+                    {app.applicationStatus === "accepted" && (
                       <button
                         onClick={() => {
                           setSelectedApplication(app);
@@ -334,10 +334,10 @@ const MyApplications = () => {
                   <span className="font-semibold text-neutral">Status:</span>
                   <span
                     className={`badge ${
-                      app.applicationStatus === "completed"
+                      app.applicationStatus === "accepted"
                         ? "bg-success/20 text-success border-success/30"
                         : app.applicationStatus === "processing"
-                        ? "bg-warning/20 text-warning border-warning/30"
+                        ? "bg-info/20 text-info border-info/30"
                         : app.applicationStatus === "rejected"
                         ? "bg-error/20 text-error border-error/30"
                         : "bg-warning/20 text-warning border-warning/30"
@@ -395,7 +395,7 @@ const MyApplications = () => {
                     </button>
                   </>
                 )}
-                {app.applicationStatus === "completed" && (
+                {app.applicationStatus === "accepted" && (
                   <button
                     onClick={() => {
                       setSelectedApplication(app);
@@ -415,12 +415,12 @@ const MyApplications = () => {
       {/* Details Modal */}
       {showDetailsModal && selectedApplication && (
         <div className="modal modal-open">
-          <div className="modal-box max-w-2xl bg-base-300 border border-neutral/10">
-            <h3 className="font-bold text-2xl mb-4 text-neutral">
+          <div className="modal-box max-w-2xl max-h-[90vh] overflow-y-auto bg-base-300 border border-neutral/10">
+            <h3 className="font-bold text-lg md:text-2xl mb-4 text-neutral">
               Application Details
             </h3>
             <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-neutral/60">Scholarship Name</p>
                   <p className="font-semibold text-neutral">
@@ -527,11 +527,11 @@ const MyApplications = () => {
                   Application Status
                 </p>
                 <span
-                  className={`badge badge-lg ${
-                    selectedApplication.applicationStatus === "completed"
+                  className={`badge badge-sm md:badge-lg ${
+                    selectedApplication.applicationStatus === "accepted"
                       ? "bg-success/20 text-success border-success/30"
                       : selectedApplication.applicationStatus === "processing"
-                      ? "bg-warning/20 text-warning border-warning/30"
+                      ? "bg-info/20 text-info border-info/30"
                       : selectedApplication.applicationStatus === "rejected"
                       ? "bg-error/20 text-error border-error/30"
                       : "bg-warning/20 text-warning border-warning/30"
@@ -543,7 +543,7 @@ const MyApplications = () => {
               <div>
                 <p className="text-sm text-neutral/60 mb-2">Payment Status</p>
                 <span
-                  className={`badge badge-lg ${
+                  className={`badge badge-sm md:badge-lg ${
                     selectedApplication.paymentStatus === "paid"
                       ? "bg-success/20 text-success border-success/30"
                       : "bg-error/20 text-error border-error/30"
@@ -557,7 +557,7 @@ const MyApplications = () => {
                   <p className="text-sm text-neutral/60 mb-2">
                     Moderator Feedback
                   </p>
-                  <p className="p-4 bg-primary/5 border border-primary/20 rounded-lg text-neutral/80">
+                  <p className="p-3 md:p-4 bg-primary/5 border border-primary/20 rounded-lg text-sm text-neutral/80">
                     {selectedApplication.feedback}
                   </p>
                 </div>
@@ -566,7 +566,7 @@ const MyApplications = () => {
             <div className="modal-action">
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="btn btn-ghost"
+                className="btn btn-sm md:btn-md btn-ghost"
               >
                 Close
               </button>
