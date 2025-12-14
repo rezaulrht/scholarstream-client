@@ -17,7 +17,7 @@ const SocialLogin = () => {
       .then((result) => {
         const user = result.user;
         const userInfo = {
-          name: user.displayName,
+          displayName: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
         };
@@ -25,14 +25,17 @@ const SocialLogin = () => {
         axiosSecure
           .post("/users", userInfo)
           .then((res) => {
-            if (res.data.insertedId || res.data.message === 'user already exists') {
-                toast.dismiss(loadingToast);
-                toast.success("Google login successful! Welcome!");
-                navigate(location.state || "/");
+            if (
+              res.data.insertedId ||
+              res.data.message === "user already exists"
+            ) {
+              toast.dismiss(loadingToast);
+              toast.success("Google login successful! Welcome!");
+              navigate(location.state || "/");
             } else {
-                 toast.dismiss(loadingToast);
-                 toast.success("Google login successful!");
-                 navigate(location.state || "/");
+              toast.dismiss(loadingToast);
+              toast.success("Google login successful!");
+              navigate(location.state || "/");
             }
           })
           .catch(() => {

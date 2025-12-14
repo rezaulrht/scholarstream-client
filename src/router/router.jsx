@@ -14,6 +14,7 @@ import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentFailed from "../pages/Dashboard/Payment/PaymentFailed";
 import MyApplications from "../pages/Dashboard/Student/MyApplications";
 import MyReviews from "../pages/Dashboard/Student/MyReviews";
+import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
 import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications";
 
 export const router = createBrowserRouter([
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
+      {
+        path: "my-profile",
+        Component: MyProfile,
+      },
       {
         path: "applications",
         Component: MyApplications,

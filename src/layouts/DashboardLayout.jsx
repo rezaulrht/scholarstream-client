@@ -121,7 +121,7 @@ const DashboardLayout = () => {
 
             <li>
               <Link
-                to="/dashboard/profile"
+                to="/dashboard/my-profile"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
                 data-tip="My Profile"
               >
