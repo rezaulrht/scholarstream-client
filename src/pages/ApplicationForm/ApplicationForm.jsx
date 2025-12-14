@@ -5,6 +5,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { HiAcademicCap, HiUser, HiDocument, HiBookOpen } from "react-icons/hi";
+import Swal from "sweetalert2";
 
 const ApplicationForm = () => {
   const location = useLocation();
@@ -22,8 +23,70 @@ const ApplicationForm = () => {
   } = useForm();
 
   const onSubmitPay = async (data) => {
-    toast.success("Stripe integration will be implemented here!");
-    console.log("Proceeding to Stripe with:", data);
+    try {
+      // First save the application
+      const applicationData = {
+        scholarshipId: scholarship._id,
+        scholarshipName: scholarship.scholarshipName,
+        universityName: scholarship.universityName,
+        scholarshipCategory: scholarship.scholarshipCategory,
+        subjectCategory: scholarship.subjectCategory,
+        degree: scholarship.degree,
+        userEmail: user?.email,
+        userName: user?.displayName,
+        phone: data.phone,
+        dateOfBirth: data.dateOfBirth,
+        gender: data.gender,
+        currentUniversity: data.currentUniversity,
+        cgpa: data.cgpa,
+        applicationFees: scholarship.applicationFees,
+        serviceCharge: scholarship.serviceCharge,
+        totalAmount:
+          (scholarship.applicationFees || 0) + (scholarship.serviceCharge || 0),
+        paymentStatus: "unpaid",
+        applicationStatus: "pending",
+        appliedAt: new Date(),
+      };
+
+      const response = await axiosSecure.post("/applications", applicationData);
+
+      if (response.data.insertedId) {
+        // Create payment session
+        const paymentInfo = {
+          applicationId: response.data.insertedId,
+          scholarshipId: scholarship._id,
+          scholarshipName: scholarship.scholarshipName,
+          universityName: scholarship.universityName,
+          userEmail: user?.email,
+          totalAmount: applicationData.totalAmount,
+        };
+
+        const paymentResponse = await axiosSecure.post(
+          "/create-checkout-session",
+          paymentInfo
+        );
+
+        if (paymentResponse.data.url) {
+          // Redirect to Stripe checkout
+          window.location.href = paymentResponse.data.url;
+        }
+      }
+    } catch (error) {
+      console.error("Error during payment:", error);
+      if (error.response?.status === 400) {
+        Swal.fire({
+          icon: "error",
+          title: "Already Applied",
+          text: error.response.data.message,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: "Failed to initiate payment. Please try again.",
+        });
+      }
+    }
   };
 
   const handlePayLater = async () => {

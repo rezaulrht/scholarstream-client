@@ -8,9 +8,11 @@ import Register from "../pages/Auth/Register/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import AllScholarships from "../pages/AllScholarships/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails/ScholarshipDetails";
-import Checkout from "../pages/Dashboard/Checkout/Checkout";
 import AddScholarship from "../pages/Dashboard/Admin/AddScholarship";
 import ApplicationForm from "../pages/ApplicationForm/ApplicationForm";
+import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
+import PaymentFailed from "../pages/Dashboard/Payment/PaymentFailed";
+import MyApplications from "../pages/Dashboard/Student/MyApplications";
 
 export const router = createBrowserRouter([
   {
@@ -45,14 +47,6 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: "/checkout",
-        element: (
-          <ProtectedRoute>
-            <Checkout />
-          </ProtectedRoute>
-        ),
-      },
     ],
   },
   {
@@ -77,7 +71,18 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      // Dashboard routes will go here
+      {
+        path: "applications",
+        Component: MyApplications,
+      },
+      {
+        path: "payment-success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "payment-failed",
+        Component: PaymentFailed,
+      },
     ],
   },
 ]);
