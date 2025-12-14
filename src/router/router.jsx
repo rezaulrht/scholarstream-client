@@ -13,6 +13,7 @@ import ApplicationForm from "../pages/ApplicationForm/ApplicationForm";
 import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentFailed from "../pages/Dashboard/Payment/PaymentFailed";
 import MyApplications from "../pages/Dashboard/Student/MyApplications";
+import MyReviews from "../pages/Dashboard/Student/MyReviews";
 import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications";
 
 export const router = createBrowserRouter([
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: "applications",
         Component: MyApplications,
+      },
+      {
+        path: "my-reviews",
+        Component: MyReviews,
       },
       {
         path: "manage-applications",

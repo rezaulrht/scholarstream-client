@@ -18,7 +18,7 @@ const ManageApplications = () => {
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [feedback, setFeedback] = useState("");
 
-  // Fetch all applications with pending status and paid payment
+  // Fetch all applications with paid payment
   const {
     data: applications = [],
     isLoading,

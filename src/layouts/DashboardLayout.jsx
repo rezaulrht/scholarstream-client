@@ -37,7 +37,7 @@ const DashboardLayout = () => {
                 `btn btn-sm ${isActive ? "btn-primary" : "btn-ghost"}`
               }
             >
-              <MdOutlineSpaceDashboard className="h-5 w-5"/>
+              <MdOutlineSpaceDashboard className="h-5 w-5" />
               Dashboard
             </NavLink>
             <Link to="/" className="btn btn-ghost btn-sm">
@@ -154,7 +154,7 @@ const DashboardLayout = () => {
 
             <li>
               <Link
-                to="/dashboard/reviews"
+                to="/dashboard/my-reviews"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
                 data-tip="My Reviews"
               >

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
@@ -16,36 +17,53 @@ const MyApplications = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
 
-  useEffect(() => {
-    if (user?.email) {
-      fetchApplications();
-    }
-  }, [user]);
-
-  const fetchApplications = async () => {
-    try {
+  // Fetch applications using TanStack Query
+  const {
+    data: applications = [],
+    isLoading: loading,
+    refetch,
+    isError,
+  } = useQuery({
+    queryKey: ["my-applications", user?.email],
+    queryFn: async () => {
       const response = await axiosSecure.get(
         `/applications/user/${user.email}`
       );
-      setApplications(response.data);
-    } catch (error) {
-      console.error("Error fetching applications:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to load applications",
+      return response.data;
+    },
+    enabled: !!user?.email,
+  });
+
+  // Fetch user's reviews and transform to map
+  const { data: userReviews = {} } = useQuery({
+    queryKey: ["my-reviews", user?.email],
+    queryFn: async () => {
+      const response = await axiosSecure.get(`/reviews/user/${user.email}`);
+      return response.data;
+    },
+    select: (reviews) => {
+      const reviewMap = {};
+      reviews.forEach((review) => {
+        reviewMap[review.scholarshipId] = review;
       });
-    } finally {
-      setLoading(false);
-    }
-  };
+      return reviewMap;
+    },
+    enabled: !!user?.email,
+  });
+
+  // Show error if query fails
+  if (isError) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to load applications",
+    });
+  }
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -62,7 +80,7 @@ const MyApplications = () => {
       try {
         await axiosSecure.delete(`/applications/${id}`);
         Swal.fire("Deleted!", "Your application has been deleted.", "success");
-        fetchApplications();
+        refetch();
       } catch (error) {
         console.error("Error deleting application:", error);
         Swal.fire({
@@ -119,10 +137,12 @@ const MyApplications = () => {
         title: "Review Added",
         text: "Your review has been submitted successfully",
       });
+
       setShowReviewModal(false);
       setReviewData({ rating: 5, comment: "" });
+      refetch();
     } catch (error) {
-      console.error("Error adding review:", error);
+      console.error("Error submitting review:", error);
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -175,6 +195,7 @@ const MyApplications = () => {
             <tr>
               <th className="text-neutral font-semibold">Scholarship Name</th>
               <th className="text-neutral font-semibold">University</th>
+              <th className="text-neutral font-semibold">Address</th>
               <th className="text-neutral font-semibold">Subject</th>
               <th className="text-neutral font-semibold">Fees</th>
               <th className="text-neutral font-semibold">Status</th>
@@ -194,6 +215,9 @@ const MyApplications = () => {
                 </td>
                 <td className="text-sm text-neutral/70">
                   {app.universityName}
+                </td>
+                <td className="text-sm text-neutral/70">
+                  {app.universityCountry || "N/A"}
                 </td>
                 <td className="text-neutral/80">
                   {app.subjectCategory || "N/A"}
@@ -281,19 +305,21 @@ const MyApplications = () => {
                       </button>
                     )}
 
-                    {/* Add Review Button - Only if accepted */}
-                    {app.applicationStatus === "accepted" && (
-                      <button
-                        onClick={() => {
-                          setSelectedApplication(app);
-                          setShowReviewModal(true);
-                        }}
-                        className="btn btn-success btn-sm"
-                        title="Add Review"
-                      >
-                        <HiOutlineStar className="text-lg" />
-                      </button>
-                    )}
+                    {/* Add Review Button - Only if accepted and no review yet */}
+                    {app.applicationStatus === "accepted" &&
+                      !userReviews[app.scholarshipId] && (
+                        <button
+                          onClick={() => {
+                            setSelectedApplication(app);
+                            setReviewData({ rating: 5, comment: "" });
+                            setShowReviewModal(true);
+                          }}
+                          className="btn btn-success btn-sm"
+                          title="Add Review"
+                        >
+                          <HiOutlineStar className="text-lg" />
+                        </button>
+                      )}
                   </div>
                 </td>
               </tr>
@@ -319,6 +345,10 @@ const MyApplications = () => {
                     University:
                   </span>{" "}
                   {app.universityName}
+                </p>
+                <p>
+                  <span className="font-semibold text-neutral">Address:</span>{" "}
+                  {app.universityCountry || "N/A"}
                 </p>
                 <p>
                   <span className="font-semibold text-neutral">Subject:</span>{" "}
@@ -395,17 +425,19 @@ const MyApplications = () => {
                     </button>
                   </>
                 )}
-                {app.applicationStatus === "accepted" && (
-                  <button
-                    onClick={() => {
-                      setSelectedApplication(app);
-                      setShowReviewModal(true);
-                    }}
-                    className="btn btn-sm btn-success"
-                  >
-                    <HiOutlineStar /> Review
-                  </button>
-                )}
+                {app.applicationStatus === "accepted" &&
+                  !userReviews[app.scholarshipId] && (
+                    <button
+                      onClick={() => {
+                        setSelectedApplication(app);
+                        setReviewData({ rating: 5, comment: "" });
+                        setShowReviewModal(true);
+                      }}
+                      className="btn btn-sm btn-success"
+                    >
+                      <HiOutlineStar /> Review
+                    </button>
+                  )}
               </div>
             </div>
           </div>
