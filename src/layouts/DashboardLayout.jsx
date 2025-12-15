@@ -9,6 +9,8 @@ import {
   HiOutlineDocumentText,
   HiOutlineStar,
   HiOutlineUsers,
+  HiOutlinePlus,
+  HiOutlineChartBar,
 } from "react-icons/hi2";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { HiOutlineClipboardList } from "react-icons/hi";
@@ -197,6 +199,28 @@ const DashboardLayout = () => {
               >
                 <HiOutlineUsers className="h-5 w-5" />
                 <span className="is-drawer-close:hidden">User Management</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/dashboard/add-scholarship"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                data-tip="Add Scholarship"
+              >
+                <HiOutlinePlus className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">Add Scholarship</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/dashboard/analytics"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                data-tip="Analytics"
+              >
+                <HiOutlineChartBar className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">Analytics</span>
               </Link>
             </li>
           </ul>
