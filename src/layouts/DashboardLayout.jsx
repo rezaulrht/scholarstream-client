@@ -8,8 +8,10 @@ import {
   HiOutlineBookOpen,
   HiOutlineDocumentText,
   HiOutlineStar,
+  HiOutlineUsers,
 } from "react-icons/hi2";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { HiOutlineClipboardList } from "react-icons/hi";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
@@ -171,6 +173,30 @@ const DashboardLayout = () => {
               >
                 <HiOutlineStar className="h-5 w-5" />
                 <span className="is-drawer-close:hidden">All Reviews</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/dashboard/manage-applications"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                data-tip="Manage Applications"
+              >
+                <HiOutlineClipboardList className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">
+                  Manage Applications
+                </span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/dashboard/user-management"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                data-tip="User Management"
+              >
+                <HiOutlineUsers className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">User Management</span>
               </Link>
             </li>
           </ul>

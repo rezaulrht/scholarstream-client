@@ -17,6 +17,7 @@ import MyReviews from "../pages/Dashboard/Student/MyReviews";
 import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
 import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications";
 import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
+import UserManagement from "../pages/Dashboard/Admin/UserManagement";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
       {
         path: "all-reviews",
         Component: AllReviews,
+      },
+      {
+        path: "user-management",
+        Component: UserManagement,
       },
       {
         path: "payment-success",
