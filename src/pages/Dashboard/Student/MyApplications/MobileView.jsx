@@ -3,6 +3,12 @@ import {
   HiOutlineTrash,
   HiOutlineCreditCard,
   HiOutlineStar,
+  HiOutlineClock,
+  HiOutlineCog,
+  HiOutlineCheckCircle,
+  HiOutlineXCircle,
+  HiOutlineCheckBadge,
+  HiOutlineExclamationTriangle,
 } from "react-icons/hi2";
 
 const MobileView = ({
@@ -48,7 +54,7 @@ const MobileView = ({
               <div className="flex gap-2 items-center">
                 <span className="font-semibold text-neutral">Status:</span>
                 <span
-                  className={`badge ${
+                  className={`badge flex items-center gap-1 ${
                     app.applicationStatus === "accepted"
                       ? "bg-success/20 text-success border-success/30"
                       : app.applicationStatus === "processing"
@@ -58,18 +64,32 @@ const MobileView = ({
                       : "bg-warning/20 text-warning border-warning/30"
                   }`}
                 >
+                  {app.applicationStatus === "accepted" ? (
+                    <HiOutlineCheckCircle className="text-sm" />
+                  ) : app.applicationStatus === "processing" ? (
+                    <HiOutlineCog className="text-sm" />
+                  ) : app.applicationStatus === "rejected" ? (
+                    <HiOutlineXCircle className="text-sm" />
+                  ) : (
+                    <HiOutlineClock className="text-sm" />
+                  )}
                   {app.applicationStatus || "pending"}
                 </span>
               </div>
               <div className="flex gap-2 items-center">
                 <span className="font-semibold text-neutral">Payment:</span>
                 <span
-                  className={`badge ${
+                  className={`badge flex items-center gap-1 ${
                     app.paymentStatus === "paid"
                       ? "bg-success/20 text-success border-success/30"
                       : "bg-error/20 text-error border-error/30"
                   }`}
                 >
+                  {app.paymentStatus === "paid" ? (
+                    <HiOutlineCheckBadge className="text-sm" />
+                  ) : (
+                    <HiOutlineExclamationTriangle className="text-sm" />
+                  )}
                   {app.paymentStatus || "unpaid"}
                 </span>
               </div>

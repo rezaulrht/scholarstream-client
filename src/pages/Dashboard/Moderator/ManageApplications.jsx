@@ -8,7 +8,13 @@ import {
   HiOutlineCheckCircle,
   HiOutlineXCircle,
   HiOutlineClipboardList,
+  HiOutlineClock,
+  HiOutlineCog,
 } from "react-icons/hi";
+import {
+  HiOutlineCheckBadge,
+  HiOutlineExclamationTriangle,
+} from "react-icons/hi2";
 
 const ManageApplications = () => {
   const axiosSecure = useAxiosSecure();
@@ -234,21 +240,35 @@ const ManageApplications = () => {
                       <td>{application.universityName}</td>
                       <td>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusClass(
+                          className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${getStatusClass(
                             application.applicationStatus
                           )}`}
                         >
+                          {application.applicationStatus === "accepted" ? (
+                            <HiOutlineCheckCircle className="text-sm" />
+                          ) : application.applicationStatus === "processing" ? (
+                            <HiOutlineCog className="text-sm" />
+                          ) : application.applicationStatus === "rejected" ? (
+                            <HiOutlineXCircle className="text-sm" />
+                          ) : (
+                            <HiOutlineClock className="text-sm" />
+                          )}
                           {application.applicationStatus}
                         </span>
                       </td>
                       <td>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                          className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${
                             application.paymentStatus === "paid"
                               ? "bg-success/20 text-success border-success/30"
                               : "bg-warning/20 text-warning border-warning/30"
                           }`}
                         >
+                          {application.paymentStatus === "paid" ? (
+                            <HiOutlineCheckBadge className="text-sm" />
+                          ) : (
+                            <HiOutlineExclamationTriangle className="text-sm" />
+                          )}
                           {application.paymentStatus}
                         </span>
                       </td>
@@ -327,10 +347,19 @@ const ManageApplications = () => {
                     </p>
                   </div>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusClass(
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusClass(
                       application.applicationStatus
                     )}`}
                   >
+                    {application.applicationStatus === "accepted" ? (
+                      <HiOutlineCheckCircle className="text-sm" />
+                    ) : application.applicationStatus === "processing" ? (
+                      <HiOutlineCog className="text-sm" />
+                    ) : application.applicationStatus === "rejected" ? (
+                      <HiOutlineXCircle className="text-sm" />
+                    ) : (
+                      <HiOutlineClock className="text-sm" />
+                    )}
                     {application.applicationStatus}
                   </span>
                 </div>
@@ -345,12 +374,17 @@ const ManageApplications = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-neutral/70">Payment:</span>
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                      className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${
                         application.paymentStatus === "paid"
                           ? "bg-success/20 text-success border-success/30"
                           : "bg-warning/20 text-warning border-warning/30"
                       }`}
                     >
+                      {application.paymentStatus === "paid" ? (
+                        <HiOutlineCheckBadge className="text-sm" />
+                      ) : (
+                        <HiOutlineExclamationTriangle className="text-sm" />
+                      )}
                       {application.paymentStatus}
                     </span>
                   </div>

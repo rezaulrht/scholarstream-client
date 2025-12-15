@@ -10,6 +10,12 @@ import {
   HiOutlineTrash,
   HiOutlineCreditCard,
   HiOutlineStar,
+  HiOutlineClock,
+  HiOutlineCog,
+  HiOutlineCheckCircle,
+  HiOutlineXCircle,
+  HiOutlineCheckBadge,
+  HiOutlineExclamationTriangle,
 } from "react-icons/hi2";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
@@ -230,7 +236,7 @@ const MyApplications = () => {
                 </td>
                 <td>
                   <span
-                    className={`badge ${
+                    className={`badge flex items-center gap-1 ${
                       app.applicationStatus === "accepted"
                         ? "bg-success/20 text-success border-success/30"
                         : app.applicationStatus === "processing"
@@ -240,17 +246,31 @@ const MyApplications = () => {
                         : "bg-warning/20 text-warning border-warning/30"
                     }`}
                   >
+                    {app.applicationStatus === "accepted" ? (
+                      <HiOutlineCheckCircle className="text-base" />
+                    ) : app.applicationStatus === "processing" ? (
+                      <HiOutlineCog className="text-base" />
+                    ) : app.applicationStatus === "rejected" ? (
+                      <HiOutlineXCircle className="text-base" />
+                    ) : (
+                      <HiOutlineClock className="text-base" />
+                    )}
                     {app.applicationStatus || "pending"}
                   </span>
                 </td>
                 <td>
                   <span
-                    className={`badge ${
+                    className={`badge flex items-center gap-1 ${
                       app.paymentStatus === "paid"
                         ? "bg-success/20 text-success border-success/30"
                         : "bg-error/20 text-error border-error/30"
                     }`}
                   >
+                    {app.paymentStatus === "paid" ? (
+                      <HiOutlineCheckBadge className="text-base" />
+                    ) : (
+                      <HiOutlineExclamationTriangle className="text-base" />
+                    )}
                     {app.paymentStatus || "unpaid"}
                   </span>
                 </td>
