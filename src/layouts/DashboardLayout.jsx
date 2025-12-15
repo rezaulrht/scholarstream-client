@@ -162,6 +162,17 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">My Reviews</span>
               </Link>
             </li>
+
+            <li>
+              <Link
+                to="/dashboard/all-reviews"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                data-tip="All Reviews"
+              >
+                <HiOutlineStar className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">All Reviews</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

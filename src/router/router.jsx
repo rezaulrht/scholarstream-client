@@ -12,10 +12,11 @@ import AddScholarship from "../pages/Dashboard/Admin/AddScholarship";
 import ApplicationForm from "../pages/ApplicationForm/ApplicationForm";
 import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentFailed from "../pages/Dashboard/Payment/PaymentFailed";
-import MyApplications from "../pages/Dashboard/Student/MyApplications";
+import MyApplications from "../pages/Dashboard/Student/MyApplications/MyApplications";
 import MyReviews from "../pages/Dashboard/Student/MyReviews";
 import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
 import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications";
+import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +90,10 @@ export const router = createBrowserRouter([
       {
         path: "manage-applications",
         Component: ManageApplications,
+      },
+      {
+        path: "all-reviews",
+        Component: AllReviews,
       },
       {
         path: "payment-success",

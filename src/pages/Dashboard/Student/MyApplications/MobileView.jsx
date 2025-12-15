@@ -1,0 +1,132 @@
+import {
+  HiOutlineEye,
+  HiOutlineTrash,
+  HiOutlineCreditCard,
+  HiOutlineStar,
+} from "react-icons/hi2";
+
+const MobileView = ({
+  applications,
+  userReviews,
+  setSelectedApplication,
+  setShowDetailsModal,
+  handlePay,
+  handleDelete,
+  setReviewData,
+  setShowReviewModal,
+}) => {
+  return (
+    <div className="lg:hidden space-y-4">
+      {applications.map((app) => (
+        <div
+          key={app._id}
+          className="card bg-base-300 shadow-md border border-neutral/10"
+        >
+          <div className="card-body">
+            <h3 className="card-title text-lg text-neutral">
+              {app.scholarshipName}
+            </h3>
+            <div className="space-y-2 text-sm text-neutral/80">
+              <p>
+                <span className="font-semibold text-neutral">University:</span>{" "}
+                {app.universityName}
+              </p>
+              <p>
+                <span className="font-semibold text-neutral">Address:</span>{" "}
+                {app.universityCountry || "N/A"}
+              </p>
+              <p>
+                <span className="font-semibold text-neutral">Subject:</span>{" "}
+                {app.subjectCategory || "N/A"}
+              </p>
+              <p>
+                <span className="font-semibold text-neutral">Fees:</span>{" "}
+                <span className="text-primary font-bold">
+                  ${app.applicationFees || 0}
+                </span>
+              </p>
+              <div className="flex gap-2 items-center">
+                <span className="font-semibold text-neutral">Status:</span>
+                <span
+                  className={`badge ${
+                    app.applicationStatus === "accepted"
+                      ? "bg-success/20 text-success border-success/30"
+                      : app.applicationStatus === "processing"
+                      ? "bg-info/20 text-info border-info/30"
+                      : app.applicationStatus === "rejected"
+                      ? "bg-error/20 text-error border-error/30"
+                      : "bg-warning/20 text-warning border-warning/30"
+                  }`}
+                >
+                  {app.applicationStatus || "pending"}
+                </span>
+              </div>
+              <div className="flex gap-2 items-center">
+                <span className="font-semibold text-neutral">Payment:</span>
+                <span
+                  className={`badge ${
+                    app.paymentStatus === "paid"
+                      ? "bg-success/20 text-success border-success/30"
+                      : "bg-error/20 text-error border-error/30"
+                  }`}
+                >
+                  {app.paymentStatus || "unpaid"}
+                </span>
+              </div>
+              {app.feedback && (
+                <p>
+                  <span className="font-semibold text-neutral">Feedback:</span>{" "}
+                  <span className="text-neutral/70">{app.feedback}</span>
+                </p>
+              )}
+            </div>
+            <div className="card-actions justify-end mt-4">
+              <button
+                onClick={() => {
+                  setSelectedApplication(app);
+                  setShowDetailsModal(true);
+                }}
+                className="btn btn-sm btn-ghost"
+              >
+                <HiOutlineEye /> Details
+              </button>
+              {app.applicationStatus === "pending" && (
+                <>
+                  {app.paymentStatus === "unpaid" && (
+                    <button
+                      onClick={() => handlePay(app)}
+                      className="btn btn-sm btn-primary"
+                    >
+                      <HiOutlineCreditCard /> Pay
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(app._id)}
+                    className="btn btn-sm btn-error"
+                  >
+                    <HiOutlineTrash /> Delete
+                  </button>
+                </>
+              )}
+              {app.applicationStatus === "accepted" &&
+                !userReviews[app.scholarshipId] && (
+                  <button
+                    onClick={() => {
+                      setSelectedApplication(app);
+                      setReviewData({ rating: 5, comment: "" });
+                      setShowReviewModal(true);
+                    }}
+                    className="btn btn-sm btn-success"
+                  >
+                    <HiOutlineStar /> Review
+                  </button>
+                )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default MobileView;
