@@ -19,6 +19,7 @@ import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications"
 import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
 import UserManagement from "../pages/Dashboard/Admin/UserManagement";
 import Analytics from "../pages/Dashboard/Admin/Analytics";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -91,15 +92,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "user-management",
-        Component: UserManagement,
+        element: <AdminRoute><UserManagement></UserManagement></AdminRoute>
       },
       {
         path: "add-scholarship",
-        Component: AddScholarship,
+        element: <AdminRoute><AddScholarship></AddScholarship></AdminRoute>
       },
       {
         path: "analytics",
-        Component: Analytics,
+        element: <AdminRoute><Analytics></Analytics></AdminRoute>
       },
       {
         path: "payment-success",
