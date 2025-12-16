@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import ScholarshipCard from "../../components/ScholarshipCard/ScholarshipCard";
+import Loading from "../../components/Loading/Loading";
 import { HiSearch } from "react-icons/hi";
 import { useQuery } from "@tanstack/react-query";
 
@@ -44,11 +45,7 @@ const AllScholarships = () => {
         </div>
 
         {/* Loading State */}
-        {isLoading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="loading loading-dots loading-lg text-primary"></div>
-          </div>
-        )}
+        {isLoading && <Loading />}
 
         {/* No Results */}
         {!isLoading && scholarships.length === 0 && (

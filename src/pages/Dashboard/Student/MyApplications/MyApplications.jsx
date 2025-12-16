@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../hooks/useAuth";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../../../components/Loading/Loading";
 import {
   HiOutlineEye,
   HiOutlinePencil,
@@ -161,11 +162,7 @@ const MyApplications = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (applications.length === 0) {

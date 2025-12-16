@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loading from "../../../components/Loading/Loading";
 import {
   HiOutlineUser,
   HiOutlinePencil,
@@ -95,11 +96,7 @@ const MyProfile = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

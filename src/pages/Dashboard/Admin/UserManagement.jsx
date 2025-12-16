@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../../components/Loading/Loading";
 import {
   HiOutlineUsers,
   HiOutlineTrash,
@@ -142,9 +143,7 @@ const UserManagement = () => {
         title: "Delete User?",
         html: `
           <p>Are you sure you want to delete</p>
-          <p><strong>${
-            userToDelete.name || userToDelete.email
-          }</strong>?</p>
+          <p><strong>${userToDelete.name || userToDelete.email}</strong>?</p>
           <p class="text-error text-sm mt-2">This action cannot be undone!</p>
         `,
         icon: "warning",
@@ -176,11 +175,7 @@ const UserManagement = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -290,9 +285,7 @@ const UserManagement = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="font-medium">
-                          {user.name || "N/A"}
-                        </td>
+                        <td className="font-medium">{user.name || "N/A"}</td>
                         <td className="text-sm text-neutral/70">
                           {user.email}
                         </td>

@@ -21,6 +21,7 @@ import UserManagement from "../pages/Dashboard/Admin/UserManagement";
 import Analytics from "../pages/Dashboard/Admin/Analytics";
 import ManageScholarship from "../pages/Dashboard/Admin/ManageScholarship";
 import AdminRoute from "./AdminRoute";
+import Error404 from "../components/Error/Error404";
 
 export const router = createBrowserRouter([
   {
@@ -94,9 +95,7 @@ export const router = createBrowserRouter([
       {
         path: "user-management",
         element: (
-          <AdminRoute>
             <UserManagement></UserManagement>
-          </AdminRoute>
         ),
       },
       {
@@ -132,5 +131,9 @@ export const router = createBrowserRouter([
         Component: PaymentFailed,
       },
     ],
+  },
+  {
+    path: "*",
+    Component: Error404,
   },
 ]);

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../../components/Loading/Loading";
 import { HiOutlineTrash, HiOutlineStar } from "react-icons/hi2";
 import { HiOutlineBookOpen } from "react-icons/hi";
 
@@ -61,11 +62,7 @@ const AllReviews = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (reviews.length === 0) {

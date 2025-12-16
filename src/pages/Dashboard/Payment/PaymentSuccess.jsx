@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/Loading/Loading";
 import { HiCheckCircle, HiArrowRight } from "react-icons/hi2";
 import Confetti from "react-confetti";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const sessionId = searchParams.get("session_id");
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ const PaymentSuccess = () => {
           .patch(`/payment-success?session_id=${sessionId}`)
           .then((response) => {
             console.log("Payment verified:", response.data);
-          })
+          });
         setLoading(false);
       } catch (err) {
         console.error("Error verifying payment:", err);
@@ -40,14 +41,7 @@ const PaymentSuccess = () => {
   }, [sessionId]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-base-200">
-        <div className="text-center">
-          <span className="loading loading-spinner loading-lg text-primary"></span>
-          <p className="mt-4 text-lg">Verifying your payment...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {

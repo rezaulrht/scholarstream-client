@@ -1,14 +1,16 @@
 import React from 'react';
 import useRole from '../hooks/useRole';
+import Forbidden from '../components/Forbidden/Forbidden';
+import Loading from '../components/Loading/Loading';
 
 const AdminRoute = ({children}) => {
     const {role, roleLoading} = useRole();
     if(roleLoading){
-        return <div>Loading...</div>;
+        return <Loading></Loading>;
     }
-
+    console.log(role);
     if(role !== 'admin'){
-        return <div>Access Denied. Admins only.</div>;
+        return <Forbidden></Forbidden>;
     }
     return children;
 };

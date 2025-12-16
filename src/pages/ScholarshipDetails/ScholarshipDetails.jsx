@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Loading from "../../components/Loading/Loading";
 import {
   HiAcademicCap,
   HiCalendar,
@@ -25,14 +26,7 @@ const ScholarshipDetails = () => {
   });
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-base-100 flex items-center justify-center">
-        <div className="text-center">
-          <span className="loading loading-spinner loading-lg text-primary"></span>
-          <p className="mt-4 text-neutral/70">Loading scholarship details...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!scholarship) {

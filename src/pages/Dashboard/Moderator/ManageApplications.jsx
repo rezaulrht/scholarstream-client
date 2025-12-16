@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Loading from "../../../components/Loading/Loading";
 import {
   HiOutlineEye,
   HiOutlineChatAlt2,
@@ -174,11 +175,7 @@ const ManageApplications = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

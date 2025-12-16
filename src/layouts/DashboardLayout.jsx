@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router";
 import { Outlet } from "react-router";
 import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 import {
   HiOutlineBars3,
   HiOutlineHome,
@@ -12,12 +13,29 @@ import {
   HiOutlinePlus,
   HiOutlineChartBar,
   HiOutlineCog,
+  HiOutlineArrowRightOnRectangle,
 } from "react-icons/hi2";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { HiOutlineClipboardList } from "react-icons/hi";
 
 const DashboardLayout = () => {
-  const { user } = useAuth();
+  const { user, logOut } = useAuth();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Logout?",
+      text: "Are you sure you want to logout?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#c97a68",
+      cancelButtonColor: "#6d7d56",
+      confirmButtonText: "Yes, logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut();
+      }
+    });
+  };
 
   return (
     <div className="drawer lg:drawer-open">
@@ -238,6 +256,17 @@ const DashboardLayout = () => {
               </Link>
             </li>
           </ul>
+
+          {/* Logout Button at Bottom */}
+          <div className="p-4 border-t border-base-300 w-full">
+            <button
+              onClick={handleLogout}
+              className="btn btn-outline btn-error w-full is-drawer-close:btn-square is-drawer-close:btn-ghost"
+            >
+              <HiOutlineArrowRightOnRectangle className="h-5 w-5" />
+              <span className="is-drawer-close:hidden">Logout</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

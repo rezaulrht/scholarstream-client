@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../components/Loading/Loading";
 import {
   HiOutlineUsers,
   HiOutlineCurrencyDollar,
@@ -36,11 +37,7 @@ const Analytics = () => {
   const COLORS = ["#97a87a", "#3f4430", "#c97a68", "#6ba96a", "#8b7355"];
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
