@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router";
 import { Outlet } from "react-router";
 import useAuth from "../hooks/useAuth";
+import useRole from "../hooks/useRole";
 import Swal from "sweetalert2";
 import {
   HiOutlineBars3,
@@ -20,6 +21,7 @@ import { HiOutlineClipboardList } from "react-icons/hi";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
+  const { role } = useRole();
 
   const handleLogout = () => {
     Swal.fire({
@@ -55,7 +57,6 @@ const DashboardLayout = () => {
           <div className="flex-1 flex justify-center gap-2">
             <NavLink
               to="/dashboard"
-              end
               className={({ isActive }) =>
                 `btn btn-sm ${isActive ? "btn-primary" : "btn-ghost"}`
               }
@@ -131,17 +132,7 @@ const DashboardLayout = () => {
 
           {/* Sidebar menu */}
           <ul className="menu w-full grow p-4">
-            <li>
-              <Link
-                to="/dashboard"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="Dashboard Home"
-              >
-                <HiOutlineHome className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">Dashboard Home</span>
-              </Link>
-            </li>
-
+            {/* Common Links - Available to All */}
             <li>
               <Link
                 to="/dashboard/my-profile"
@@ -153,108 +144,118 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
-            <li>
-              <Link
-                to="/dashboard/scholarships"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="My Scholarships"
-              >
-                <HiOutlineBookOpen className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">My Scholarships</span>
-              </Link>
-            </li>
+            {/* Student Links */}
+            {role === "student" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/applications"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="My Applications"
+                  >
+                    <HiOutlineDocumentText className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">
+                      My Applications
+                    </span>
+                  </Link>
+                </li>
 
-            <li>
-              <Link
-                to="/dashboard/applications"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="My Applications"
-              >
-                <HiOutlineDocumentText className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">My Applications</span>
-              </Link>
-            </li>
+                <li>
+                  <Link
+                    to="/dashboard/my-reviews"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="My Reviews"
+                  >
+                    <HiOutlineStar className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">My Reviews</span>
+                  </Link>
+                </li>
+              </>
+            )}
 
-            <li>
-              <Link
-                to="/dashboard/my-reviews"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="My Reviews"
-              >
-                <HiOutlineStar className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">My Reviews</span>
-              </Link>
-            </li>
+            {/* Moderator Links */}
+            {role === "moderator" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/manage-applications"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="Manage Applications"
+                  >
+                    <HiOutlineClipboardList className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">
+                      Manage Applications
+                    </span>
+                  </Link>
+                </li>
 
-            <li>
-              <Link
-                to="/dashboard/all-reviews"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="All Reviews"
-              >
-                <HiOutlineStar className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">All Reviews</span>
-              </Link>
-            </li>
+                <li>
+                  <Link
+                    to="/dashboard/all-reviews"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="All Reviews"
+                  >
+                    <HiOutlineStar className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">All Reviews</span>
+                  </Link>
+                </li>
+              </>
+            )}
 
-            <li>
-              <Link
-                to="/dashboard/manage-applications"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="Manage Applications"
-              >
-                <HiOutlineClipboardList className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">
-                  Manage Applications
-                </span>
-              </Link>
-            </li>
+            {/* Admin Links */}
+            {role === "admin" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/add-scholarship"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="Add Scholarship"
+                  >
+                    <HiOutlinePlus className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">
+                      Add Scholarship
+                    </span>
+                  </Link>
+                </li>
 
-            <li>
-              <Link
-                to="/dashboard/user-management"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="User Management"
-              >
-                <HiOutlineUsers className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">User Management</span>
-              </Link>
-            </li>
+                <li>
+                  <Link
+                    to="/dashboard/manage-scholarships"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="Manage Scholarships"
+                  >
+                    <HiOutlineCog className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">
+                      Manage Scholarships
+                    </span>
+                  </Link>
+                </li>
 
-            <li>
-              <Link
-                to="/dashboard/add-scholarship"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="Add Scholarship"
-              >
-                <HiOutlinePlus className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">Add Scholarship</span>
-              </Link>
-            </li>
+                <li>
+                  <Link
+                    to="/dashboard/user-management"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="User Management"
+                  >
+                    <HiOutlineUsers className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">
+                      User Management
+                    </span>
+                  </Link>
+                </li>
 
-            <li>
-              <Link
-                to="/dashboard/analytics"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="Analytics"
-              >
-                <HiOutlineChartBar className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">Analytics</span>
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                to="/dashboard/manage-scholarships"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
-                data-tip="Manage Scholarships"
-              >
-                <HiOutlineCog className="h-5 w-5" />
-                <span className="is-drawer-close:hidden">
-                  Manage Scholarships
-                </span>
-              </Link>
-            </li>
+                <li>
+                  <Link
+                    to="/dashboard/analytics"
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                    data-tip="Analytics"
+                  >
+                    <HiOutlineChartBar className="h-5 w-5" />
+                    <span className="is-drawer-close:hidden">Analytics</span>
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
 
           {/* Logout Button at Bottom */}

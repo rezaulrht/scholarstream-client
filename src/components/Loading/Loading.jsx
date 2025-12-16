@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const Loading = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-base-100 to-base-200">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-base-100 to-base-200">
       <div className="text-center">
         {/* Spinning Logo */}
         <motion.div
@@ -75,7 +75,7 @@ const Loading = () => {
                   delay: 0.4,
                 }}
               >
-                .
+
               </motion.span>
             </motion.div>
           </div>

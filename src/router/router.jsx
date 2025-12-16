@@ -22,6 +22,7 @@ import Analytics from "../pages/Dashboard/Admin/Analytics";
 import ManageScholarship from "../pages/Dashboard/Admin/ManageScholarship";
 import AdminRoute from "./AdminRoute";
 import Error404 from "../components/Error/Error404";
+import ModeratorRoute from "./ModeratorRoute";
 
 export const router = createBrowserRouter([
   {
@@ -86,16 +87,26 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-applications",
-        Component: ManageApplications,
+        element: (
+          <ModeratorRoute>
+            <ManageApplications></ManageApplications>
+          </ModeratorRoute>
+        ),
       },
       {
         path: "all-reviews",
-        Component: AllReviews,
+        element: (
+          <ModeratorRoute>
+            <AllReviews></AllReviews>
+          </ModeratorRoute>
+        ),
       },
       {
         path: "user-management",
         element: (
+          <AdminRoute>
             <UserManagement></UserManagement>
+          </AdminRoute>
         ),
       },
       {

@@ -71,32 +71,18 @@ const Navbar = () => {
         </NavLink>
       </li>
       {user && (
-        <>
-          <li>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `font-medium transition-colors duration-300 hover:text-primary ${
-                  isActive ? "text-primary" : "text-neutral"
-                }`
-              }
-            >
-              Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/add-scholarship"
-              className={({ isActive }) =>
-                `font-medium transition-colors duration-300 hover:text-primary ${
-                  isActive ? "text-primary" : "text-neutral"
-                }`
-              }
-            >
-              Add Scholarship
-            </NavLink>
-          </li>
-        </>
+        <li>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              `font-medium transition-colors duration-300 hover:text-primary ${
+                isActive ? "text-primary" : "text-neutral"
+              }`
+            }
+          >
+            Dashboard
+          </NavLink>
+        </li>
       )}
     </>
   );

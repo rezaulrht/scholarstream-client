@@ -10,7 +10,7 @@ const Forbidden = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-base-100 to-base-200 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-base-100 to-base-200 px-4">
       <div className="max-w-2xl w-full text-center">
         {/* Animated Shield Icon */}
         <motion.div
