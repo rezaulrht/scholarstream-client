@@ -19,6 +19,7 @@ import ManageApplications from "../pages/Dashboard/Moderator/ManageApplications"
 import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
 import UserManagement from "../pages/Dashboard/Admin/UserManagement";
 import Analytics from "../pages/Dashboard/Admin/Analytics";
+import ManageScholarship from "../pages/Dashboard/Admin/ManageScholarship";
 import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
@@ -92,15 +93,35 @@ export const router = createBrowserRouter([
       },
       {
         path: "user-management",
-        element: <AdminRoute><UserManagement></UserManagement></AdminRoute>
+        element: (
+          <AdminRoute>
+            <UserManagement></UserManagement>
+          </AdminRoute>
+        ),
       },
       {
         path: "add-scholarship",
-        element: <AdminRoute><AddScholarship></AddScholarship></AdminRoute>
+        element: (
+          <AdminRoute>
+            <AddScholarship></AddScholarship>
+          </AdminRoute>
+        ),
       },
       {
         path: "analytics",
-        element: <AdminRoute><Analytics></Analytics></AdminRoute>
+        element: (
+          <AdminRoute>
+            <Analytics></Analytics>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-scholarships",
+        element: (
+          <AdminRoute>
+            <ManageScholarship></ManageScholarship>
+          </AdminRoute>
+        ),
       },
       {
         path: "payment-success",

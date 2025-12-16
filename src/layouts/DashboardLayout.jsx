@@ -11,6 +11,7 @@ import {
   HiOutlineUsers,
   HiOutlinePlus,
   HiOutlineChartBar,
+  HiOutlineCog,
 } from "react-icons/hi2";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { HiOutlineClipboardList } from "react-icons/hi";
@@ -221,6 +222,19 @@ const DashboardLayout = () => {
               >
                 <HiOutlineChartBar className="h-5 w-5" />
                 <span className="is-drawer-close:hidden">Analytics</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/dashboard/manage-scholarships"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right hover:bg-primary/10"
+                data-tip="Manage Scholarships"
+              >
+                <HiOutlineCog className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">
+                  Manage Scholarships
+                </span>
               </Link>
             </li>
           </ul>
