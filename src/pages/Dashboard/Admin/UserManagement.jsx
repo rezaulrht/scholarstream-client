@@ -276,6 +276,7 @@ const UserManagement = () => {
                                   src={user.photoURL}
                                   alt={user.name}
                                   className="object-cover"
+                                  referrerPolicy="no-referrer"
                                 />
                               ) : (
                                 <div className="bg-primary/20 flex items-center justify-center">
@@ -345,6 +346,7 @@ const UserManagement = () => {
                             src={user.photoURL}
                             alt={user.name}
                             className="object-cover"
+                            referrerPolicy="no-referrer"
                           />
                         ) : (
                           <div className="bg-primary/20 flex items-center justify-center">
@@ -415,6 +417,7 @@ const UserManagement = () => {
                         src={selectedUser.photoURL}
                         alt={selectedUser.name}
                         className="object-cover"
+                        referrerPolicy="no-referrer"
                       />
                     ) : (
                       <div className="bg-primary/20 flex items-center justify-center">

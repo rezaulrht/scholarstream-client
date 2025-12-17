@@ -117,6 +117,7 @@ const MyProfile = () => {
                 <img
                   src={user?.photoURL || "/default-avatar.png"}
                   alt={user?.displayName}
+                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>

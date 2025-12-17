@@ -115,6 +115,7 @@ const Navbar = () => {
                     <img
                       src={user.photoURL || "https://via.placeholder.com/150"}
                       alt={user.displayName || "User"}
+                      referrerPolicy="no-referrer"
                     />
                   </div>
                 </label>
@@ -202,6 +203,7 @@ const Navbar = () => {
                       src={user.photoURL || "https://via.placeholder.com/150"}
                       alt={user.displayName || "User"}
                       className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                      referrerPolicy="no-referrer"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-neutral truncate">

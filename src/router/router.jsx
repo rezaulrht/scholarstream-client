@@ -23,6 +23,7 @@ import ManageScholarship from "../pages/Dashboard/Admin/ManageScholarship";
 import AdminRoute from "./AdminRoute";
 import Error404 from "../components/Error/Error404";
 import ModeratorRoute from "./ModeratorRoute";
+import DashboardHome from "../pages/Dashboard/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
+      {
+        index: true,
+        Component: DashboardHome,
+      },
       {
         path: "my-profile",
         Component: MyProfile,
