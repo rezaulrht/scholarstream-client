@@ -52,7 +52,7 @@ const Register = () => {
             updateUserProfile(profile)
               .then(() => {
                 const userInfo = {
-                  displayName: data.name,
+                  name: data.name,
                   email: data.email,
                   photoURL: photoURL,
                 };

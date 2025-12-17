@@ -86,7 +86,13 @@ const ScholarshipDetails = () => {
     }
   );
 
+  // Check if deadline has passed
+  const isDeadlinePassed = new Date(applicationDeadline) < new Date();
+
   const handleApplyNow = () => {
+    if (isDeadlinePassed) {
+      return; // Prevent navigation if deadline passed
+    }
     navigate(`/apply/${id}`, {
       state: {
         scholarship: scholarship,
@@ -271,7 +277,13 @@ const ScholarshipDetails = () => {
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-4 md:space-y-6">
                 {/* Application Deadline */}
-                <div className="bg-linear-to-br from-primary via-primary to-secondary text-primary-content rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6">
+                <div
+                  className={`bg-linear-to-br ${
+                    isDeadlinePassed
+                      ? "from-error via-error to-error/80"
+                      : "from-primary via-primary to-secondary"
+                  } text-primary-content rounded-xl md:rounded-2xl shadow-lg p-4 md:p-6`}
+                >
                   <div className="text-center">
                     <div className="inline-flex items-center justify-center w-12 md:w-16 h-12 md:h-16 bg-white/20 rounded-xl md:rounded-2xl mb-3 md:mb-4">
                       <HiCalendar className="w-6 md:w-8 h-6 md:h-8 text-white" />
@@ -282,6 +294,16 @@ const ScholarshipDetails = () => {
                     <p className="text-xl md:text-3xl font-bold mb-4 md:mb-6">
                       {formattedDeadline}
                     </p>
+                    {isDeadlinePassed && (
+                      <div className="bg-white/20 rounded-lg p-2 md:p-3">
+                        <p className="text-xs md:text-sm font-semibold">
+                          ⚠️ Deadline Passed
+                        </p>
+                        <p className="text-xs opacity-90 mt-1">
+                          Applications are no longer accepted
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -329,15 +351,30 @@ const ScholarshipDetails = () => {
 
                     <button
                       onClick={handleApplyNow}
-                      className="w-full py-3 md:py-4 bg-primary text-primary-content font-bold rounded-lg md:rounded-xl hover:bg-secondary hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                      disabled={isDeadlinePassed}
+                      className={`w-full py-3 md:py-4 font-bold rounded-lg md:rounded-xl transition-all duration-300 text-base md:text-lg ${
+                        isDeadlinePassed
+                          ? "bg-neutral/20 text-neutral/40 cursor-not-allowed"
+                          : "bg-primary text-primary-content hover:bg-secondary hover:shadow-xl"
+                      }`}
                     >
-                      Apply Now
+                      {isDeadlinePassed ? "Application Closed" : "Apply Now"}
                     </button>
 
                     <p className="text-xs text-center text-neutral/60 mt-2 md:mt-3">
-                      Secure payment via Stripe.
-                      <br />
-                      Application is non-refundable.
+                      {isDeadlinePassed ? (
+                        <>
+                          This scholarship is no longer accepting applications.
+                          <br />
+                          Deadline has passed.
+                        </>
+                      ) : (
+                        <>
+                          Secure payment via Stripe.
+                          <br />
+                          Application is non-refundable.
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>

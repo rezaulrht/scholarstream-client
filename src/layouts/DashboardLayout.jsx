@@ -139,6 +139,24 @@ const DashboardLayout = () => {
             {/* Common Links - Available to All */}
             <li>
               <NavLink
+                to="/dashboard"
+                end
+                className={({ isActive }) =>
+                  `is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-close:px-2 ${
+                    isActive
+                      ? "bg-primary/20 text-primary"
+                      : "hover:bg-primary/10"
+                  }`
+                }
+                data-tip="Dashboard Home"
+              >
+                <MdOutlineSpaceDashboard className="h-5 w-5" />
+                <span className="is-drawer-close:hidden">Dashboard Home</span>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
                 to="/dashboard/my-profile"
                 className={({ isActive }) =>
                   `is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-close:px-2 ${

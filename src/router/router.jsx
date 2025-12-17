@@ -10,6 +10,7 @@ import AllScholarships from "../pages/AllScholarships/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails/ScholarshipDetails";
 import AddScholarship from "../pages/Dashboard/Admin/AddScholarship";
 import ApplicationForm from "../pages/ApplicationForm/ApplicationForm";
+import Checkout from "../pages/Checkout/Checkout";
 import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentFailed from "../pages/Dashboard/Payment/PaymentFailed";
 import MyApplications from "../pages/Dashboard/Student/MyApplications/MyApplications";
@@ -47,6 +48,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ApplicationForm />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/checkout/:applicationId",
+        element: (
+          <ProtectedRoute>
+            <Checkout />
           </ProtectedRoute>
         ),
       },

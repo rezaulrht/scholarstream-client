@@ -17,7 +17,7 @@ const SocialLogin = () => {
       .then((result) => {
         const user = result.user;
         const userInfo = {
-          displayName: user.displayName,
+          name: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
         };

@@ -197,9 +197,7 @@ const DashboardHome = () => {
                             {app.paymentStatus}
                           </span>
                         </td>
-                        <td>
-                          {new Date(app.applicationDate).toLocaleDateString()}
-                        </td>
+                        <td>{new Date(app.appliedAt).toLocaleDateString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -367,9 +365,7 @@ const DashboardHome = () => {
                             {app.applicationStatus}
                           </span>
                         </td>
-                        <td>
-                          {new Date(app.applicationDate).toLocaleDateString()}
-                        </td>
+                        <td>{new Date(app.appliedAt).toLocaleDateString()}</td>
                         <td>
                           {app.feedback ? (
                             <span className="badge badge-success">

@@ -103,17 +103,10 @@ const MyApplications = () => {
   };
 
   const handlePay = (application) => {
-    // Navigate back to apply page with application data
-    navigate(`/apply/${application.scholarshipId}`, {
+    // Navigate to checkout page with application data
+    navigate(`/checkout/${application._id}`, {
       state: {
-        scholarship: {
-          _id: application.scholarshipId,
-          scholarshipName: application.scholarshipName,
-          universityName: application.universityName,
-          applicationFees: application.applicationFees,
-          serviceCharge: application.serviceCharge,
-        },
-        existingApplication: application,
+        application: application,
       },
     });
   };

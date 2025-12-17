@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HiAcademicCap, HiUser, HiDocument, HiBookOpen } from "react-icons/hi";
 import Swal from "sweetalert2";
 
@@ -15,6 +15,28 @@ const ApplicationForm = () => {
   const scholarship = location.state?.scholarship;
   const [isSavingLater, setIsSavingLater] = useState(false);
 
+  // Check if deadline has passed
+  useEffect(() => {
+    if (!scholarship) {
+      toast.error("No scholarship data found!");
+      navigate("/all-scholarships");
+      return;
+    }
+
+    const isDeadlinePassed =
+      new Date(scholarship.applicationDeadline) < new Date();
+    if (isDeadlinePassed) {
+      Swal.fire({
+        icon: "error",
+        title: "Application Closed",
+        text: "The deadline for this scholarship has passed. Applications are no longer accepted.",
+        confirmButtonColor: "#c97a68",
+      }).then(() => {
+        navigate(`/scholarships/${scholarship._id}`);
+      });
+    }
+  }, [scholarship, navigate]);
+
   const {
     register,
     handleSubmit,
@@ -24,7 +46,7 @@ const ApplicationForm = () => {
 
   const onSubmitPay = async (data) => {
     try {
-      // First save the application
+      // Save the application first
       const applicationData = {
         scholarshipId: scholarship._id,
         scholarshipName: scholarship.scholarshipName,
@@ -52,28 +74,18 @@ const ApplicationForm = () => {
       const response = await axiosSecure.post("/applications", applicationData);
 
       if (response.data.insertedId) {
-        // Create payment session
-        const paymentInfo = {
-          applicationId: response.data.insertedId,
-          scholarshipId: scholarship._id,
-          scholarshipName: scholarship.scholarshipName,
-          universityName: scholarship.universityName,
-          userEmail: user?.email,
-          totalAmount: applicationData.totalAmount,
-        };
-
-        const paymentResponse = await axiosSecure.post(
-          "/create-checkout-session",
-          paymentInfo
-        );
-
-        if (paymentResponse.data.url) {
-          // Redirect to Stripe checkout
-          window.location.href = paymentResponse.data.url;
-        }
+        // Navigate to checkout page with application data
+        navigate(`/checkout/${response.data.insertedId}`, {
+          state: {
+            application: {
+              _id: response.data.insertedId,
+              ...applicationData,
+            },
+          },
+        });
       }
     } catch (error) {
-      console.error("Error during payment:", error);
+      console.error("Error during application:", error);
       if (error.response?.status === 400) {
         Swal.fire({
           icon: "error",
@@ -83,14 +95,14 @@ const ApplicationForm = () => {
       } else {
         Swal.fire({
           icon: "error",
-          title: "Payment Failed",
-          text: "Failed to initiate payment. Please try again.",
+          title: "Submission Failed",
+          text: "Failed to submit application. Please try again.",
         });
       }
     }
   };
 
-  const handlePayLater = async () => {
+  const handleSaveForLater = async () => {
     const data = getValues();
     setIsSavingLater(true);
 
@@ -126,9 +138,9 @@ const ApplicationForm = () => {
 
       if (response.data.insertedId) {
         toast.success(
-          "Application saved! You can pay later from your dashboard."
+          "Application saved! You can complete payment later from your dashboard."
         );
-        navigate("/dashboard/my-applications");
+        navigate("/dashboard/applications");
       }
     } catch (error) {
       console.error("Error saving application:", error);
@@ -497,7 +509,7 @@ const ApplicationForm = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-end pt-6 border-t">
               <button
                 type="button"
-                onClick={handlePayLater}
+                onClick={handleSaveForLater}
                 disabled={isSavingLater || isSubmitting}
                 className="btn btn-outline btn-secondary"
               >
@@ -507,7 +519,7 @@ const ApplicationForm = () => {
                     Saving...
                   </>
                 ) : (
-                  "Save & Pay Later"
+                  "Save for Later"
                 )}
               </button>
               <button
@@ -515,12 +527,14 @@ const ApplicationForm = () => {
                 className="btn btn-primary"
                 disabled={isSavingLater || isSubmitting}
               >
-                Proceed to Pay
-                <span className="font-bold">
-                  $
-                  {(scholarship.applicationFees || 0) +
-                    (scholarship.serviceCharge || 0)}
-                </span>
+                {isSubmitting ? (
+                  <>
+                    <span className="loading loading-spinner"></span>
+                    Processing...
+                  </>
+                ) : (
+                  "Proceed to Checkout"
+                )}
               </button>
             </div>
           </form>
