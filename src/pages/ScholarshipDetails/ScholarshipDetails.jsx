@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/Loading/Loading";
+import StudentReviews from "./StudentReviews";
 import {
   HiAcademicCap,
   HiCalendar,
@@ -21,6 +22,14 @@ const ScholarshipDetails = () => {
     queryKey: ["scholarship", id],
     queryFn: async () => {
       const response = await axiosSecure.get(`/scholarships/${id}`);
+      return response.data;
+    },
+  });
+
+  const { data: reviews = [], isLoading: reviewsLoading } = useQuery({
+    queryKey: ["reviews", id],
+    queryFn: async () => {
+      const response = await axiosSecure.get(`/reviews/scholarship/${id}`);
       return response.data;
     },
   });
@@ -335,6 +344,9 @@ const ScholarshipDetails = () => {
               </div>
             </div>
           </div>
+
+          {/* Reviews Section */}
+          <StudentReviews reviews={reviews} isLoading={reviewsLoading} />
         </div>
       </div>
     </div>
