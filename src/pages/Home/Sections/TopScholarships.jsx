@@ -1,77 +1,25 @@
 import { motion } from "framer-motion";
 import { HiAcademicCap, HiCalendar, HiLocationMarker } from "react-icons/hi";
 import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import Loading from "../../../components/Loading/Loading";
 
 const TopScholarships = () => {
-  // Mock scholarship data - replace with actual data from API
-  const scholarships = [
-    {
-      id: 1,
-      title: "Harvard University Global Scholarship",
-      university: "Harvard University",
-      location: "USA",
-      amount: "$50,000",
-      deadline: "2025-03-15",
-      type: "Full Scholarship",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&h=300&fit=crop",
+  // Fetch top 6 scholarships from database
+  const { data: scholarships = [], isLoading } = useQuery({
+    queryKey: ["top-scholarships"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "http://localhost:5000/scholarships?limit=6"
+      );
+      return response.data;
     },
-    {
-      id: 2,
-      title: "Oxford Rhodes Scholarship",
-      university: "University of Oxford",
-      location: "UK",
-      amount: "Full Funding",
-      deadline: "2025-04-20",
-      type: "Full Scholarship",
-      image:
-        "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=400&h=300&fit=crop",
-    },
-    {
-      id: 3,
-      title: "ETH Zurich Excellence Scholarship",
-      university: "ETH Zurich",
-      location: "Switzerland",
-      amount: "$45,000",
-      deadline: "2025-05-10",
-      type: "Merit-Based",
-      image:
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop",
-    },
-    {
-      id: 4,
-      title: "University of Tokyo MEXT Scholarship",
-      university: "University of Tokyo",
-      location: "Japan",
-      amount: "$40,000",
-      deadline: "2025-06-01",
-      type: "Full Scholarship",
-      image:
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop",
-    },
-    {
-      id: 5,
-      title: "Australian National University Scholarship",
-      university: "ANU",
-      location: "Australia",
-      amount: "$35,000",
-      deadline: "2025-04-30",
-      type: "Merit-Based",
-      image:
-        "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=400&h=300&fit=crop",
-    },
-    {
-      id: 6,
-      title: "MIT Presidential Fellowship",
-      university: "MIT",
-      location: "USA",
-      amount: "Full Funding",
-      deadline: "2025-03-25",
-      type: "Full Scholarship",
-      image:
-        "https://images.unsplash.com/photo-1562774053-701939374585?w=400&h=300&fit=crop",
-    },
-  ];
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const container = {
     hidden: { opacity: 0 },
@@ -124,7 +72,7 @@ const TopScholarships = () => {
         >
           {scholarships.map((scholarship) => (
             <motion.div
-              key={scholarship.id}
+              key={scholarship._id}
               variants={item}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className="bg-base-100 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-neutral/10"
@@ -132,13 +80,13 @@ const TopScholarships = () => {
               {/* Image */}
               <div className="relative h-48 overflow-hidden bg-base-200">
                 <img
-                  src={scholarship.image}
-                  alt={scholarship.title}
+                  src={scholarship.universityImage}
+                  alt={scholarship.scholarshipName}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-4 right-4">
                   <span className="px-3 py-1 bg-primary text-primary-content text-xs font-semibold rounded-full">
-                    {scholarship.type}
+                    {scholarship.scholarshipCategory}
                   </span>
                 </div>
               </div>
@@ -146,23 +94,25 @@ const TopScholarships = () => {
               {/* Content */}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-neutral mb-2 line-clamp-2">
-                  {scholarship.title}
+                  {scholarship.scholarshipName}
                 </h3>
 
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center gap-2 text-sm text-neutral/70">
                     <HiAcademicCap className="w-4 h-4 text-primary" />
-                    <span>{scholarship.university}</span>
+                    <span>{scholarship.universityName}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-neutral/70">
                     <HiLocationMarker className="w-4 h-4 text-primary" />
-                    <span>{scholarship.location}</span>
+                    <span>{scholarship.universityCountry}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-neutral/70">
                     <HiCalendar className="w-4 h-4 text-primary" />
                     <span>
                       Deadline:{" "}
-                      {new Date(scholarship.deadline).toLocaleDateString()}
+                      {new Date(
+                        scholarship.applicationDeadline
+                      ).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -171,11 +121,11 @@ const TopScholarships = () => {
                   <div>
                     <p className="text-xs text-neutral/60">Award Amount</p>
                     <p className="text-lg font-bold text-primary">
-                      {scholarship.amount}
+                      ${scholarship.applicationFees}
                     </p>
                   </div>
                   <Link
-                    to={`/scholarship/${scholarship.id}`}
+                    to={`/scholarships/${scholarship._id}`}
                     className="px-4 py-2 bg-primary text-primary-content font-medium rounded-lg hover:bg-secondary transition-colors duration-300"
                   >
                     View Details

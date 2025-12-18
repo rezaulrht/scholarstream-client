@@ -1,6 +1,5 @@
 import Hero from "./Sections/Hero";
 import TopScholarships from "./Sections/TopScholarships";
-import TrustedUniversities from "./Sections/TrustedUniversities";
 import ScholarshipCategories from "./Sections/ScholarshipCategories";
 import WhyChooseUs from "./Sections/WhyChooseUs";
 import Testimonials from "./Sections/Testimonials";
@@ -12,7 +11,6 @@ const Home = () => {
     <div className="bg-base-100">
       <Hero />
       <TopScholarships />
-      <TrustedUniversities />
       <ScholarshipCategories />
       <WhyChooseUs />
       <Testimonials />

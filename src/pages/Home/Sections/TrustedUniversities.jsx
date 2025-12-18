@@ -9,18 +9,53 @@ import {
   HiBookOpen,
   HiCheckCircle,
 } from "react-icons/hi";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const TrustedUniversities = () => {
+  // Fetch statistics from database
+  const { data: stats } = useQuery({
+    queryKey: ["home-statistics"],
+    queryFn: async () => {
+      const response = await axios.get("http://localhost:5000/statistics/home");
+      return response.data;
+    },
+  });
+
   // University data with counts
   const statistics = [
-    { icon: HiAcademicCap, number: "500+", label: "Partner Universities" },
-    { icon: HiGlobe, number: "150+", label: "Countries Worldwide" },
-    { icon: HiCurrencyDollar, number: "$50M+", label: "Scholarships Awarded" },
-    { icon: HiUserGroup, number: "10,000+", label: "Students Helped" },
-    { icon: HiStar, number: "95%", label: "Success Rate" },
-    { icon: HiBookOpen, number: "1,000+", label: "Programs Available" },
-    { icon: FaTrophy, number: "200+", label: "Top-Ranked Schools" },
+    {
+      icon: HiAcademicCap,
+      number: stats?.totalScholarships || "0",
+      label: "Scholarships Available",
+    },
+    {
+      icon: HiGlobe,
+      number: stats?.totalCountries || "0",
+      label: "Countries Worldwide",
+    },
+    {
+      icon: HiUserGroup,
+      number: stats?.totalApplications || "0",
+      label: "Applications Submitted",
+    },
+    {
+      icon: HiStar,
+      number: stats?.totalReviews || "0",
+      label: "Student Reviews",
+    },
+    {
+      icon: HiBookOpen,
+      number: stats?.totalUniversities || "0",
+      label: "Partner Universities",
+    },
+    {
+      icon: FaTrophy,
+      number: stats?.totalUsers || "0",
+      label: "Registered Users",
+    },
     { icon: HiCheckCircle, number: "100%", label: "Free to Use" },
+    { icon: HiCurrencyDollar, number: "24/7", label: "Support Available" },
   ];
 
   return (
