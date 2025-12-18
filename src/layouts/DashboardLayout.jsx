@@ -1,7 +1,9 @@
 import { Link, NavLink } from "react-router";
 import { Outlet } from "react-router";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import useRole from "../hooks/useRole";
+import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import {
   HiOutlineBars3,
@@ -22,6 +24,18 @@ import { HiOutlineClipboardList } from "react-icons/hi";
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
   const { role } = useRole();
+  const axiosSecure = useAxiosSecure();
+
+  // Fetch user details from database for updated photo
+  const { data: userDetails } = useQuery({
+    queryKey: ["user-details-dashboard", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return null;
+      const response = await axiosSecure.get(`/users/${user.email}`);
+      return response.data;
+    },
+    enabled: !!user?.email,
+  });
 
   const handleLogout = () => {
     Swal.fire({
@@ -116,7 +130,7 @@ const DashboardLayout = () => {
                 <div className="avatar">
                   <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                     <img
-                      src={user?.photoURL}
+                      src={userDetails?.photoURL || user?.photoURL}
                       alt={user?.displayName}
                       referrerPolicy="no-referrer"
                     />

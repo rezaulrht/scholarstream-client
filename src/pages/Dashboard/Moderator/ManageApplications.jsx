@@ -24,6 +24,7 @@ const ManageApplications = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [feedbackAction, setFeedbackAction] = useState(null); // 'accept', 'reject', 'revision'
 
   // Fetch all applications with paid payment
   const {
@@ -53,7 +54,12 @@ const ManageApplications = () => {
 
   // Submit Feedback
   const handleSubmitFeedback = async () => {
-    if (!feedback.trim()) {
+    const targetStatus = feedbackAction === "accept" ? "accepted" : 
+                        feedbackAction === "reject" ? "rejected" : 
+                        "needs revision";
+    const isOptional = feedbackAction === "accept";
+
+    if (!isOptional && !feedback.trim()) {
       Swal.fire({
         icon: "warning",
         title: "Feedback Required",
@@ -63,19 +69,39 @@ const ManageApplications = () => {
     }
 
     try {
+      // Add feedback if provided
+      if (feedback.trim()) {
+        await axiosSecure.patch(
+          `/applications/${selectedApplication._id}/feedback`,
+          { feedback }
+        );
+      }
+
+      // Update status
       await axiosSecure.patch(
-        `/applications/${selectedApplication._id}/feedback`,
-        { feedback }
+        `/applications/${selectedApplication._id}/status`,
+        { applicationStatus: targetStatus }
       );
+
+      const statusMessages = {
+        "needs revision": "Feedback has been added and application marked for revision.",
+        "rejected": "Application has been rejected with feedback.",
+        "accepted": feedback.trim() 
+          ? "Application accepted with congratulatory message." 
+          : "Application has been accepted."
+      };
+
       Swal.fire({
         icon: "success",
-        title: "Feedback Added",
-        text: "Feedback has been successfully added to the application.",
+        title: targetStatus === "accepted" ? "Application Accepted" : 
+               targetStatus === "rejected" ? "Application Rejected" : "Feedback Added",
+        text: statusMessages[targetStatus],
         timer: 2000,
         showConfirmButton: false,
       });
       setShowFeedbackModal(false);
       setFeedback("");
+      setFeedbackAction(null);
       refetch();
     } catch (error) {
       console.error(error);
@@ -169,6 +195,8 @@ const ManageApplications = () => {
         return "bg-success/20 text-success border-success/30";
       case "rejected":
         return "bg-error/20 text-error border-error/30";
+      case "needs revision":
+        return "bg-orange-500/20 text-orange-600 border-orange-500/30";
       default:
         return "bg-neutral/20 text-neutral border-neutral/30";
     }
@@ -281,11 +309,13 @@ const ManageApplications = () => {
                           >
                             <HiOutlineEye className="w-5 h-5" />
                           </button>
-                          {application.applicationStatus === "processing" && (
+                          {(application.applicationStatus === "processing" ||
+                            application.applicationStatus ===
+                              "needs revision") && (
                             <button
                               onClick={() => handleOpenFeedback(application)}
                               className="btn btn-sm btn-ghost text-info hover:bg-info/10"
-                              title="Add Feedback"
+                              title="Update Feedback"
                             >
                               <HiOutlineChatAlt2 className="w-5 h-5" />
                             </button>
@@ -619,10 +649,20 @@ const ManageApplications = () => {
         <div className="modal modal-open">
           <div className="modal-box">
             <h3 className="font-bold text-xl text-neutral mb-4">
-              Add Feedback
+              {feedbackAction === "accept" && "Accept Application"}
+              {feedbackAction === "reject" && "Reject Application"}
+              {feedbackAction === "revision" && "Request Revision"}
             </h3>
             <p className="text-sm text-neutral/70 mb-4">
-              Provide feedback for{" "}
+              {feedbackAction === "accept" && (
+                <>Add an optional congratulatory message for </>
+              )}
+              {feedbackAction === "reject" && (
+                <>Provide rejection reason for </>
+              )}
+              {feedbackAction === "revision" && (
+                <>Explain what needs to be revised for </>
+              )}
               <span className="font-semibold">
                 {selectedApplication.userName}
               </span>
@@ -630,18 +670,35 @@ const ManageApplications = () => {
               <span className="font-semibold">
                 {selectedApplication.scholarshipName}
               </span>
+              {feedbackAction === "reject" && (
+                <span className="block mt-2 text-error font-semibold">
+                  * Feedback is required for rejection
+                </span>
+              )}
+              {feedbackAction === "revision" && (
+                <span className="block mt-2 text-orange-600 font-semibold">
+                  * Feedback is required to request revision
+                </span>
+              )}
             </p>
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               className="textarea textarea-bordered w-full h-32 focus:border-primary focus:outline-none"
-              placeholder="Enter your feedback here..."
+              placeholder={
+                feedbackAction === "accept"
+                  ? "Enter congratulatory message (optional)..."
+                  : feedbackAction === "reject"
+                  ? "Explain why the application is being rejected (required)..."
+                  : "Explain what needs to be improved or corrected (required)..."
+              }
             ></textarea>
             <div className="modal-action">
               <button
                 onClick={() => {
                   setShowFeedbackModal(false);
                   setFeedback("");
+                  setFeedbackAction(null);
                 }}
                 className="btn btn-ghost"
               >
@@ -649,9 +706,17 @@ const ManageApplications = () => {
               </button>
               <button
                 onClick={handleSubmitFeedback}
-                className="btn bg-primary text-primary-content hover:bg-secondary"
+                className={`btn ${
+                  feedbackAction === "accept"
+                    ? "bg-success text-success-content hover:bg-success/80"
+                    : feedbackAction === "reject"
+                    ? "bg-error text-error-content hover:bg-error/80"
+                    : "bg-primary text-primary-content hover:bg-secondary"
+                }`}
               >
-                Submit Feedback
+                {feedbackAction === "accept" && "Accept Application"}
+                {feedbackAction === "reject" && "Reject Application"}
+                {feedbackAction === "revision" && "Request Revision"}
               </button>
             </div>
           </div>
@@ -660,6 +725,7 @@ const ManageApplications = () => {
             onClick={() => {
               setShowFeedbackModal(false);
               setFeedback("");
+              setFeedbackAction(null);
             }}
           ></div>
         </div>
@@ -680,28 +746,80 @@ const ManageApplications = () => {
             </p>
             <div className="space-y-3">
               {selectedApplication.applicationStatus === "pending" && (
-                <button
-                  onClick={() => {
-                    handleUpdateStatus(selectedApplication._id, "processing");
-                    setShowStatusModal(false);
-                  }}
-                  className="btn btn-block bg-info/10 text-info hover:bg-info hover:text-info-content border-info/30"
-                >
-                  <HiOutlineCheckCircle className="w-5 h-5" />
-                  Mark as Processing
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      handleUpdateStatus(selectedApplication._id, "processing");
+                      setShowStatusModal(false);
+                    }}
+                    className="btn btn-block bg-info/10 text-info hover:bg-info hover:text-info-content border-info/30"
+                  >
+                    <HiOutlineCheckCircle className="w-5 h-5" />
+                    Mark as Processing
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowStatusModal(false);
+                      setFeedbackAction("revision");
+                      setFeedback("");
+                      handleOpenFeedback(selectedApplication);
+                    }}
+                    className="btn btn-block bg-orange-500/10 text-orange-600 hover:bg-orange-500 hover:text-white border-orange-500/30"
+                  >
+                    <HiOutlineExclamationTriangle className="w-5 h-5" />
+                    Request Revision (Add Feedback)
+                  </button>
+                </>
               )}
               {selectedApplication.applicationStatus === "processing" && (
-                <button
-                  onClick={() => {
-                    handleUpdateStatus(selectedApplication._id, "accepted");
-                    setShowStatusModal(false);
-                  }}
-                  className="btn btn-block bg-success/10 text-success hover:bg-success hover:text-success-content border-success/30"
-                >
-                  <HiOutlineCheckCircle className="w-5 h-5" />
-                  Mark as Accepted
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      setShowStatusModal(false);
+                      setFeedbackAction("accept");
+                      setFeedback("");
+                      handleOpenFeedback(selectedApplication);
+                    }}
+                    className="btn btn-block bg-success/10 text-success hover:bg-success hover:text-success-content border-success/30"
+                  >
+                    <HiOutlineCheckCircle className="w-5 h-5" />
+                    Accept Application
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowStatusModal(false);
+                      setFeedbackAction("reject");
+                      setFeedback("");
+                      handleOpenFeedback(selectedApplication);
+                    }}
+                    className="btn btn-block bg-error/10 text-error hover:bg-error hover:text-error-content border-error/30"
+                  >
+                    <HiOutlineXCircle className="w-5 h-5" />
+                    Reject Application
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowStatusModal(false);
+                      setFeedbackAction("revision");
+                      setFeedback("");
+                      handleOpenFeedback(selectedApplication);
+                    }}
+                    className="btn btn-block bg-orange-500/10 text-orange-600 hover:bg-orange-500 hover:text-white border-orange-500/30"
+                  >
+                    <HiOutlineExclamationTriangle className="w-5 h-5" />
+                    Request Revision
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleUpdateStatus(selectedApplication._id, "pending");
+                      setShowStatusModal(false);
+                    }}
+                    className="btn btn-block bg-base-300 text-neutral hover:bg-base-200 border-neutral/30"
+                  >
+                    <HiOutlineClock className="w-5 h-5" />
+                    Send Back to Pending
+                  </button>
+                </>
               )}
             </div>
             <div className="modal-action">

@@ -1,11 +1,25 @@
 import { Link, NavLink, useNavigate } from "react-router";
 import Logo from "../Logo/Logo";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+
+  // Fetch user details from database for updated photo
+  const { data: userDetails } = useQuery({
+    queryKey: ["user-details", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return null;
+      const response = await axiosSecure.get(`/users/${user.email}`);
+      return response.data;
+    },
+    enabled: !!user?.email,
+  });
 
   const handleLogout = () => {
     Swal.fire({
@@ -113,7 +127,11 @@ const Navbar = () => {
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full border-2 border-primary hover:border-secondary transition-all duration-300">
                     <img
-                      src={user.photoURL || "https://via.placeholder.com/150"}
+                      src={
+                        userDetails?.photoURL ||
+                        user.photoURL ||
+                        "https://via.placeholder.com/150"
+                      }
                       alt={user.displayName || "User"}
                       referrerPolicy="no-referrer"
                     />
@@ -200,7 +218,11 @@ const Navbar = () => {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 px-4 py-2">
                     <img
-                      src={user.photoURL || "https://via.placeholder.com/150"}
+                      src={
+                        userDetails?.photoURL ||
+                        user.photoURL ||
+                        "https://via.placeholder.com/150"
+                      }
                       alt={user.displayName || "User"}
                       className="w-10 h-10 rounded-full border-2 border-primary object-cover"
                       referrerPolicy="no-referrer"

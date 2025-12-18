@@ -63,6 +63,8 @@ const MobileView = ({
                       ? "bg-info/20 text-info border-info/30"
                       : app.applicationStatus === "rejected"
                       ? "bg-error/20 text-error border-error/30"
+                      : app.applicationStatus === "needs revision"
+                      ? "bg-orange-500/20 text-orange-600 border-orange-500/30"
                       : "bg-warning/20 text-warning border-warning/30"
                   }`}
                 >
@@ -72,6 +74,8 @@ const MobileView = ({
                     <HiOutlineCog className="text-sm" />
                   ) : app.applicationStatus === "rejected" ? (
                     <HiOutlineXCircle className="text-sm" />
+                  ) : app.applicationStatus === "needs revision" ? (
+                    <HiOutlineExclamationTriangle className="text-sm" />
                   ) : (
                     <HiOutlineClock className="text-sm" />
                   )}
@@ -96,10 +100,24 @@ const MobileView = ({
                 </span>
               </div>
               {app.feedback && (
-                <p>
+                <div
+                  className={`p-2 rounded text-sm ${
+                    app.applicationStatus === "needs revision"
+                      ? "bg-orange-500/10 border border-orange-500/30 text-orange-700"
+                      : ""
+                  }`}
+                >
                   <span className="font-semibold text-neutral">Feedback:</span>{" "}
-                  <span className="text-neutral/70">{app.feedback}</span>
-                </p>
+                  <span
+                    className={
+                      app.applicationStatus === "needs revision"
+                        ? ""
+                        : "text-neutral/70"
+                    }
+                  >
+                    {app.feedback}
+                  </span>
+                </div>
               )}
             </div>
             <div className="card-actions justify-end mt-4">
@@ -112,28 +130,39 @@ const MobileView = ({
               >
                 <HiOutlineEye /> Details
               </button>
-              {app.applicationStatus === "pending" && (
+              {(app.applicationStatus === "pending" ||
+                app.applicationStatus === "needs revision") && (
                 <>
                   <button
                     onClick={() => handleEdit(app)}
-                    className="btn btn-sm btn-ghost"
+                    className={`btn btn-sm btn-ghost ${
+                      app.applicationStatus === "needs revision"
+                        ? "text-orange-600"
+                        : ""
+                    }`}
                   >
-                    <HiOutlinePencil /> Edit
+                    <HiOutlinePencil />{" "}
+                    {app.applicationStatus === "needs revision"
+                      ? "Revise"
+                      : "Edit"}
                   </button>
-                  {app.paymentStatus === "unpaid" && (
+                  {app.paymentStatus === "unpaid" &&
+                    app.applicationStatus === "pending" && (
+                      <button
+                        onClick={() => handlePay(app)}
+                        className="btn btn-sm btn-primary"
+                      >
+                        <HiOutlineCreditCard /> Pay
+                      </button>
+                    )}
+                  {app.applicationStatus === "pending" && (
                     <button
-                      onClick={() => handlePay(app)}
-                      className="btn btn-sm btn-primary"
+                      onClick={() => handleDelete(app._id)}
+                      className="btn btn-sm btn-error"
                     >
-                      <HiOutlineCreditCard /> Pay
+                      <HiOutlineTrash /> Delete
                     </button>
                   )}
-                  <button
-                    onClick={() => handleDelete(app._id)}
-                    className="btn btn-sm btn-error"
-                  >
-                    <HiOutlineTrash /> Delete
-                  </button>
                 </>
               )}
               {app.applicationStatus === "accepted" &&

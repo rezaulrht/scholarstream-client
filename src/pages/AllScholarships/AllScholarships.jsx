@@ -20,7 +20,7 @@ const AllScholarships = () => {
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page")) || 1
   );
-  const limit = 9;
+  const limit = 6;
 
   // Fetch scholarships with filters
   const { data, isLoading, refetch, isError } = useQuery({

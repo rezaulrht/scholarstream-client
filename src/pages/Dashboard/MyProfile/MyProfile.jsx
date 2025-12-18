@@ -115,7 +115,11 @@ const MyProfile = () => {
             <div className="avatar">
               <div className="w-32 h-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4">
                 <img
-                  src={user?.photoURL || "/default-avatar.png"}
+                  src={
+                    userDetails?.photoURL ||
+                    user?.photoURL ||
+                    "/default-avatar.png"
+                  }
                   alt={user?.displayName}
                   referrerPolicy="no-referrer"
                 />
@@ -203,7 +207,7 @@ const MyProfile = () => {
                 </label>
                 <div className="p-3 bg-base-100 rounded-lg border border-neutral/20 break-all">
                   <p className="text-neutral text-sm">
-                    {user?.photoURL || "N/A"}
+                    {userDetails?.photoURL || user?.photoURL || "N/A"}
                   </p>
                 </div>
               </div>

@@ -104,10 +104,19 @@ const MyApplications = () => {
   };
 
   const handlePay = (application) => {
+    // Ensure _id is properly formatted as a string
+    const applicationId =
+      typeof application._id === "object"
+        ? application._id.$oid || application._id.toString()
+        : application._id;
+
     // Navigate to checkout page with application data
-    navigate(`/checkout/${application._id}`, {
+    navigate(`/checkout/${applicationId}`, {
       state: {
-        application: application,
+        application: {
+          ...application,
+          _id: applicationId,
+        },
       },
     });
   };
@@ -197,6 +206,22 @@ const MyApplications = () => {
         </p>
       </div>
 
+      {/* Show alert for applications needing revision */}
+      {applications.some(
+        (app) => app.applicationStatus === "needs revision"
+      ) && (
+        <div className="alert alert-warning bg-orange-500/10 border-orange-500/30 mb-6">
+          <HiOutlineExclamationTriangle className="text-2xl text-orange-600" />
+          <div>
+            <h3 className="font-bold text-orange-700">Revision Required</h3>
+            <div className="text-sm text-orange-600">
+              Some of your applications need revision. Please review the
+              moderator's feedback and edit your applications.
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Desktop Table View */}
       <div className="hidden lg:block overflow-x-auto bg-base-300 rounded-lg shadow-md border border-neutral/10">
         <table className="table">
@@ -243,6 +268,8 @@ const MyApplications = () => {
                         ? "bg-info/20 text-info border-info/30"
                         : app.applicationStatus === "rejected"
                         ? "bg-error/20 text-error border-error/30"
+                        : app.applicationStatus === "needs revision"
+                        ? "bg-orange-500/20 text-orange-600 border-orange-500/30"
                         : "bg-warning/20 text-warning border-warning/30"
                     }`}
                   >
@@ -252,6 +279,8 @@ const MyApplications = () => {
                       <HiOutlineCog className="text-base" />
                     ) : app.applicationStatus === "rejected" ? (
                       <HiOutlineXCircle className="text-base" />
+                    ) : app.applicationStatus === "needs revision" ? (
+                      <HiOutlineExclamationTriangle className="text-base" />
                     ) : (
                       <HiOutlineClock className="text-base" />
                     )}
@@ -274,8 +303,18 @@ const MyApplications = () => {
                     {app.paymentStatus || "unpaid"}
                   </span>
                 </td>
-                <td className="max-w-xs truncate text-sm text-neutral/70">
-                  {app.feedback || (
+                <td className="max-w-xs text-sm">
+                  {app.feedback ? (
+                    <div
+                      className={`p-2 rounded ${
+                        app.applicationStatus === "needs revision"
+                          ? "bg-orange-500/10 border border-orange-500/30 text-orange-700"
+                          : "text-neutral/70"
+                      }`}
+                    >
+                      {app.feedback}
+                    </div>
+                  ) : (
                     <span className="italic text-neutral/40">
                       No feedback yet
                     </span>
@@ -295,12 +334,21 @@ const MyApplications = () => {
                       <HiOutlineEye className="text-lg" />
                     </button>
 
-                    {/* Edit Button - Only if pending */}
-                    {app.applicationStatus === "pending" && (
+                    {/* Edit Button - Only if pending or needs revision */}
+                    {(app.applicationStatus === "pending" ||
+                      app.applicationStatus === "needs revision") && (
                       <button
                         onClick={() => handleEdit(app)}
-                        className="btn btn-ghost btn-sm hover:bg-accent/20 hover:text-accent"
-                        title="Edit Application"
+                        className={`btn btn-ghost btn-sm ${
+                          app.applicationStatus === "needs revision"
+                            ? "hover:bg-orange-500/20 hover:text-orange-600"
+                            : "hover:bg-accent/20 hover:text-accent"
+                        }`}
+                        title={
+                          app.applicationStatus === "needs revision"
+                            ? "Revise Application"
+                            : "Edit Application"
+                        }
                       >
                         <HiOutlinePencil className="text-lg" />
                       </button>
