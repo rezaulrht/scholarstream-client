@@ -1,5 +1,6 @@
 import {
   HiOutlineEye,
+  HiOutlinePencil,
   HiOutlineTrash,
   HiOutlineCreditCard,
   HiOutlineStar,
@@ -17,6 +18,7 @@ const MobileView = ({
   setSelectedApplication,
   setShowDetailsModal,
   handlePay,
+  handleEdit,
   handleDelete,
   setReviewData,
   setShowReviewModal,
@@ -112,6 +114,12 @@ const MobileView = ({
               </button>
               {app.applicationStatus === "pending" && (
                 <>
+                  <button
+                    onClick={() => handleEdit(app)}
+                    className="btn btn-sm btn-ghost"
+                  >
+                    <HiOutlinePencil /> Edit
+                  </button>
                   {app.paymentStatus === "unpaid" && (
                     <button
                       onClick={() => handlePay(app)}

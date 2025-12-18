@@ -21,6 +21,7 @@ import {
 import { HiOutlineBookOpen } from "react-icons/hi";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import AddReviewModal from "./AddReviewModal";
+import EditApplicationModal from "./EditApplicationModal";
 import MobileView from "./MobileView";
 
 const MyApplications = () => {
@@ -30,9 +31,9 @@ const MyApplications = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
 
-  // Fetch applications using TanStack Query
   const {
     data: applications = [],
     isLoading: loading,
@@ -109,6 +110,15 @@ const MyApplications = () => {
         application: application,
       },
     });
+  };
+
+  const handleEdit = (application) => {
+    setSelectedApplication(application);
+    setShowEditModal(true);
+  };
+
+  const handleEditSuccess = () => {
+    refetch();
   };
 
   const handleAddReview = async () => {
@@ -288,6 +298,7 @@ const MyApplications = () => {
                     {/* Edit Button - Only if pending */}
                     {app.applicationStatus === "pending" && (
                       <button
+                        onClick={() => handleEdit(app)}
                         className="btn btn-ghost btn-sm hover:bg-accent/20 hover:text-accent"
                         title="Edit Application"
                       >
@@ -348,6 +359,7 @@ const MyApplications = () => {
         setSelectedApplication={setSelectedApplication}
         setShowDetailsModal={setShowDetailsModal}
         handlePay={handlePay}
+        handleEdit={handleEdit}
         handleDelete={handleDelete}
         setReviewData={setReviewData}
         setShowReviewModal={setShowReviewModal}
@@ -368,6 +380,14 @@ const MyApplications = () => {
         reviewData={reviewData}
         setReviewData={setReviewData}
         handleAddReview={handleAddReview}
+      />
+
+      {/* Edit Application Modal */}
+      <EditApplicationModal
+        application={selectedApplication}
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        onSuccess={handleEditSuccess}
       />
     </div>
   );

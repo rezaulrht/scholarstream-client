@@ -89,17 +89,13 @@ const PaymentSuccess = () => {
               Your scholarship application payment has been processed
               successfully.
             </p>
-            <p className="text-base-content/70 mb-8">
-              Transaction ID:{" "}
-              <span className="font-mono font-semibold">{sessionId}</span>
-            </p>
 
             {/* Info Box */}
             <div className="bg-primary/10 rounded-lg p-6 mb-8 text-left">
               <h3 className="font-semibold text-lg mb-3">What's Next?</h3>
               <ul className="space-y-2 text-base-content/80">
                 <li className="flex items-start gap-2">
-                  <HiCheckCircle className="text-success mt-1 flex-shrink-0" />
+                  <HiCheckCircle className="text-success mt-1 shrink-0" />
                   <span>
                     Your application is now being reviewed by the scholarship
                     committee
