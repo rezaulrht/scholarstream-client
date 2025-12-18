@@ -54,9 +54,12 @@ const ManageApplications = () => {
 
   // Submit Feedback
   const handleSubmitFeedback = async () => {
-    const targetStatus = feedbackAction === "accept" ? "accepted" : 
-                        feedbackAction === "reject" ? "rejected" : 
-                        "needs revision";
+    const targetStatus =
+      feedbackAction === "accept"
+        ? "accepted"
+        : feedbackAction === "reject"
+        ? "rejected"
+        : "needs revision";
     const isOptional = feedbackAction === "accept";
 
     if (!isOptional && !feedback.trim()) {
@@ -84,17 +87,22 @@ const ManageApplications = () => {
       );
 
       const statusMessages = {
-        "needs revision": "Feedback has been added and application marked for revision.",
-        "rejected": "Application has been rejected with feedback.",
-        "accepted": feedback.trim() 
-          ? "Application accepted with congratulatory message." 
-          : "Application has been accepted."
+        "needs revision":
+          "Feedback has been added and application marked for revision.",
+        rejected: "Application has been rejected with feedback.",
+        accepted: feedback.trim()
+          ? "Application accepted with congratulatory message."
+          : "Application has been accepted.",
       };
 
       Swal.fire({
         icon: "success",
-        title: targetStatus === "accepted" ? "Application Accepted" : 
-               targetStatus === "rejected" ? "Application Rejected" : "Feedback Added",
+        title:
+          targetStatus === "accepted"
+            ? "Application Accepted"
+            : targetStatus === "rejected"
+            ? "Application Rejected"
+            : "Feedback Added",
         text: statusMessages[targetStatus],
         timer: 2000,
         showConfirmButton: false,

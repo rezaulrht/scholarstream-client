@@ -104,13 +104,19 @@ const MobileView = ({
                   className={`p-2 rounded text-sm ${
                     app.applicationStatus === "needs revision"
                       ? "bg-orange-500/10 border border-orange-500/30 text-orange-700"
+                      : app.applicationStatus === "rejected"
+                      ? "bg-error/10 border border-error/30 text-error"
+                      : app.applicationStatus === "accepted"
+                      ? "bg-success/10 border border-success/30 text-success"
                       : ""
                   }`}
                 >
                   <span className="font-semibold text-neutral">Feedback:</span>{" "}
                   <span
                     className={
-                      app.applicationStatus === "needs revision"
+                      app.applicationStatus === "needs revision" ||
+                      app.applicationStatus === "rejected" ||
+                      app.applicationStatus === "accepted"
                         ? ""
                         : "text-neutral/70"
                     }

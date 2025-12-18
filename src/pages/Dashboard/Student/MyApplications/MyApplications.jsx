@@ -222,6 +222,20 @@ const MyApplications = () => {
         </div>
       )}
 
+      {/* Show alert for rejected applications */}
+      {applications.some((app) => app.applicationStatus === "rejected") && (
+        <div className="alert alert-error bg-error/10 border-error/30 mb-6">
+          <HiOutlineXCircle className="text-2xl text-error" />
+          <div>
+            <h3 className="font-bold text-error">Application Rejected</h3>
+            <div className="text-sm text-error">
+              Unfortunately, some of your applications have been rejected.
+              Please review the moderator's feedback for details.
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Desktop Table View */}
       <div className="hidden lg:block overflow-x-auto bg-base-300 rounded-lg shadow-md border border-neutral/10">
         <table className="table">
@@ -309,6 +323,10 @@ const MyApplications = () => {
                       className={`p-2 rounded ${
                         app.applicationStatus === "needs revision"
                           ? "bg-orange-500/10 border border-orange-500/30 text-orange-700"
+                          : app.applicationStatus === "rejected"
+                          ? "bg-error/10 border border-error/30 text-error"
+                          : app.applicationStatus === "accepted"
+                          ? "bg-success/10 border border-success/30 text-success"
                           : "text-neutral/70"
                       }`}
                     >
