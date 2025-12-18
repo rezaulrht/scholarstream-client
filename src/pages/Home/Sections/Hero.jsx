@@ -1,9 +1,21 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { HiSearch } from "react-icons/hi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useState } from "react";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/all-scholarships?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      navigate("/all-scholarships");
+    }
+  };
   return (
     <section className="relative bg-neutral py-20 md:py-32 overflow-hidden">
       {/* Background Image with Overlay */}
@@ -60,19 +72,27 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mb-8"
           >
-            <div className="relative max-w-2xl mx-auto">
+            <form
+              onSubmit={handleSearch}
+              className="relative max-w-2xl mx-auto"
+            >
               <div className="flex items-center bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-transparent focus-within:border-primary transition-all duration-300">
                 <HiSearch className="w-6 h-6 text-neutral/50 ml-5 shrink-0" />
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search scholarships by country, degree, or major..."
                   className="w-full px-4 py-4 md:py-5 text-neutral outline-none"
                 />
-                <button className="px-6 md:px-8 py-4 md:py-5 bg-primary text-primary-content font-semibold hover:bg-secondary transition-all duration-300 shrink-0">
+                <button
+                  type="submit"
+                  className="px-6 md:px-8 py-4 md:py-5 bg-primary text-primary-content font-semibold hover:bg-secondary transition-all duration-300 shrink-0"
+                >
                   Search
                 </button>
               </div>
-            </div>
+            </form>
           </motion.div>
 
           {/* CTA Buttons */}

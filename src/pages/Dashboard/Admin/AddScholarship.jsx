@@ -197,12 +197,20 @@ const AddScholarship = () => {
                   </label>
                   <div className="relative">
                     <HiGlobeAlt className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
-                    <input
-                      type="text"
+                    <select
                       {...register("universityCountry", { required: true })}
-                      placeholder="e.g., United States"
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
-                    />
+                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors appearance-none"
+                    >
+                      <option value="">Select Country</option>
+                      <option value="USA">USA</option>
+                      <option value="UK">UK</option>
+                      <option value="Canada">Canada</option>
+                      <option value="Australia">Australia</option>
+                      <option value="Germany">Germany</option>
+                      <option value="France">France</option>
+                      <option value="Japan">Japan</option>
+                      <option value="China">China</option>
+                    </select>
                   </div>
                   {errors.universityCountry && (
                     <p className="text-sm text-error mt-1">

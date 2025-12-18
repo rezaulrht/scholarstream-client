@@ -7,7 +7,7 @@ import Loading from "../../../components/Loading/Loading";
 
 const TopScholarships = () => {
   // Fetch top 6 scholarships from database
-  const { data: scholarships = [], isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["top-scholarships"],
     queryFn: async () => {
       const response = await axios.get(
@@ -16,6 +16,8 @@ const TopScholarships = () => {
       return response.data;
     },
   });
+
+  const scholarships = data?.scholarships || [];
 
   if (isLoading) {
     return <Loading />;
