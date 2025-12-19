@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/Loading/Loading";
 import StudentReviews from "./StudentReviews";
+import Recommendation from "./Recommendation";
 import {
   HiAcademicCap,
   HiCalendar,
@@ -33,6 +34,18 @@ const ScholarshipDetails = () => {
       return response.data;
     },
   });
+
+  const { data: recommendations = [], isLoading: recommendationsLoading } =
+    useQuery({
+      queryKey: ["recommendations", id],
+      queryFn: async () => {
+        const response = await axiosSecure.get(
+          `/scholarships/${id}/recommendations?limit=6`
+        );
+        return response.data;
+      },
+      enabled: !!id,
+    });
 
   if (isLoading) {
     return <Loading />;
@@ -384,6 +397,13 @@ const ScholarshipDetails = () => {
 
           {/* Reviews Section */}
           <StudentReviews reviews={reviews} isLoading={reviewsLoading} />
+
+          {/* Recommendations Section */}
+          <Recommendation
+            recommendations={recommendations}
+            isLoading={recommendationsLoading}
+            currentCategory={scholarship?.scholarshipCategory}
+          />
         </div>
       </div>
     </div>
