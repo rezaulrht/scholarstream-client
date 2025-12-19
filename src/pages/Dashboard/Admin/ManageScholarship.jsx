@@ -34,8 +34,8 @@ const ManageScholarship = () => {
   } = useQuery({
     queryKey: ["all-scholarships"],
     queryFn: async () => {
-      const response = await axiosSecure.get("/scholarships");
-      return response.data;
+      const response = await axiosSecure.get("/scholarships?limit=1000");
+      return response.data.scholarships; // Extract scholarships array from response
     },
   });
 

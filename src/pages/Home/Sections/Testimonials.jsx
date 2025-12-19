@@ -59,8 +59,8 @@ const Testimonials = () => {
             className="pb-12"
           >
             {testimonials.map((testimonial) => (
-              <SwiperSlide key={testimonial._id}>
-                <div className="bg-base-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 h-full border border-neutral/10">
+              <SwiperSlide key={testimonial._id} className="h-auto">
+                <div className="bg-base-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 h-full min-h-[380px] border border-neutral/10 flex flex-col">
                   {/* Rating Stars */}
                   <div className="flex gap-1 mb-4">
                     {[...Array(testimonial.ratingPoint)].map((_, i) => (
@@ -72,7 +72,7 @@ const Testimonials = () => {
                   </div>
 
                   {/* Testimonial Text */}
-                  <p className="text-neutral/80 mb-6 leading-relaxed line-clamp-4">
+                  <p className="text-neutral/80 mb-6 leading-relaxed line-clamp-5 flex-grow">
                     "{testimonial.reviewComment}"
                   </p>
 

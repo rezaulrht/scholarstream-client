@@ -157,40 +157,12 @@ const ManageApplications = () => {
     }
   };
 
-  // Cancel Application
-  const handleCancelApplication = async (applicationId, scholarshipName) => {
-    try {
-      const result = await Swal.fire({
-        title: "Cancel this application?",
-        text: `Are you sure you want to reject "${scholarshipName}"?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#c97a68",
-        cancelButtonColor: "#6d7d56",
-        confirmButtonText: "Yes, reject it!",
-      });
-
-      if (result.isConfirmed) {
-        await axiosSecure.patch(`/applications/${applicationId}/status`, {
-          applicationStatus: "rejected",
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Application Rejected",
-          text: "The application has been rejected.",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        refetch();
-      }
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to reject application. Please try again.",
-      });
-    }
+  // Cancel/Reject Application - Opens feedback modal with reject action
+  const handleCancelApplication = async (application) => {
+    setSelectedApplication(application);
+    setFeedbackAction("reject");
+    setFeedback("");
+    setShowFeedbackModal(true);
   };
 
   const getStatusClass = (status) => {
@@ -345,10 +317,7 @@ const ManageApplications = () => {
                             application.applicationStatus === "processing") && (
                             <button
                               onClick={() =>
-                                handleCancelApplication(
-                                  application._id,
-                                  application.scholarshipName
-                                )
+                                handleCancelApplication(application)
                               }
                               className="btn btn-sm btn-ghost text-error hover:bg-error/10"
                               title="Reject Application"
@@ -464,12 +433,7 @@ const ManageApplications = () => {
                   {(application.applicationStatus === "pending" ||
                     application.applicationStatus === "processing") && (
                     <button
-                      onClick={() =>
-                        handleCancelApplication(
-                          application._id,
-                          application.scholarshipName
-                        )
-                      }
+                      onClick={() => handleCancelApplication(application)}
                       className="btn btn-sm bg-error/10 text-error hover:bg-error hover:text-error-content border-0 flex-1"
                     >
                       <HiOutlineXCircle className="w-4 h-4" />
@@ -754,30 +718,16 @@ const ManageApplications = () => {
             </p>
             <div className="space-y-3">
               {selectedApplication.applicationStatus === "pending" && (
-                <>
-                  <button
-                    onClick={() => {
-                      handleUpdateStatus(selectedApplication._id, "processing");
-                      setShowStatusModal(false);
-                    }}
-                    className="btn btn-block bg-info/10 text-info hover:bg-info hover:text-info-content border-info/30"
-                  >
-                    <HiOutlineCheckCircle className="w-5 h-5" />
-                    Mark as Processing
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowStatusModal(false);
-                      setFeedbackAction("revision");
-                      setFeedback("");
-                      handleOpenFeedback(selectedApplication);
-                    }}
-                    className="btn btn-block bg-orange-500/10 text-orange-600 hover:bg-orange-500 hover:text-white border-orange-500/30"
-                  >
-                    <HiOutlineExclamationTriangle className="w-5 h-5" />
-                    Request Revision (Add Feedback)
-                  </button>
-                </>
+                <button
+                  onClick={() => {
+                    handleUpdateStatus(selectedApplication._id, "processing");
+                    setShowStatusModal(false);
+                  }}
+                  className="btn btn-block bg-info/10 text-info hover:bg-info hover:text-info-content border-info/30"
+                >
+                  <HiOutlineCheckCircle className="w-5 h-5" />
+                  Mark as Processing
+                </button>
               )}
               {selectedApplication.applicationStatus === "processing" && (
                 <>

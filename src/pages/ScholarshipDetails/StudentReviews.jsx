@@ -70,9 +70,17 @@ const StudentReviews = ({ reviews, isLoading }) => {
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-3">
                   <div className="flex items-start gap-3 mb-3 md:mb-0">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <HiUser className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                    </div>
+                    {review.userImage ? (
+                      <img
+                        src={review.userImage}
+                        alt={review.userName}
+                        className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-primary/20 flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <HiUser className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                      </div>
+                    )}
                     <div>
                       <h4 className="font-semibold text-neutral text-base md:text-lg">
                         {review.userName}
