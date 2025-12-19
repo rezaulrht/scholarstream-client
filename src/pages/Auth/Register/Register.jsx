@@ -13,7 +13,7 @@ import Logo from "../../../components/Logo/Logo";
 import { useForm } from "react-hook-form";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import useAuth from "../../../hooks/useAuth";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 import toast from "react-hot-toast";
 
 const Register = () => {
@@ -24,6 +24,7 @@ const Register = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const { registerUser, updateUserProfile } = useAuth();
+  const axios = useAxios();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosSecure = useAxiosSecure();

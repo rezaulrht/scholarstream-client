@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxios from "../../hooks/useAxios";
 import ScholarshipCard from "../../components/ScholarshipCard/ScholarshipCard";
 import Loading from "../../components/Loading/Loading";
 import { HiSearch, HiFilter, HiSortAscending, HiX } from "react-icons/hi";
 
 const AllScholarships = () => {
+  const axios = useAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || ""
@@ -47,9 +48,7 @@ const AllScholarships = () => {
         params.append("sortOrder", sortOrder);
       }
 
-      const response = await axios.get(
-        `http://localhost:5000/scholarships?${params.toString()}`
-      );
+      const response = await axios.get(`/scholarships?${params.toString()}`);
       return response.data;
     },
   });

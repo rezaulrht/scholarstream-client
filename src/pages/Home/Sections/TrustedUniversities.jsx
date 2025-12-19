@@ -10,14 +10,15 @@ import {
   HiCheckCircle,
 } from "react-icons/hi";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 
 const TrustedUniversities = () => {
+  const axios = useAxios();
   // Fetch statistics from database
   const { data: stats } = useQuery({
     queryKey: ["home-statistics"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:5000/statistics/home");
+      const response = await axios.get("/statistics/home");
       return response.data;
     },
   });

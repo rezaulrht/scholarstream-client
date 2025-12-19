@@ -92,7 +92,9 @@ const ScholarshipCategories = () => {
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
                 <Link
-                  to={`/all-scholarships?category=${encodeURIComponent(category.name)}`}
+                  to={`/all-scholarships?category=${encodeURIComponent(
+                    category.name
+                  )}`}
                   className="block bg-base-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 border border-neutral/10 group h-full"
                 >
                   <div className="flex items-start gap-4">

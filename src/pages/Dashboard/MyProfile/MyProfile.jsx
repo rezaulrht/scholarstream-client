@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 import toast from "react-hot-toast";
 import Loading from "../../../components/Loading/Loading";
 import {
@@ -15,6 +15,7 @@ import {
 const MyProfile = () => {
   const { user, updateUserProfile } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const axios = useAxios();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     displayName: user?.displayName || "",

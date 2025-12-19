@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 import {
   HiAcademicCap,
   HiCalendar,
@@ -24,6 +24,7 @@ const AddScholarship = () => {
   } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const axios = useAxios();
   const navigate = useNavigate();
 
   const handleAddScholarship = async (data) => {

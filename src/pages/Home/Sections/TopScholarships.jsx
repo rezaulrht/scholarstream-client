@@ -2,17 +2,16 @@ import { motion } from "framer-motion";
 import { HiAcademicCap, HiCalendar, HiLocationMarker } from "react-icons/hi";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading/Loading";
 
 const TopScholarships = () => {
+  const axios = useAxios();
   // Fetch top 6 scholarships from database
   const { data, isLoading } = useQuery({
     queryKey: ["top-scholarships"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:5000/scholarships?limit=6"
-      );
+      const response = await axios.get("/scholarships?limit=6");
       return response.data;
     },
   });

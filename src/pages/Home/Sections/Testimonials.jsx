@@ -2,19 +2,18 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { HiStar } from "react-icons/hi";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 const Testimonials = () => {
+  const axios = useAxios();
   // Fetch reviews from database
   const { data: testimonials = [] } = useQuery({
     queryKey: ["testimonials"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:5000/reviews/public?limit=10"
-      );
+      const response = await axios.get("/reviews/public?limit=10");
       return response.data;
     },
   });

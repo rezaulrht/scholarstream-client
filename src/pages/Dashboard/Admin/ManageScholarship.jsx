@@ -10,11 +10,12 @@ import {
   HiOutlineEye,
 } from "react-icons/hi2";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 import toast from "react-hot-toast";
 
 const ManageScholarship = () => {
   const axiosSecure = useAxiosSecure();
+  const axios = useAxios();
   const [selectedScholarship, setSelectedScholarship] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
