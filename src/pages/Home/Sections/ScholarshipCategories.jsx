@@ -13,51 +13,24 @@ const ScholarshipCategories = () => {
   const categories = [
     {
       id: 1,
-      name: "Undergraduate",
-      description: "Bachelor's degree scholarships worldwide",
+      name: "Full fund",
+      description: "100% tuition coverage with living expenses and stipends",
       icon: HiAcademicCap,
-      count: "3,500+",
       gradient: "from-primary/10 to-primary/5",
     },
     {
       id: 2,
-      name: "Graduate",
-      description: "Master's programs and funding opportunities",
+      name: "Partial",
+      description: "Partial tuition coverage or financial assistance",
       icon: HiTrendingUp,
-      count: "2,800+",
       gradient: "from-secondary/10 to-secondary/5",
     },
     {
       id: 3,
-      name: "PhD & Research",
-      description: "Doctoral and postdoctoral fellowships",
+      name: "Self-fund",
+      description: "Self-funded programs with admission support",
       icon: HiBeaker,
-      count: "1,900+",
       gradient: "from-accent/10 to-accent/5",
-    },
-    {
-      id: 4,
-      name: "Study Abroad",
-      description: "International exchange programs",
-      icon: HiGlobe,
-      count: "1,200+",
-      gradient: "from-info/10 to-info/5",
-    },
-    {
-      id: 5,
-      name: "Merit-Based",
-      description: "Academic excellence awards",
-      icon: HiLightBulb,
-      count: "2,100+",
-      gradient: "from-warning/10 to-warning/5",
-    },
-    {
-      id: 6,
-      name: "Need-Based",
-      description: "Financial aid for students in need",
-      icon: HiUserGroup,
-      count: "1,600+",
-      gradient: "from-success/10 to-success/5",
     },
   ];
 
@@ -108,7 +81,7 @@ const ScholarshipCategories = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
         >
           {categories.map((category) => {
             const Icon = category.icon;
@@ -119,7 +92,7 @@ const ScholarshipCategories = () => {
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
                 <Link
-                  to={`/scholarships/category/${category.name.toLowerCase()}`}
+                  to={`/all-scholarships?category=${encodeURIComponent(category.name)}`}
                   className="block bg-base-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 border border-neutral/10 group h-full"
                 >
                   <div className="flex items-start gap-4">
@@ -133,10 +106,7 @@ const ScholarshipCategories = () => {
                       <p className="text-sm text-neutral/70 mb-3">
                         {category.description}
                       </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-primary">
-                          {category.count} scholarships
-                        </span>
+                      <div className="flex items-center justify-end">
                         <span className="text-primary group-hover:translate-x-2 transition-transform duration-300">
                           →
                         </span>
