@@ -5,6 +5,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
+import ForgotPassword from "../pages/Auth/ForgotPassword/ForgotPassword";
 import ProtectedRoute from "./ProtectedRoute";
 import AllScholarships from "../pages/AllScholarships/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails/ScholarshipDetails";
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "forgot-password",
+        Component: ForgotPassword,
       },
     ],
   },
