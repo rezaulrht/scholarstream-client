@@ -483,7 +483,7 @@ const ApplicationForm = () => {
                 Supporting Documents
               </h2>
               <div className="form-control">
-                <label className="label">
+                <label className="label flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <span className="label-text font-medium">
                     Upload Documents (Optional)
                   </span>
@@ -498,7 +498,7 @@ const ApplicationForm = () => {
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 />
                 <label className="label">
-                  <span className="label-text-alt text-base-content/60">
+                  <span className="label-text-alt text-base-content/60 break-words">
                     Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)
                   </span>
                 </label>
