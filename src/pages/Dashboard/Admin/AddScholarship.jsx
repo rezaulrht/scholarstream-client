@@ -29,7 +29,6 @@ const AddScholarship = () => {
 
   const handleAddScholarship = async (data) => {
     try {
-      // Upload image to imgBB with loading toast
       const uploadToast = toast.loading("Uploading university image...");
       const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
       const formData = new FormData();
@@ -65,7 +64,6 @@ const AddScholarship = () => {
       await axiosSecure.post("/add-scholarship", scholarshipData);
       toast.dismiss(addToast);
 
-      // Show success alert with SweetAlert2
       Swal.fire({
         title: "Success!",
         text: "Scholarship has been added successfully!",

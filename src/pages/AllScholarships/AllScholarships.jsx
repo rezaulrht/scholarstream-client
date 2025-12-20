@@ -330,7 +330,6 @@ const AllScholarships = () => {
                   <div className="flex gap-2 flex-wrap justify-center">
                     {[...Array(totalPages)].map((_, index) => {
                       const page = index + 1;
-                      // Show first page, last page, current page, and pages around current
                       if (
                         page === 1 ||
                         page === totalPages ||

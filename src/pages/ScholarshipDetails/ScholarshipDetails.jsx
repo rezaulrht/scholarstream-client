@@ -1,6 +1,8 @@
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, useLocation } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
+import useRole from "../../hooks/useRole";
 import Loading from "../../components/Loading/Loading";
 import StudentReviews from "./StudentReviews";
 import Recommendation from "./Recommendation";
@@ -17,7 +19,10 @@ import {
 const ScholarshipDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const { role, roleLoading } = useRole();
 
   const { data: scholarship, isLoading } = useQuery({
     queryKey: ["scholarship", id],
@@ -102,10 +107,26 @@ const ScholarshipDetails = () => {
   // Check if deadline has passed
   const isDeadlinePassed = new Date(applicationDeadline) < new Date();
 
+  // Check if user can apply (only students can apply)
+  const canApply = user && role === "student";
+  const isModeratorOrAdmin = role === "moderator" || role === "admin";
+
   const handleApplyNow = () => {
     if (isDeadlinePassed) {
-      return; // Prevent navigation if deadline passed
+      return;
     }
+    
+    if (!user) {
+      navigate("/login", {
+        state: { from: location.pathname },
+      });
+      return;
+    }
+    
+    if (!canApply) {
+      return;
+    }
+    
     navigate(`/apply/${id}`, {
       state: {
         scholarship: scholarship,
@@ -364,14 +385,20 @@ const ScholarshipDetails = () => {
 
                     <button
                       onClick={handleApplyNow}
-                      disabled={isDeadlinePassed}
+                      disabled={isDeadlinePassed || isModeratorOrAdmin}
                       className={`w-full py-3 md:py-4 font-bold rounded-lg md:rounded-xl transition-all duration-300 text-base md:text-lg ${
-                        isDeadlinePassed
+                        isDeadlinePassed || isModeratorOrAdmin
                           ? "bg-neutral/20 text-neutral/40 cursor-not-allowed"
                           : "bg-primary text-primary-content hover:bg-secondary hover:shadow-xl"
                       }`}
                     >
-                      {isDeadlinePassed ? "Application Closed" : "Apply Now"}
+                      {isDeadlinePassed
+                        ? "Application Closed"
+                        : isModeratorOrAdmin
+                        ? "Students Only"
+                        : !user
+                        ? "Login to Apply"
+                        : "Apply Now"}
                     </button>
 
                     <p className="text-xs text-center text-neutral/60 mt-2 md:mt-3">
@@ -380,6 +407,18 @@ const ScholarshipDetails = () => {
                           This scholarship is no longer accepting applications.
                           <br />
                           Deadline has passed.
+                        </>
+                      ) : isModeratorOrAdmin ? (
+                        <>
+                          Only students can apply for scholarships.
+                          <br />
+                          Moderators and admins cannot submit applications.
+                        </>
+                      ) : !user ? (
+                        <>
+                          Please login to apply for this scholarship.
+                          <br />
+                          Student accounts only.
                         </>
                       ) : (
                         <>

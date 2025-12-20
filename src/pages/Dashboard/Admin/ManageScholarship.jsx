@@ -36,7 +36,7 @@ const ManageScholarship = () => {
     queryKey: ["all-scholarships"],
     queryFn: async () => {
       const response = await axiosSecure.get("/scholarships?limit=1000");
-      return response.data.scholarships; // Extract scholarships array from response
+      return response.data.scholarships;
     },
   });
 
@@ -58,7 +58,6 @@ const ManageScholarship = () => {
     try {
       let universityImageURL = selectedScholarship.universityImage;
 
-      // If new image is uploaded
       if (data.universityImage && data.universityImage[0]) {
         const uploadToast = toast.loading("Uploading new image...");
         const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;

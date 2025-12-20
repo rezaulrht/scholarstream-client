@@ -7,7 +7,6 @@ import Confetti from "react-confetti";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
-  //   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const sessionId = searchParams.get("session_id");
   const [loading, setLoading] = useState(true);
@@ -22,8 +21,6 @@ const PaymentSuccess = () => {
       }
 
       try {
-        // Here you would typically verify the payment with your backend
-        // For now, we'll just show success
         axiosSecure
           .patch(`/payment-success?session_id=${sessionId}`)
           .then((response) => {

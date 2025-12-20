@@ -46,7 +46,6 @@ const ApplicationForm = () => {
 
   const onSubmitPay = async (data) => {
     try {
-      // Save the application first
       const applicationData = {
         scholarshipId: scholarship._id,
         scholarshipName: scholarship.scholarshipName,
@@ -74,7 +73,6 @@ const ApplicationForm = () => {
       const response = await axiosSecure.post("/applications", applicationData);
 
       if (response.data.insertedId) {
-        // Navigate to checkout page with application data
         navigate(`/checkout/${response.data.insertedId}`, {
           state: {
             application: {
@@ -126,7 +124,6 @@ const ApplicationForm = () => {
         paymentStatus: "unpaid",
         appliedAt: new Date(),
         feedback: "",
-        // Application form data
         phone: data.phone,
         dateOfBirth: data.dateOfBirth,
         gender: data.gender,

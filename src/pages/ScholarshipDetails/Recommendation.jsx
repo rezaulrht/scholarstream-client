@@ -13,7 +13,7 @@ const Recommendation = ({ recommendations, isLoading, currentCategory }) => {
   }
 
   if (!recommendations || recommendations.length === 0) {
-    return null; // Don't show section if no recommendations
+    return null;
   }
 
   return (

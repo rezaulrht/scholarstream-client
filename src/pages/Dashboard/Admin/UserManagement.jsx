@@ -128,7 +128,6 @@ const UserManagement = () => {
 
   // Delete user
   const handleDeleteUser = async (userToDelete) => {
-    // Prevent deleting self
     if (userToDelete.email === currentUser?.email) {
       Swal.fire({
         icon: "error",

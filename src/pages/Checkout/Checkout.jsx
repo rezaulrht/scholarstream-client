@@ -47,7 +47,6 @@ const Checkout = () => {
 
     setIsProcessing(true);
     try {
-      // Ensure _id is a string
       const applicationId =
         typeof application._id === "object"
           ? application._id.$oid || application._id.toString()

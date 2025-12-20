@@ -24,7 +24,7 @@ const ManageApplications = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [feedback, setFeedback] = useState("");
-  const [feedbackAction, setFeedbackAction] = useState(null); // 'accept', 'reject', 'revision'
+  const [feedbackAction, setFeedbackAction] = useState(null);
 
   // Fetch all applications with paid payment
   const {
@@ -72,7 +72,6 @@ const ManageApplications = () => {
     }
 
     try {
-      // Add feedback if provided
       if (feedback.trim()) {
         await axiosSecure.patch(
           `/applications/${selectedApplication._id}/feedback`,
@@ -80,7 +79,6 @@ const ManageApplications = () => {
         );
       }
 
-      // Update status
       await axiosSecure.patch(
         `/applications/${selectedApplication._id}/status`,
         { applicationStatus: targetStatus }

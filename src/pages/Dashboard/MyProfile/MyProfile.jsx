@@ -53,7 +53,6 @@ const MyProfile = () => {
     try {
       let photoURL = user?.photoURL;
 
-      // If user uploaded a new photo, upload to ImgBB first
       if (formData.photoFile) {
         const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
         const formDataImg = new FormData();
@@ -71,10 +70,8 @@ const MyProfile = () => {
         }
       }
 
-      // Update Firebase Auth profile
       await updateUserProfile(formData.displayName, photoURL);
 
-      // Update database
       await axiosSecure.patch(`/users/${user.email}`, {
         displayName: formData.displayName,
         photoURL: photoURL,

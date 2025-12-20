@@ -104,13 +104,11 @@ const MyApplications = () => {
   };
 
   const handlePay = (application) => {
-    // Ensure _id is properly formatted as a string
     const applicationId =
       typeof application._id === "object"
         ? application._id.$oid || application._id.toString()
         : application._id;
 
-    // Navigate to checkout page with application data
     navigate(`/checkout/${applicationId}`, {
       state: {
         application: {
