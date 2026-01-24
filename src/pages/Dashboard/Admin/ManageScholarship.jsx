@@ -91,7 +91,7 @@ const ManageScholarship = () => {
       const updateToast = toast.loading("Updating scholarship...");
       await axiosSecure.patch(
         `/scholarships/${selectedScholarship._id}`,
-        scholarshipData
+        scholarshipData,
       );
       toast.dismiss(updateToast);
 
@@ -157,10 +157,10 @@ const ManageScholarship = () => {
     <div className="p-4 md:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-neutral mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-base-content mb-2">
           Manage Scholarships
         </h1>
-        <p className="text-neutral/70">
+        <p className="text-base-content/70">
           Update or delete scholarship opportunities
         </p>
       </div>
@@ -183,33 +183,43 @@ const ManageScholarship = () => {
 
       {/* Empty State */}
       {scholarships.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-md p-12 text-center">
+        <div className="bg-base-100 rounded-2xl shadow-md p-12 text-center border border-base-content/10">
           <HiOutlineAcademicCap className="text-8xl text-primary/50 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-neutral mb-2">
+          <h3 className="text-xl font-semibold text-base-content mb-2">
             No Scholarships Found
           </h3>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             No scholarships have been added yet.
           </p>
         </div>
       ) : (
         <>
           {/* Desktop Table View */}
-          <div className="hidden lg:block bg-white rounded-2xl shadow-md overflow-hidden">
+          <div className="hidden lg:block bg-base-100 rounded-2xl shadow-md overflow-hidden border border-base-content/10">
             <div className="overflow-x-auto">
               <table className="table">
                 <thead className="bg-primary/5">
                   <tr>
-                    <th className="text-neutral font-semibold">
+                    <th className="text-base-content font-semibold">
                       Scholarship Name
                     </th>
-                    <th className="text-neutral font-semibold">University</th>
-                    <th className="text-neutral font-semibold">Location</th>
-                    <th className="text-neutral font-semibold">Category</th>
-                    <th className="text-neutral font-semibold">Degree</th>
-                    <th className="text-neutral font-semibold">App. Fees</th>
-                    <th className="text-neutral font-semibold">Deadline</th>
-                    <th className="text-neutral font-semibold text-center">
+                    <th className="text-base-content font-semibold">
+                      University
+                    </th>
+                    <th className="text-base-content font-semibold">
+                      Location
+                    </th>
+                    <th className="text-base-content font-semibold">
+                      Category
+                    </th>
+                    <th className="text-base-content font-semibold">Degree</th>
+                    <th className="text-base-content font-semibold">
+                      App. Fees
+                    </th>
+                    <th className="text-base-content font-semibold">
+                      Deadline
+                    </th>
+                    <th className="text-base-content font-semibold text-center">
                       Actions
                     </th>
                   </tr>
@@ -236,7 +246,7 @@ const ManageScholarship = () => {
                       </td>
                       <td className="text-sm text-neutral/70">
                         {new Date(
-                          scholarship.applicationDeadline
+                          scholarship.applicationDeadline,
                         ).toLocaleDateString()}
                       </td>
                       <td>
@@ -276,7 +286,7 @@ const ManageScholarship = () => {
             {scholarships.map((scholarship) => (
               <div
                 key={scholarship._id}
-                className="bg-white rounded-xl shadow-md p-5 space-y-4"
+                className="bg-base-100 rounded-xl shadow-md p-5 space-y-4 border border-base-content/10"
               >
                 <div className="flex items-start gap-4">
                   <img
@@ -285,10 +295,10 @@ const ManageScholarship = () => {
                     className="w-16 h-16 rounded-lg object-cover"
                   />
                   <div className="flex-1">
-                    <h3 className="font-bold text-neutral text-lg">
+                    <h3 className="font-bold text-base-content text-lg">
                       {scholarship.scholarshipName}
                     </h3>
-                    <p className="text-sm text-neutral/70">
+                    <p className="text-sm text-base-content/70">
                       {scholarship.universityName}
                     </p>
                     <span className="mt-2 inline-flex badge badge-sm bg-primary/20 text-primary border-primary/30">
@@ -299,29 +309,29 @@ const ManageScholarship = () => {
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-neutral/70">Location:</span>
-                    <span className="font-medium text-neutral">
+                    <span className="text-base-content/70">Location:</span>
+                    <span className="font-medium text-base-content">
                       {scholarship.universityCity},{" "}
                       {scholarship.universityCountry}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-neutral/70">Degree:</span>
-                    <span className="font-medium text-neutral">
+                    <span className="text-base-content/70">Degree:</span>
+                    <span className="font-medium text-base-content">
                       {scholarship.degree}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-neutral/70">App. Fees:</span>
+                    <span className="text-base-content/70">App. Fees:</span>
                     <span className="font-semibold text-primary">
                       ${scholarship.applicationFees}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-neutral/70">Deadline:</span>
-                    <span className="font-medium text-neutral">
+                    <span className="text-base-content/70">Deadline:</span>
+                    <span className="font-medium text-base-content">
                       {new Date(
-                        scholarship.applicationDeadline
+                        scholarship.applicationDeadline,
                       ).toLocaleDateString()}
                     </span>
                   </div>
@@ -360,7 +370,7 @@ const ManageScholarship = () => {
       {showDetailsModal && selectedScholarship && (
         <div className="modal modal-open">
           <div className="modal-box max-w-3xl max-h-[90vh] overflow-y-auto">
-            <h3 className="font-bold text-xl text-neutral mb-4">
+            <h3 className="font-bold text-xl text-base-content mb-4">
               Scholarship Details
             </h3>
             <div className="space-y-4">
@@ -371,10 +381,10 @@ const ManageScholarship = () => {
                   className="w-24 h-24 rounded-lg object-cover"
                 />
                 <div>
-                  <h4 className="font-bold text-lg text-neutral">
+                  <h4 className="font-bold text-lg text-base-content">
                     {selectedScholarship.scholarshipName}
                   </h4>
-                  <p className="text-neutral/70">
+                  <p className="text-base-content/70">
                     {selectedScholarship.universityName}
                   </p>
                 </div>
@@ -382,8 +392,8 @@ const ManageScholarship = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <span className="text-neutral/60">Location:</span>
-                  <p className="font-medium text-neutral">
+                  <span className="text-base-content/60">Location:</span>
+                  <p className="font-medium text-base-content">
                     {selectedScholarship.universityCity},{" "}
                     {selectedScholarship.universityCountry}
                   </p>
@@ -434,7 +444,7 @@ const ManageScholarship = () => {
                   <span className="text-neutral/60">Deadline:</span>
                   <p className="font-medium text-neutral">
                     {new Date(
-                      selectedScholarship.applicationDeadline
+                      selectedScholarship.applicationDeadline,
                     ).toLocaleDateString()}
                   </p>
                 </div>
@@ -468,7 +478,7 @@ const ManageScholarship = () => {
       {showEditModal && selectedScholarship && (
         <div className="modal modal-open">
           <div className="modal-box max-w-4xl max-h-[90vh] overflow-y-auto">
-            <h3 className="font-bold text-xl text-neutral mb-4">
+            <h3 className="font-bold text-xl text-base-content mb-4">
               Edit Scholarship
             </h3>
             <form
@@ -477,7 +487,7 @@ const ManageScholarship = () => {
             >
               {/* Scholarship Name */}
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">
+                <label className="block text-sm font-medium text-base-content mb-2">
                   Scholarship Name <span className="text-error">*</span>
                 </label>
                 <input

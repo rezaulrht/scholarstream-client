@@ -58,8 +58,8 @@ const ManageApplications = () => {
       feedbackAction === "accept"
         ? "accepted"
         : feedbackAction === "reject"
-        ? "rejected"
-        : "needs revision";
+          ? "rejected"
+          : "needs revision";
     const isOptional = feedbackAction === "accept";
 
     if (!isOptional && !feedback.trim()) {
@@ -75,13 +75,13 @@ const ManageApplications = () => {
       if (feedback.trim()) {
         await axiosSecure.patch(
           `/applications/${selectedApplication._id}/feedback`,
-          { feedback }
+          { feedback },
         );
       }
 
       await axiosSecure.patch(
         `/applications/${selectedApplication._id}/status`,
-        { applicationStatus: targetStatus }
+        { applicationStatus: targetStatus },
       );
 
       const statusMessages = {
@@ -99,8 +99,8 @@ const ManageApplications = () => {
           targetStatus === "accepted"
             ? "Application Accepted"
             : targetStatus === "rejected"
-            ? "Application Rejected"
-            : "Feedback Added",
+              ? "Application Rejected"
+              : "Feedback Added",
         text: statusMessages[targetStatus],
         timer: 2000,
         showConfirmButton: false,
@@ -188,49 +188,51 @@ const ManageApplications = () => {
     <div className="p-4 md:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-neutral mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-base-content mb-2">
           Manage Applications
         </h1>
-        <p className="text-neutral/70">
+        <p className="text-base-content/70">
           Review and manage student scholarship applications
         </p>
       </div>
       {/* Empty State */}
       {applications.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-md p-12 text-center">
+        <div className="bg-base-100 rounded-2xl shadow-md p-12 text-center border border-base-content/10">
           <HiOutlineClipboardList className="text-8xl text-primary/50 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-neutral mb-2">
+          <h3 className="text-xl font-semibold text-base-content mb-2">
             No Applications Found
           </h3>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             No paid applications to review at the moment.
           </p>
         </div>
       ) : (
         <>
           {/* Desktop Table View */}
-          <div className="hidden lg:block bg-white rounded-2xl shadow-md">
+          <div className="hidden lg:block bg-base-100 rounded-2xl shadow-md border border-base-content/10">
             <div className="overflow-x-auto overflow-y-visible">
               <table className="table">
                 <thead className="bg-primary/5">
                   <tr>
-                    <th className="text-neutral font-semibold">
+                    <th className="text-base-content font-semibold">
                       Applicant Name
                     </th>
-                    <th className="text-neutral font-semibold">
+                    <th className="text-base-content font-semibold">
                       Applicant Email
                     </th>
-                    <th className="text-neutral font-semibold">
+                    <th className="text-base-content font-semibold">
                       University Name
                     </th>
-                    <th className="text-neutral font-semibold">
+                    <th className="text-base-content font-semibold">
                       Application Status
                     </th>
-                    <th className="text-neutral font-semibold">
+                    <th className="text-base-content font-semibold">
                       Payment Status
                     </th>
-                    <th className="text-neutral font-semibold">Feedback</th>
-                    <th className="text-neutral font-semibold text-center">
+                    <th className="text-base-content font-semibold">
+                      Feedback
+                    </th>
+                    <th className="text-base-content font-semibold text-center">
                       Actions
                     </th>
                   </tr>
@@ -244,7 +246,7 @@ const ManageApplications = () => {
                       <td>
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${getStatusClass(
-                            application.applicationStatus
+                            application.applicationStatus,
                           )}`}
                         >
                           {application.applicationStatus === "accepted" ? (
@@ -275,7 +277,7 @@ const ManageApplications = () => {
                           {application.paymentStatus}
                         </span>
                       </td>
-                      <td className="max-w-xs truncate text-sm text-neutral/70">
+                      <td className="max-w-xs truncate text-sm text-base-content/70">
                         {application.feedback || "No feedback yet"}
                       </td>
                       <td className="relative">
@@ -337,20 +339,20 @@ const ManageApplications = () => {
             {applications.map((application) => (
               <div
                 key={application._id}
-                className="bg-white rounded-xl shadow-md p-5 space-y-4 overflow-visible"
+                className="bg-base-100 rounded-xl shadow-md p-5 space-y-4 overflow-visible border border-base-content/10"
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-bold text-neutral text-lg">
+                    <h3 className="font-bold text-base-content text-lg">
                       {application.userName}
                     </h3>
-                    <p className="text-sm text-neutral/70">
+                    <p className="text-sm text-base-content/70">
                       {application.userEmail}
                     </p>
                   </div>
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusClass(
-                      application.applicationStatus
+                      application.applicationStatus,
                     )}`}
                   >
                     {application.applicationStatus === "accepted" ? (
@@ -368,13 +370,13 @@ const ManageApplications = () => {
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-neutral/70">University:</span>
-                    <span className="font-medium text-neutral">
+                    <span className="text-base-content/70">University:</span>
+                    <span className="font-medium text-base-content">
                       {application.universityName}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-neutral/70">Payment:</span>
+                    <span className="text-base-content/70">Payment:</span>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${
                         application.paymentStatus === "paid"
@@ -391,8 +393,8 @@ const ManageApplications = () => {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-neutral/70">Feedback:</span>
-                    <span className="font-medium text-neutral text-right max-w-[60%] truncate">
+                    <span className="text-base-content/70">Feedback:</span>
+                    <span className="font-medium text-base-content text-right max-w-[60%] truncate">
                       {application.feedback || "No feedback yet"}
                     </span>
                   </div>
@@ -448,19 +450,21 @@ const ManageApplications = () => {
       {showDetailsModal && selectedApplication && (
         <div className="modal modal-open">
           <div className="modal-box max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="font-bold text-lg md:text-xl text-neutral mb-4">
+            <h3 className="font-bold text-lg md:text-xl text-base-content mb-4">
               Application Details
             </h3>
             <div className="space-y-4">
               {/* Scholarship Info */}
               <div className="bg-primary/5 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-neutral mb-3 text-sm md:text-base">
+                <h4 className="font-semibold text-base-content mb-3 text-sm md:text-base">
                   Scholarship Information
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-neutral/60">Scholarship Name:</span>
-                    <p className="font-medium text-neutral">
+                    <span className="text-base-content/60">
+                      Scholarship Name:
+                    </span>
+                    <p className="font-medium text-base-content">
                       {selectedApplication.scholarshipName}
                     </p>
                   </div>
@@ -493,7 +497,7 @@ const ManageApplications = () => {
 
               {/* Applicant Info */}
               <div className="bg-base-200/50 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-neutral mb-3 text-sm md:text-base">
+                <h4 className="font-semibold text-base-content mb-3 text-sm md:text-base">
                   Applicant Information
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
@@ -519,7 +523,7 @@ const ManageApplications = () => {
                     <span className="text-neutral/60">Date of Birth:</span>
                     <p className="font-medium text-neutral">
                       {new Date(
-                        selectedApplication.dateOfBirth
+                        selectedApplication.dateOfBirth,
                       ).toLocaleDateString()}
                     </p>
                   </div>
@@ -568,7 +572,7 @@ const ManageApplications = () => {
                   <span className="text-neutral/60">Applied Date:</span>
                   <p className="font-medium text-neutral">
                     {new Date(
-                      selectedApplication.appliedAt
+                      selectedApplication.appliedAt,
                     ).toLocaleDateString()}
                   </p>
                 </div>
@@ -659,8 +663,8 @@ const ManageApplications = () => {
                 feedbackAction === "accept"
                   ? "Enter congratulatory message (optional)..."
                   : feedbackAction === "reject"
-                  ? "Explain why the application is being rejected (required)..."
-                  : "Explain what needs to be improved or corrected (required)..."
+                    ? "Explain why the application is being rejected (required)..."
+                    : "Explain what needs to be improved or corrected (required)..."
               }
             ></textarea>
             <div className="modal-action">
@@ -680,8 +684,8 @@ const ManageApplications = () => {
                   feedbackAction === "accept"
                     ? "bg-success text-success-content hover:bg-success/80"
                     : feedbackAction === "reject"
-                    ? "bg-error text-error-content hover:bg-error/80"
-                    : "bg-primary text-primary-content hover:bg-secondary"
+                      ? "bg-error text-error-content hover:bg-error/80"
+                      : "bg-primary text-primary-content hover:bg-secondary"
                 }`}
               >
                 {feedbackAction === "accept" && "Accept Application"}

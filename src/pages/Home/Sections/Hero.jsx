@@ -25,7 +25,7 @@ const Hero = () => {
           alt="Students celebrating graduation"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-neutral/80"></div>
+        <div className="absolute inset-0 bg-black/70 dark:bg-black/60"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -77,13 +77,13 @@ const Hero = () => {
               className="relative max-w-2xl mx-auto"
             >
               <div className="flex items-center bg-base-100 rounded-2xl shadow-lg overflow-hidden border-2 border-transparent focus-within:border-primary transition-all duration-300">
-                <HiSearch className="w-6 h-6 text-neutral/50 ml-5 shrink-0" />
+                <HiSearch className="w-6 h-6 text-base-content/50 ml-5 shrink-0" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search scholarships by country, degree, or major..."
-                  className="w-full px-4 py-4 md:py-5 text-neutral outline-none"
+                  className="w-full px-4 py-4 md:py-5 bg-base-100 text-base-content outline-none placeholder:text-base-content/50"
                 />
                 <button
                   type="submit"

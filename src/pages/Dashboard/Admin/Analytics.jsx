@@ -44,10 +44,10 @@ const Analytics = () => {
     <div className="p-4 md:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-neutral mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-base-content mb-2">
           Platform Analytics
         </h1>
-        <p className="text-neutral/70">
+        <p className="text-base-content/70">
           Overview of key metrics and application statistics
         </p>
       </div>
@@ -60,7 +60,7 @@ const Analytics = () => {
             <div className="stat-figure text-primary">
               <HiOutlineUsers className="text-4xl" />
             </div>
-            <div className="stat-title text-neutral/70">Total Users</div>
+            <div className="stat-title text-base-content/70">Total Users</div>
             <div className="stat-value text-primary">
               {analytics?.totalUsers || 0}
             </div>
@@ -74,7 +74,9 @@ const Analytics = () => {
             <div className="stat-figure text-success">
               <HiOutlineAcademicCap className="text-4xl" />
             </div>
-            <div className="stat-title text-neutral/70">Total Scholarships</div>
+            <div className="stat-title text-base-content/70">
+              Total Scholarships
+            </div>
             <div className="stat-value text-success">
               {analytics?.totalScholarships || 0}
             </div>
@@ -88,7 +90,9 @@ const Analytics = () => {
             <div className="stat-figure text-warning">
               <HiOutlineCurrencyDollar className="text-4xl" />
             </div>
-            <div className="stat-title text-neutral/70">Fees Collected</div>
+            <div className="stat-title text-base-content/70">
+              Fees Collected
+            </div>
             <div className="stat-value text-warning">
               ${analytics?.totalFeesCollected?.toFixed(2) || 0}
             </div>
@@ -100,10 +104,10 @@ const Analytics = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Bar Chart - Applications by University */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
+        <div className="bg-base-100 rounded-2xl shadow-md p-6 border border-base-content/10">
           <div className="flex items-center gap-2 mb-6">
             <HiOutlineChartBar className="text-2xl text-primary" />
-            <h2 className="text-xl font-bold text-neutral">
+            <h2 className="text-xl font-bold text-base-content">
               Applications by University
             </h2>
           </div>
@@ -140,10 +144,10 @@ const Analytics = () => {
         </div>
 
         {/* Pie Chart - Applications by Category */}
-        <div className="bg-white rounded-2xl shadow-md p-6">
+        <div className="bg-base-100 rounded-2xl shadow-md p-6 border border-base-content/10">
           <div className="flex items-center gap-2 mb-6">
             <HiOutlineChartBar className="text-2xl text-primary" />
-            <h2 className="text-xl font-bold text-neutral">
+            <h2 className="text-xl font-bold text-base-content">
               Applications by Category
             </h2>
           </div>
@@ -182,17 +186,21 @@ const Analytics = () => {
       </div>
 
       {/* Additional Stats Table */}
-      <div className="mt-8 bg-white rounded-2xl shadow-md p-6">
-        <h2 className="text-xl font-bold text-neutral mb-4">
+      <div className="mt-8 bg-base-100 rounded-2xl shadow-md p-6 border border-base-content/10">
+        <h2 className="text-xl font-bold text-base-content mb-4">
           Top Universities by Applications
         </h2>
         <div className="overflow-x-auto">
           <table className="table">
             <thead className="bg-primary/5">
               <tr>
-                <th className="text-neutral font-semibold">Rank</th>
-                <th className="text-neutral font-semibold">University Name</th>
-                <th className="text-neutral font-semibold">Applications</th>
+                <th className="text-base-content font-semibold">Rank</th>
+                <th className="text-base-content font-semibold">
+                  University Name
+                </th>
+                <th className="text-base-content font-semibold">
+                  Applications
+                </th>
               </tr>
             </thead>
             <tbody>

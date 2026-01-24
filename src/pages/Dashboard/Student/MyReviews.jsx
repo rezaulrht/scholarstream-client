@@ -136,8 +136,8 @@ const MyReviews = () => {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral">My Reviews</h1>
-        <p className="text-neutral/60 mt-2">
+        <h1 className="text-3xl font-bold text-base-content">My Reviews</h1>
+        <p className="text-base-content/60 mt-2">
           Manage all the reviews you've written
         </p>
       </div>
@@ -147,12 +147,18 @@ const MyReviews = () => {
         <table className="table">
           <thead className="bg-primary/20">
             <tr>
-              <th className="text-neutral font-semibold">Scholarship Name</th>
-              <th className="text-neutral font-semibold">University Name</th>
-              <th className="text-neutral font-semibold">Review Comment</th>
-              <th className="text-neutral font-semibold">Review Date</th>
-              <th className="text-neutral font-semibold">Rating</th>
-              <th className="text-neutral font-semibold">Actions</th>
+              <th className="text-base-content font-semibold">
+                Scholarship Name
+              </th>
+              <th className="text-base-content font-semibold">
+                University Name
+              </th>
+              <th className="text-base-content font-semibold">
+                Review Comment
+              </th>
+              <th className="text-base-content font-semibold">Review Date</th>
+              <th className="text-base-content font-semibold">Rating</th>
+              <th className="text-base-content font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -161,18 +167,18 @@ const MyReviews = () => {
                 key={review._id}
                 className="hover:bg-primary/5 transition-colors"
               >
-                <td className="font-semibold text-neutral">
+                <td className="font-semibold text-base-content">
                   {review.scholarshipName}
                 </td>
-                <td className="text-sm text-neutral/70">
+                <td className="text-sm text-base-content/70">
                   {review.universityName}
                 </td>
                 <td className="max-w-md">
-                  <p className="text-sm text-neutral/80 line-clamp-2">
+                  <p className="text-sm text-base-content/80 line-clamp-2">
                     {review.reviewComment}
                   </p>
                 </td>
-                <td className="text-sm text-neutral/70">
+                <td className="text-sm text-base-content/70">
                   {new Date(review.reviewDate).toLocaleDateString()}
                 </td>
                 <td>
@@ -218,31 +224,35 @@ const MyReviews = () => {
         {reviews.map((review) => (
           <div
             key={review._id}
-            className="card bg-base-300 shadow-md border border-neutral/10"
+            className="card bg-base-300 shadow-md border border-base-content/10"
           >
             <div className="card-body">
-              <h3 className="card-title text-lg text-neutral">
+              <h3 className="card-title text-lg text-base-content">
                 {review.scholarshipName}
               </h3>
-              <div className="space-y-2 text-sm text-neutral/80">
+              <div className="space-y-2 text-sm text-base-content/80">
                 <p>
-                  <span className="font-semibold text-neutral">
+                  <span className="font-semibold text-base-content">
                     University:
                   </span>{" "}
                   {review.universityName}
                 </p>
                 <p>
-                  <span className="font-semibold text-neutral">Comment:</span>{" "}
-                  <span className="text-neutral/70">
+                  <span className="font-semibold text-base-content">
+                    Comment:
+                  </span>{" "}
+                  <span className="text-base-content/70">
                     {review.reviewComment}
                   </span>
                 </p>
                 <p>
-                  <span className="font-semibold text-neutral">Date:</span>{" "}
+                  <span className="font-semibold text-base-content">Date:</span>{" "}
                   {new Date(review.reviewDate).toLocaleDateString()}
                 </p>
                 <div className="flex gap-2 items-center">
-                  <span className="font-semibold text-neutral">Rating:</span>
+                  <span className="font-semibold text-base-content">
+                    Rating:
+                  </span>
                   <div className="flex gap-0.5">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <HiOutlineStar

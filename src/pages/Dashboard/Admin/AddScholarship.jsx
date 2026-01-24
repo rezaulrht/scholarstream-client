@@ -92,32 +92,32 @@ const AddScholarship = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl lg:text-4xl font-bold text-neutral mb-2">
+            <h1 className="text-3xl lg:text-4xl font-bold text-base-content mb-2">
               Add New Scholarship
             </h1>
-            <p className="text-neutral/70">
+            <p className="text-base-content/70">
               Fill in the details to add a new scholarship opportunity
             </p>
           </div>
 
           {/* Form Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
+          <div className="bg-base-100 rounded-2xl shadow-lg p-6 lg:p-8 border border-base-content/10">
             <form
               onSubmit={handleSubmit(handleAddScholarship)}
               className="space-y-6"
             >
               {/* Scholarship Name */}
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">
+                <label className="block text-sm font-medium text-base-content mb-2">
                   Scholarship Name <span className="text-error">*</span>
                 </label>
                 <div className="relative">
-                  <HiAcademicCap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                  <HiAcademicCap className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                   <input
                     type="text"
                     {...register("scholarshipName", { required: true })}
                     placeholder="e.g., Full Tuition Merit Scholarship"
-                    className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                   />
                 </div>
                 {errors.scholarshipName && (
@@ -130,16 +130,16 @@ const AddScholarship = () => {
               {/* University Details */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     University Name <span className="text-error">*</span>
                   </label>
                   <div className="relative">
-                    <HiOfficeBuilding className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                    <HiOfficeBuilding className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                     <input
                       type="text"
                       {...register("universityName", { required: true })}
                       placeholder="e.g., Harvard University"
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                     />
                   </div>
                   {errors.universityName && (
@@ -150,7 +150,7 @@ const AddScholarship = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     University World Rank <span className="text-error">*</span>
                   </label>
                   <input
@@ -160,7 +160,7 @@ const AddScholarship = () => {
                       min: 1,
                     })}
                     placeholder="e.g., 1"
-                    className="w-full px-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                   />
                   {errors.universityWorldRank && (
                     <p className="text-sm text-error mt-1">
@@ -172,14 +172,14 @@ const AddScholarship = () => {
 
               {/* University Image */}
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">
+                <label className="block text-sm font-medium text-base-content mb-2">
                   University Logo/Image <span className="text-error">*</span>
                 </label>
                 <input
                   type="file"
                   {...register("universityImage", { required: true })}
                   accept="image/*"
-                  className="file-input file-input-bordered w-full rounded-xl border-2 border-neutral/20 focus:border-primary hover:border-primary transition-colors"
+                  className="file-input file-input-bordered w-full rounded-xl border-2 border-base-content/20 bg-base-100 focus:border-primary hover:border-primary transition-colors"
                 />
                 {errors.universityImage && (
                   <p className="text-sm text-error mt-1">
@@ -191,14 +191,14 @@ const AddScholarship = () => {
               {/* Location */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Country <span className="text-error">*</span>
                   </label>
                   <div className="relative">
-                    <HiGlobeAlt className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                    <HiGlobeAlt className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                     <select
                       {...register("universityCountry", { required: true })}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors appearance-none"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors appearance-none"
                     >
                       <option value="">Select Country</option>
                       <option value="USA">USA</option>
@@ -219,14 +219,14 @@ const AddScholarship = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     City <span className="text-error">*</span>
                   </label>
                   <input
                     type="text"
                     {...register("universityCity", { required: true })}
                     placeholder="e.g., Cambridge"
-                    className="w-full px-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                   />
                   {errors.universityCity && (
                     <p className="text-sm text-error mt-1">City is required</p>
@@ -237,12 +237,12 @@ const AddScholarship = () => {
               {/* Categories */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Scholarship Category <span className="text-error">*</span>
                   </label>
                   <select
                     {...register("scholarshipCategory", { required: true })}
-                    className="w-full px-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                   >
                     <option value="">Select Category</option>
                     <option value="Full fund">Full fund</option>
@@ -257,12 +257,12 @@ const AddScholarship = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Subject Category <span className="text-error">*</span>
                   </label>
                   <select
                     {...register("subjectCategory", { required: true })}
-                    className="w-full px-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                   >
                     <option value="">Select Subject</option>
                     <option value="Engineering">Engineering</option>
@@ -282,12 +282,12 @@ const AddScholarship = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Degree <span className="text-error">*</span>
                   </label>
                   <select
                     {...register("degree", { required: true })}
-                    className="w-full px-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                   >
                     <option value="">Select Degree</option>
                     <option value="Diploma">Diploma</option>
@@ -305,27 +305,27 @@ const AddScholarship = () => {
               {/* Fees and Amount */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Tuition Fees (USD)
                   </label>
                   <div className="relative">
-                    <HiCurrencyDollar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                    <HiCurrencyDollar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                     <input
                       type="number"
                       step="0.01"
                       {...register("tuitionFees", { min: 0 })}
                       placeholder="0.00"
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Application Fees (USD) <span className="text-error">*</span>
                   </label>
                   <div className="relative">
-                    <HiCurrencyDollar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                    <HiCurrencyDollar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                     <input
                       type="number"
                       step="0.01"
@@ -334,7 +334,7 @@ const AddScholarship = () => {
                         min: 0,
                       })}
                       placeholder="0.00"
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                     />
                   </div>
                   {errors.applicationFees && (
@@ -347,17 +347,17 @@ const AddScholarship = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Service Charge (USD) <span className="text-error">*</span>
                   </label>
                   <div className="relative">
-                    <HiCurrencyDollar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                    <HiCurrencyDollar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                     <input
                       type="number"
                       step="0.01"
                       {...register("serviceCharge", { required: true, min: 0 })}
                       placeholder="0.00"
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                     />
                   </div>
                   {errors.serviceCharge && (
@@ -368,15 +368,15 @@ const AddScholarship = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral mb-2">
+                  <label className="block text-sm font-medium text-base-content mb-2">
                     Application Deadline <span className="text-error">*</span>
                   </label>
                   <div className="relative">
-                    <HiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                    <HiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                     <input
                       type="date"
                       {...register("applicationDeadline", { required: true })}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors"
                     />
                   </div>
                   {errors.applicationDeadline && (
@@ -389,7 +389,7 @@ const AddScholarship = () => {
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-neutral mb-2">
+                <label className="block text-sm font-medium text-base-content mb-2">
                   Scholarship Description <span className="text-error">*</span>
                 </label>
                 <textarea
@@ -399,7 +399,7 @@ const AddScholarship = () => {
                   })}
                   rows="4"
                   placeholder="Provide a detailed description of the scholarship..."
-                  className="w-full px-4 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors resize-none"
                 ></textarea>
                 {errors.scholarshipDescription?.type === "required" && (
                   <p className="text-sm text-error mt-1">

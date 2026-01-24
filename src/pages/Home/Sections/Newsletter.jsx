@@ -34,10 +34,10 @@ const Newsletter = () => {
   ];
 
   return (
-    <section className="py-12 md:py-20 bg-gradient-to-br from-primary via-secondary to-neutral relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-gradient-to-br from-primary/90 via-secondary/90 to-accent/90 dark:from-primary/70 dark:via-secondary/70 dark:to-accent/70 relative overflow-hidden">
       {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-white/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-72 h-72 bg-base-100/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-base-100/10 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -48,13 +48,13 @@ const Newsletter = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 md:mb-12"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6">
-              <HiMail className="w-8 h-8 md:w-10 md:h-10 text-white" />
+            <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-base-100/20 backdrop-blur-sm rounded-2xl mb-6">
+              <HiMail className="w-8 h-8 md:w-10 md:h-10 text-base-100" />
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-100 mb-4">
               Never Miss an Opportunity
             </h2>
-            <p className="text-base md:text-lg text-white/90 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-base-100/90 max-w-2xl mx-auto">
               Subscribe to our newsletter and get the latest scholarship
               opportunities, application tips, and success stories delivered
               straight to your inbox.

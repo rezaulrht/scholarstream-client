@@ -100,8 +100,8 @@ const MyProfile = () => {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral">My Profile</h1>
-        <p className="text-neutral/60 mt-2">
+        <h1 className="text-3xl font-bold text-base-content">My Profile</h1>
+        <p className="text-base-content/60 mt-2">
           View and manage your profile information
         </p>
       </div>
@@ -124,10 +124,10 @@ const MyProfile = () => {
               </div>
             </div>
             <div className="text-center md:text-left flex-1">
-              <h2 className="text-2xl font-bold text-neutral">
+              <h2 className="text-2xl font-bold text-base-content">
                 {user?.displayName}
               </h2>
-              <p className="text-neutral/70">{user?.email}</p>
+              <p className="text-base-content/70">{user?.email}</p>
               <div className="mt-2">
                 <span className="badge badge-primary badge-lg">
                   {userDetails?.role || "Student"}
@@ -146,18 +146,20 @@ const MyProfile = () => {
           {/* Profile Information */}
           {!isEditing ? (
             <div className="space-y-6">
-              <div className="divider text-neutral font-semibold">
+              <div className="divider text-base-content font-semibold">
                 Account Information
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-semibold text-neutral">
+                    <span className="label-text font-semibold text-base-content">
                       Full Name
                     </span>
                   </label>
-                  <div className="p-3 bg-base-100 rounded-lg border border-neutral/20">
-                    <p className="text-neutral">{user?.displayName || "N/A"}</p>
+                  <div className="p-3 bg-base-100 rounded-lg border border-base-content/20">
+                    <p className="text-base-content">
+                      {user?.displayName || "N/A"}
+                    </p>
                   </div>
                 </div>
                 <div className="form-control">
@@ -199,12 +201,12 @@ const MyProfile = () => {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-semibold text-neutral">
+                  <span className="label-text font-semibold text-base-content">
                     Profile Photo URL
                   </span>
                 </label>
-                <div className="p-3 bg-base-100 rounded-lg border border-neutral/20 break-all">
-                  <p className="text-neutral text-sm">
+                <div className="p-3 bg-base-100 rounded-lg border border-base-content/20 break-all">
+                  <p className="text-base-content text-sm">
                     {userDetails?.photoURL || user?.photoURL || "N/A"}
                   </p>
                 </div>
@@ -213,13 +215,13 @@ const MyProfile = () => {
           ) : (
             /* Edit Form */
             <form onSubmit={handleUpdateProfile} className="space-y-6">
-              <div className="divider text-neutral font-semibold">
+              <div className="divider text-base-content font-semibold">
                 Edit Profile Information
               </div>
               <div className="space-y-4">
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-semibold text-neutral">
+                    <span className="label-text font-semibold text-base-content">
                       Full Name <span className="text-error">*</span>
                     </span>
                   </label>
@@ -236,12 +238,12 @@ const MyProfile = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-semibold text-neutral">
+                    <span className="label-text font-semibold text-base-content">
                       Profile Photo
                     </span>
                   </label>
                   <div className="relative">
-                    <HiOutlineCamera className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50 z-10 pointer-events-none" />
+                    <HiOutlineCamera className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50 z-10 pointer-events-none" />
                     <input
                       type="file"
                       accept="image/*"
@@ -255,7 +257,7 @@ const MyProfile = () => {
                     />
                   </div>
                   <label className="label">
-                    <span className="label-text-alt text-neutral/60">
+                    <span className="label-text-alt text-base-content/60">
                       {formData.photoFile
                         ? formData.photoFile.name
                         : "Choose a new profile photo (optional)"}
@@ -264,7 +266,7 @@ const MyProfile = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-semibold text-neutral">
+                    <span className="label-text font-semibold text-base-content">
                       Email Address
                     </span>
                   </label>
@@ -275,7 +277,7 @@ const MyProfile = () => {
                     disabled
                   />
                   <label className="label">
-                    <span className="label-text-alt text-neutral/60">
+                    <span className="label-text-alt text-base-content/60">
                       Email cannot be changed
                     </span>
                   </label>
@@ -311,10 +313,10 @@ const MyProfile = () => {
             <HiOutlineUser className="text-4xl" />
           </div>
           <div className="stat-title text-neutral/70">Account Type</div>
-          <div className="stat-value text-2xl text-neutral capitalize">
+          <div className="stat-value text-2xl text-base-content capitalize">
             {userDetails?.role || "Student"}
           </div>
-          <div className="stat-desc text-neutral/60">Active account</div>
+          <div className="stat-desc text-base-content/60">Active account</div>
         </div>
         <div className="stat bg-base-300 rounded-lg border border-neutral/10">
           <div className="stat-figure text-success">
@@ -332,7 +334,7 @@ const MyProfile = () => {
               ></path>
             </svg>
           </div>
-          <div className="stat-title text-neutral/70">Profile Status</div>
+          <div className="stat-title text-base-content/70">Profile Status</div>
           <div className="stat-value text-2xl text-success">Complete</div>
           <div className="stat-desc text-success/70">Profile is up to date</div>
         </div>
@@ -352,7 +354,7 @@ const MyProfile = () => {
               ></path>
             </svg>
           </div>
-          <div className="stat-title text-neutral/70">Member Since</div>
+          <div className="stat-title text-base-content/70">Member Since</div>
           <div className="stat-value text-2xl text-info">
             {userDetails?.createdAt
               ? new Date(userDetails.createdAt).getFullYear()

@@ -43,7 +43,7 @@ const MyApplications = () => {
     queryKey: ["my-applications", user?.email],
     queryFn: async () => {
       const response = await axiosSecure.get(
-        `/applications/user/${user.email}`
+        `/applications/user/${user.email}`,
       );
       return response.data;
     },
@@ -198,15 +198,17 @@ const MyApplications = () => {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral">My Applications</h1>
-        <p className="text-neutral/60 mt-2">
+        <h1 className="text-3xl font-bold text-base-content">
+          My Applications
+        </h1>
+        <p className="text-base-content/60 mt-2">
           Track and manage your scholarship applications
         </p>
       </div>
 
       {/* Show alert for applications needing revision */}
       {applications.some(
-        (app) => app.applicationStatus === "needs revision"
+        (app) => app.applicationStatus === "needs revision",
       ) && (
         <div className="alert alert-warning bg-orange-500/10 border-orange-500/30 mb-6">
           <HiOutlineExclamationTriangle className="text-2xl text-orange-600" />
@@ -235,19 +237,21 @@ const MyApplications = () => {
       )}
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block overflow-x-auto bg-base-300 rounded-lg shadow-md border border-neutral/10">
+      <div className="hidden lg:block overflow-x-auto bg-base-300 rounded-lg shadow-md border border-base-content/10">
         <table className="table">
           <thead className="bg-primary/20">
             <tr>
-              <th className="text-neutral font-semibold">Scholarship Name</th>
-              <th className="text-neutral font-semibold">University</th>
-              <th className="text-neutral font-semibold">Address</th>
-              <th className="text-neutral font-semibold">Subject</th>
-              <th className="text-neutral font-semibold">Fees</th>
-              <th className="text-neutral font-semibold">Status</th>
-              <th className="text-neutral font-semibold">Payment</th>
-              <th className="text-neutral font-semibold">Feedback</th>
-              <th className="text-neutral font-semibold">Actions</th>
+              <th className="text-base-content font-semibold">
+                Scholarship Name
+              </th>
+              <th className="text-base-content font-semibold">University</th>
+              <th className="text-base-content font-semibold">Address</th>
+              <th className="text-base-content font-semibold">Subject</th>
+              <th className="text-base-content font-semibold">Fees</th>
+              <th className="text-base-content font-semibold">Status</th>
+              <th className="text-base-content font-semibold">Payment</th>
+              <th className="text-base-content font-semibold">Feedback</th>
+              <th className="text-base-content font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -256,16 +260,16 @@ const MyApplications = () => {
                 key={app._id}
                 className="hover:bg-primary/5 transition-colors"
               >
-                <td className="font-semibold text-neutral">
+                <td className="font-semibold text-base-content">
                   {app.scholarshipName}
                 </td>
-                <td className="text-sm text-neutral/70">
+                <td className="text-sm text-base-content/70">
                   {app.universityName}
                 </td>
-                <td className="text-sm text-neutral/70">
+                <td className="text-sm text-base-content/70">
                   {app.universityCountry || "N/A"}
                 </td>
-                <td className="text-neutral/80">
+                <td className="text-base-content/80">
                   {app.subjectCategory || "N/A"}
                 </td>
                 <td className="font-semibold text-primary">
@@ -277,12 +281,12 @@ const MyApplications = () => {
                       app.applicationStatus === "accepted"
                         ? "bg-success/20 text-success border-success/30"
                         : app.applicationStatus === "processing"
-                        ? "bg-info/20 text-info border-info/30"
-                        : app.applicationStatus === "rejected"
-                        ? "bg-error/20 text-error border-error/30"
-                        : app.applicationStatus === "needs revision"
-                        ? "bg-orange-500/20 text-orange-600 border-orange-500/30"
-                        : "bg-warning/20 text-warning border-warning/30"
+                          ? "bg-info/20 text-info border-info/30"
+                          : app.applicationStatus === "rejected"
+                            ? "bg-error/20 text-error border-error/30"
+                            : app.applicationStatus === "needs revision"
+                              ? "bg-orange-500/20 text-orange-600 border-orange-500/30"
+                              : "bg-warning/20 text-warning border-warning/30"
                     }`}
                   >
                     {app.applicationStatus === "accepted" ? (
@@ -322,10 +326,10 @@ const MyApplications = () => {
                         app.applicationStatus === "needs revision"
                           ? "bg-orange-500/10 border border-orange-500/30 text-orange-700"
                           : app.applicationStatus === "rejected"
-                          ? "bg-error/10 border border-error/30 text-error"
-                          : app.applicationStatus === "accepted"
-                          ? "bg-success/10 border border-success/30 text-success"
-                          : "text-neutral/70"
+                            ? "bg-error/10 border border-error/30 text-error"
+                            : app.applicationStatus === "accepted"
+                              ? "bg-success/10 border border-success/30 text-success"
+                              : "text-neutral/70"
                       }`}
                     >
                       {app.feedback}

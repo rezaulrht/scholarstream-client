@@ -64,13 +64,13 @@ const Register = () => {
                     if (res.data.insertedId) {
                       toast.dismiss(loadingToast);
                       toast.success(
-                        "Account created successfully! Welcome aboard!"
+                        "Account created successfully! Welcome aboard!",
                       );
                       navigate(location.state || "/");
                     } else {
                       toast.dismiss(loadingToast);
                       toast.error(
-                        "User created in Firebase but server save failed/exists."
+                        "User created in Firebase but server save failed/exists.",
                       );
                     }
                   })

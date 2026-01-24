@@ -4,7 +4,7 @@ import authBg from "../assets/authbg.png";
 
 const AuthLayout = () => {
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex" data-theme="light">
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -35,7 +35,7 @@ const AuthLayout = () => {
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-white">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-[#ffffff]">
         <div className="w-full max-w-md">
           <Outlet />
         </div>

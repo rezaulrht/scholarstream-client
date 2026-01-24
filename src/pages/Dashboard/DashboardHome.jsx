@@ -53,23 +53,23 @@ const DashboardHome = () => {
   // Student Dashboard Home
   if (role === "student") {
     const pendingApplications = applications.filter(
-      (app) => app.applicationStatus === "pending"
+      (app) => app.applicationStatus === "pending",
     );
     const acceptedApplications = applications.filter(
-      (app) => app.applicationStatus === "completed"
+      (app) => app.applicationStatus === "completed",
     );
     const processingApplications = applications.filter(
-      (app) => app.applicationStatus === "processing"
+      (app) => app.applicationStatus === "processing",
     );
 
     return (
       <div className="space-y-6">
         {/* Welcome Section */}
         <div className="bg-linear-to-r from-primary/10 to-secondary/10 rounded-lg p-6 border border-primary/20">
-          <h1 className="text-3xl font-bold text-neutral mb-2">
+          <h1 className="text-3xl font-bold text-base-content mb-2">
             Welcome back, {user?.displayName}! 👋
           </h1>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             Track your scholarship applications and discover new opportunities.
           </p>
         </div>
@@ -123,7 +123,7 @@ const DashboardHome = () => {
         <div className="card bg-base-200 shadow">
           <div className="card-body">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="card-title text-neutral">
+              <h2 className="card-title text-base-content">
                 <HiOutlineDocumentText className="w-6 h-6" />
                 Recent Applications
               </h2>
@@ -177,10 +177,10 @@ const DashboardHome = () => {
                               app.applicationStatus === "completed"
                                 ? "badge-success"
                                 : app.applicationStatus === "processing"
-                                ? "badge-info"
-                                : app.applicationStatus === "rejected"
-                                ? "badge-error"
-                                : "badge-warning"
+                                  ? "badge-info"
+                                  : app.applicationStatus === "rejected"
+                                    ? "badge-error"
+                                    : "badge-warning"
                             }`}
                           >
                             {app.applicationStatus}
@@ -243,23 +243,23 @@ const DashboardHome = () => {
   // Moderator Dashboard Home
   if (role === "moderator") {
     const pendingApplications = applications.filter(
-      (app) => app.applicationStatus === "pending"
+      (app) => app.applicationStatus === "pending",
     );
     const processingApplications = applications.filter(
-      (app) => app.applicationStatus === "processing"
+      (app) => app.applicationStatus === "processing",
     );
     const completedApplications = applications.filter(
-      (app) => app.applicationStatus === "completed"
+      (app) => app.applicationStatus === "completed",
     );
 
     return (
       <div className="space-y-6">
         {/* Welcome Section */}
         <div className="bg-linear-to-r from-info/10 to-primary/10 rounded-lg p-6 border border-info/20">
-          <h1 className="text-3xl font-bold text-neutral mb-2">
+          <h1 className="text-3xl font-bold text-base-content mb-2">
             Welcome back, {user?.displayName}! 🎯
           </h1>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             Manage and review student scholarship applications.
           </p>
         </div>
@@ -313,7 +313,7 @@ const DashboardHome = () => {
         <div className="card bg-base-200 shadow">
           <div className="card-body">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="card-title text-neutral">
+              <h2 className="card-title text-base-content">
                 <HiOutlineClipboardList className="w-6 h-6" />
                 Applications Requiring Attention
               </h2>
@@ -416,10 +416,10 @@ const DashboardHome = () => {
       <div className="space-y-6">
         {/* Welcome Section */}
         <div className="bg-linear-to-r from-secondary/10 to-primary/10 rounded-lg p-6 border border-secondary/20">
-          <h1 className="text-3xl font-bold text-neutral mb-2">
+          <h1 className="text-3xl font-bold text-base-content mb-2">
             Welcome back, {user?.displayName}! 🚀
           </h1>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             Monitor platform performance and manage system resources.
           </p>
         </div>
@@ -473,7 +473,7 @@ const DashboardHome = () => {
                 <div className="stat-value text-info">
                   {analytics?.applicationsByUniversity?.reduce(
                     (sum, item) => sum + item.count,
-                    0
+                    0,
                   ) || 0}
                 </div>
                 <div className="stat-desc">Total submitted</div>
@@ -485,7 +485,7 @@ const DashboardHome = () => {
               {/* Applications by University */}
               <div className="card bg-base-200 shadow">
                 <div className="card-body">
-                  <h2 className="card-title text-neutral mb-4">
+                  <h2 className="card-title text-base-content mb-4">
                     <HiOutlineChartBar className="w-6 h-6" />
                     Top Universities by Applications
                   </h2>
@@ -507,8 +507,8 @@ const DashboardHome = () => {
                                 max={
                                   Math.max(
                                     ...analytics.applicationsByUniversity.map(
-                                      (u) => u.count
-                                    )
+                                      (u) => u.count,
+                                    ),
                                   ) || 1
                                 }
                               ></progress>
@@ -527,7 +527,7 @@ const DashboardHome = () => {
               {/* Applications by Category */}
               <div className="card bg-base-200 shadow">
                 <div className="card-body">
-                  <h2 className="card-title text-neutral mb-4">
+                  <h2 className="card-title text-base-content mb-4">
                     <HiOutlineAcademicCap className="w-6 h-6" />
                     Applications by Category
                   </h2>
@@ -547,8 +547,8 @@ const DashboardHome = () => {
                               max={
                                 Math.max(
                                   ...analytics.applicationsByCategory.map(
-                                    (c) => c.count
-                                  )
+                                    (c) => c.count,
+                                  ),
                                 ) || 1
                               }
                             ></progress>
@@ -611,10 +611,10 @@ const DashboardHome = () => {
   return (
     <div className="flex items-center justify-center min-h-[60vh]">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-neutral mb-2">
+        <h2 className="text-2xl font-bold text-base-content mb-2">
           Welcome to ScholarStream
         </h2>
-        <p className="text-neutral/60">Loading your dashboard...</p>
+        <p className="text-base-content/60">Loading your dashboard...</p>
       </div>
     </div>
   );

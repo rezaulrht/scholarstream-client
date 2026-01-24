@@ -68,7 +68,7 @@ const ScholarshipCategories = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-base-content/70 max-w-2xl mx-auto">
+            className="text-base-content/70 max-w-2xl mx-auto"
           >
             Find the perfect scholarship that matches your academic goals and
             aspirations

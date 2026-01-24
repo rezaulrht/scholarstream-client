@@ -181,10 +181,10 @@ const UserManagement = () => {
     <div className="p-4 md:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-neutral mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-base-content mb-2">
           User Management
         </h1>
-        <p className="text-neutral/70">
+        <p className="text-base-content/70">
           Manage user roles and permissions across the platform
         </p>
       </div>
@@ -233,12 +233,12 @@ const UserManagement = () => {
 
       {/* Empty State */}
       {filteredUsers.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-md p-12 text-center">
+        <div className="bg-base-100 rounded-2xl shadow-md p-12 text-center border border-base-content/10">
           <HiOutlineUsers className="text-8xl text-primary/50 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-neutral mb-2">
+          <h3 className="text-xl font-semibold text-base-content mb-2">
             No Users Found
           </h3>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             {roleFilter === "all"
               ? "No users registered yet."
               : `No users with ${roleFilter} role found.`}
@@ -247,17 +247,17 @@ const UserManagement = () => {
       ) : (
         <>
           {/* Desktop Table View */}
-          <div className="hidden lg:block bg-white rounded-2xl shadow-md">
+          <div className="hidden lg:block bg-base-100 rounded-2xl shadow-md border border-base-content/10">
             <div className="overflow-x-auto">
               <table className="table">
                 <thead className="bg-primary/5">
                   <tr>
-                    <th className="text-neutral font-semibold">Photo</th>
-                    <th className="text-neutral font-semibold">Name</th>
-                    <th className="text-neutral font-semibold">Email</th>
-                    <th className="text-neutral font-semibold">Role</th>
-                    <th className="text-neutral font-semibold">Joined</th>
-                    <th className="text-neutral font-semibold text-center">
+                    <th className="text-base-content font-semibold">Photo</th>
+                    <th className="text-base-content font-semibold">Name</th>
+                    <th className="text-base-content font-semibold">Email</th>
+                    <th className="text-base-content font-semibold">Role</th>
+                    <th className="text-base-content font-semibold">Joined</th>
+                    <th className="text-base-content font-semibold text-center">
                       Actions
                     </th>
                   </tr>
@@ -335,7 +335,7 @@ const UserManagement = () => {
               return (
                 <div
                   key={user._id}
-                  className="bg-white rounded-xl shadow-md p-5 space-y-4"
+                  className="bg-base-100 rounded-xl shadow-md p-5 space-y-4 border border-base-content/10"
                 >
                   <div className="flex items-start gap-4">
                     <div className="avatar">
@@ -355,10 +355,10 @@ const UserManagement = () => {
                       </div>
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-neutral text-lg">
+                      <h3 className="font-bold text-base-content text-lg">
                         {user.name || "N/A"}
                       </h3>
-                      <p className="text-sm text-neutral/70 break-all">
+                      <p className="text-sm text-base-content/70 break-all">
                         {user.email}
                       </p>
                       <span
@@ -370,7 +370,7 @@ const UserManagement = () => {
                     </div>
                   </div>
 
-                  <div className="text-sm text-neutral/70">
+                  <div className="text-sm text-base-content/70">
                     <span className="font-semibold">Joined:</span>{" "}
                     {new Date(user.createdAt).toLocaleDateString()}
                   </div>
@@ -404,7 +404,7 @@ const UserManagement = () => {
       {showRoleModal && selectedUser && (
         <div className="modal modal-open">
           <div className="modal-box">
-            <h3 className="font-bold text-xl text-neutral mb-4">
+            <h3 className="font-bold text-xl text-base-content mb-4">
               Change User Role
             </h3>
             <div className="space-y-4">
@@ -426,10 +426,10 @@ const UserManagement = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="font-semibold text-neutral">
+                  <p className="font-semibold text-base-content">
                     {selectedUser.name || "N/A"}
                   </p>
-                  <p className="text-sm text-neutral/70">
+                  <p className="text-sm text-base-content/70">
                     {selectedUser.email}
                   </p>
                 </div>
@@ -451,7 +451,7 @@ const UserManagement = () => {
                   <option value="admin">Admin</option>
                 </select>
                 <label className="label">
-                  <span className="label-text-alt text-neutral/60">
+                  <span className="label-text-alt text-base-content/60">
                     Select the new role for this user
                   </span>
                 </label>

@@ -82,8 +82,8 @@ const AllReviews = () => {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral">All Reviews</h1>
-        <p className="text-neutral/60 mt-2">
+        <h1 className="text-3xl font-bold text-base-content">All Reviews</h1>
+        <p className="text-base-content/60 mt-2">
           Moderate and manage all student reviews
         </p>
         <div className="mt-4">
@@ -112,10 +112,10 @@ const AllReviews = () => {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-neutral truncate">
+                  <p className="font-semibold text-base-content truncate">
                     {review.userName}
                   </p>
-                  <p className="text-xs text-neutral/60 truncate">
+                  <p className="text-xs text-base-content/60 truncate">
                     {review.userEmail}
                   </p>
                 </div>
@@ -124,14 +124,14 @@ const AllReviews = () => {
               {/* Scholarship Info */}
               <div className="space-y-2 mb-3">
                 <div>
-                  <p className="text-xs text-neutral/60">Scholarship</p>
-                  <p className="font-semibold text-neutral text-sm">
+                  <p className="text-xs text-base-content/60">Scholarship</p>
+                  <p className="font-semibold text-base-content text-sm">
                     {review.scholarshipName}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral/60">University</p>
-                  <p className="text-sm text-neutral/80">
+                  <p className="text-xs text-base-content/60">University</p>
+                  <p className="text-sm text-base-content/80">
                     {review.universityName}
                   </p>
                 </div>
@@ -139,7 +139,7 @@ const AllReviews = () => {
 
               {/* Rating */}
               <div className="mb-3">
-                <p className="text-xs text-neutral/60 mb-1">Rating</p>
+                <p className="text-xs text-base-content/60 mb-1">Rating</p>
                 <div className="flex gap-0.5">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <HiOutlineStar
@@ -156,15 +156,15 @@ const AllReviews = () => {
 
               {/* Review Comment */}
               <div className="mb-3">
-                <p className="text-xs text-neutral/60 mb-1">Review</p>
-                <p className="text-sm text-neutral/80 line-clamp-3">
+                <p className="text-xs text-base-content/60 mb-1">Review</p>
+                <p className="text-sm text-base-content/80 line-clamp-3">
                   {review.reviewComment}
                 </p>
               </div>
 
               {/* Review Date */}
               <div className="mb-4">
-                <p className="text-xs text-neutral/60">
+                <p className="text-xs text-base-content/60">
                   Posted on {new Date(review.reviewDate).toLocaleDateString()}
                 </p>
               </div>
