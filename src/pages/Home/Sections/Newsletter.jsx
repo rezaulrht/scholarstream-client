@@ -9,7 +9,7 @@ const Newsletter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error("Please enter a valid email address");
       return;
@@ -19,7 +19,7 @@ const Newsletter = () => {
     toast.success("Successfully subscribed to newsletter!");
     setIsSubscribed(true);
     setEmail("");
-    
+
     // Reset after 3 seconds
     setTimeout(() => {
       setIsSubscribed(false);
@@ -113,7 +113,9 @@ const Newsletter = () => {
                   className="flex items-start gap-3"
                 >
                   <HiCheckCircle className="w-5 h-5 md:w-6 md:h-6 text-success shrink-0 mt-0.5" />
-                  <p className="text-sm md:text-base text-neutral/80">{benefit}</p>
+                  <p className="text-sm md:text-base text-neutral/80">
+                    {benefit}
+                  </p>
                 </motion.div>
               ))}
             </div>

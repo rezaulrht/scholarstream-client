@@ -9,7 +9,8 @@ const BlogNews = () => {
       title: "Top 10 Scholarship Application Tips for 2026",
       excerpt:
         "Discover the most effective strategies to make your scholarship application stand out from the competition and increase your chances of success.",
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop",
       category: "Application Tips",
       date: "January 20, 2026",
       readTime: "5 min read",
@@ -20,7 +21,8 @@ const BlogNews = () => {
       title: "New Full-Ride Scholarships Announced for International Students",
       excerpt:
         "Universities across the US and Europe have announced exciting new full-ride scholarship opportunities for international students this year.",
-      image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop",
       category: "News",
       date: "January 18, 2026",
       readTime: "4 min read",
@@ -31,7 +33,8 @@ const BlogNews = () => {
       title: "How to Write a Winning Scholarship Essay",
       excerpt:
         "Learn from experts about crafting compelling scholarship essays that capture attention and showcase your unique story and achievements.",
-      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop",
       category: "Guide",
       date: "January 15, 2026",
       readTime: "7 min read",

@@ -1,5 +1,10 @@
 import { motion } from "framer-motion";
-import { HiAcademicCap, HiGlobeAlt, HiUsers, HiTrendingUp } from "react-icons/hi";
+import {
+  HiAcademicCap,
+  HiGlobeAlt,
+  HiUsers,
+  HiTrendingUp,
+} from "react-icons/hi";
 import { useState, useEffect, useRef } from "react";
 
 const Statistics = () => {
@@ -13,7 +18,7 @@ const Statistics = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     if (sectionRef.current) {
@@ -77,9 +82,17 @@ const Statistics = () => {
           </p>
         </motion.div>
 
-        <div ref={sectionRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div
+          ref={sectionRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+        >
           {stats.map((stat, index) => (
-            <StatCard key={index} stat={stat} isVisible={isVisible} delay={index * 0.1} />
+            <StatCard
+              key={index}
+              stat={stat}
+              isVisible={isVisible}
+              delay={index * 0.1}
+            />
           ))}
         </div>
       </div>
@@ -96,7 +109,7 @@ const StatCard = ({ stat, isVisible, delay }) => {
       let start = 0;
       const duration = 2000;
       const increment = stat.end / (duration / 16);
-      
+
       const timer = setInterval(() => {
         start += increment;
         if (start >= stat.end) {
@@ -118,7 +131,9 @@ const StatCard = ({ stat, isVisible, delay }) => {
       transition={{ duration: 0.6, delay }}
       className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 md:p-8 text-center"
     >
-      <div className={`inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 ${stat.color} rounded-2xl mb-4`}>
+      <div
+        className={`inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 ${stat.color} rounded-2xl mb-4`}
+      >
         <Icon className="w-8 h-8 md:w-10 md:h-10" />
       </div>
       <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral mb-2">
