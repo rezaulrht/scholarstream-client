@@ -6,7 +6,7 @@ import { HiLocationMarker, HiMail, HiPhone } from "react-icons/hi";
 
 const Footer = () => {
   return (
-    <footer className="bg-white text-neutral">
+    <footer className="bg-base-100 text-base-content">
       <div className="container mx-auto px-4">
         {/* Main Footer Content */}
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

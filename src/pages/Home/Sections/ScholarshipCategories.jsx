@@ -50,7 +50,7 @@ const ScholarshipCategories = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-base-100">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -59,7 +59,7 @@ const ScholarshipCategories = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold text-neutral mb-4"
+            className="text-3xl md:text-4xl font-bold text-base-content mb-4"
           >
             Browse by <span className="text-primary">Category</span>
           </motion.h2>
@@ -68,7 +68,7 @@ const ScholarshipCategories = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-neutral/70 max-w-2xl mx-auto"
+            className="text-base-content/70 max-w-2xl mx-auto">
           >
             Find the perfect scholarship that matches your academic goals and
             aspirations
@@ -93,7 +93,7 @@ const ScholarshipCategories = () => {
               >
                 <Link
                   to={`/all-scholarships?category=${encodeURIComponent(
-                    category.name
+                    category.name,
                   )}`}
                   className="block bg-base-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 border border-neutral/10 group h-full"
                 >
@@ -102,10 +102,10 @@ const ScholarshipCategories = () => {
                       <Icon className="w-7 h-7 text-primary group-hover:text-white transition-colors duration-300" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-neutral mb-2 group-hover:text-primary transition-colors duration-300">
+                      <h3 className="text-xl font-bold text-base-content mb-2 group-hover:text-primary transition-colors duration-300">
                         {category.name}
                       </h3>
-                      <p className="text-sm text-neutral/70 mb-3">
+                      <p className="text-sm text-base-content/70 mb-3">
                         {category.description}
                       </p>
                       <div className="flex items-center justify-end">

@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router";
 import Logo from "../Logo/Logo";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -103,7 +104,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className="bg-white shadow-md sticky top-0 z-50"
+      className="bg-base-100 shadow-md sticky top-0 z-50"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -122,6 +123,9 @@ const Navbar = () => {
 
           {/* Auth Buttons - Right Side */}
           <div className="hidden lg:flex items-center gap-3">
+            {" "}
+            {/* Theme Toggle */}
+            <ThemeToggle />
             {user ? (
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -214,6 +218,14 @@ const Navbar = () => {
 
             {/* Mobile Auth Section */}
             <div className="pt-4 space-y-2 border-t border-base-300">
+              {/* Mobile Theme Toggle */}
+              <div className="flex items-center justify-between px-4 py-2">
+                <span className="text-sm font-medium text-base-content">
+                  Theme
+                </span>
+                <ThemeToggle />
+              </div>
+
               {user ? (
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 px-4 py-2">

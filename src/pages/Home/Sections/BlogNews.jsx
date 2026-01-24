@@ -55,10 +55,10 @@ const BlogNews = () => {
           <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
             Latest Updates
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-4">
             News & Resources
           </h2>
-          <p className="text-base md:text-lg text-neutral/70 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-base-content/70 max-w-2xl mx-auto">
             Stay updated with the latest scholarship news, application tips, and
             success stories from our community
           </p>
@@ -72,7 +72,7 @@ const BlogNews = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+              className="bg-base-100 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
               {/* Image */}
               <div className="relative h-48 md:h-56 overflow-hidden">
@@ -91,7 +91,7 @@ const BlogNews = () => {
               {/* Content */}
               <div className="p-6 md:p-7">
                 {/* Meta Info */}
-                <div className="flex items-center gap-4 text-xs md:text-sm text-neutral/60 mb-3">
+                <div className="flex items-center gap-4 text-xs md:text-sm text-base-content/60 mb-3">
                   <div className="flex items-center gap-1.5">
                     <HiCalendar className="w-4 h-4" />
                     <span>{item.date}</span>
@@ -103,22 +103,22 @@ const BlogNews = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-lg md:text-xl font-bold text-neutral mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                <h3 className="text-lg md:text-xl font-bold text-base-content mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                   {item.title}
                 </h3>
 
                 {/* Excerpt */}
-                <p className="text-sm md:text-base text-neutral/70 mb-4 line-clamp-3">
+                <p className="text-sm md:text-base text-base-content/70 mb-4 line-clamp-3">
                   {item.excerpt}
                 </p>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-neutral/10">
+                <div className="flex items-center justify-between pt-4 border-t border-base-content/10">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                       <HiUser className="w-4 h-4 text-primary" />
                     </div>
-                    <span className="text-sm font-medium text-neutral">
+                    <span className="text-sm font-medium text-base-content">
                       {item.author}
                     </span>
                   </div>
@@ -140,7 +140,7 @@ const BlogNews = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-10 md:mt-12"
         >
-          <button className="px-8 py-3.5 bg-white border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-300 inline-flex items-center gap-2 group">
+          <button className="px-8 py-3.5 bg-base-100 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-300 inline-flex items-center gap-2 group">
             View All Articles
             <HiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>

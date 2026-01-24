@@ -63,11 +63,11 @@ const TrustedUniversities = () => {
     <section className="py-16 md:py-20 bg-base-200">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-neutral mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-base-content mb-3">
             Connecting Students to{" "}
             <span className="text-primary">Global Opportunities</span>
           </h2>
-          <p className="text-neutral/70">
+          <p className="text-base-content/70">
             Your gateway to world-class education and funding
           </p>
         </div>
@@ -79,7 +79,7 @@ const TrustedUniversities = () => {
             return (
               <div
                 key={index}
-                className="mx-6 md:mx-8 flex items-center gap-4 bg-white rounded-2xl px-8 py-6 shadow-md hover:shadow-lg transition-all duration-300 min-w-[280px] border border-neutral/10"
+                className="mx-6 md:mx-8 flex items-center gap-4 bg-base-100 rounded-2xl px-8 py-6 shadow-md hover:shadow-lg transition-all duration-300 min-w-[280px] border border-base-content/10"
               >
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
                   <Icon className="w-6 h-6 text-primary" />
@@ -88,7 +88,7 @@ const TrustedUniversities = () => {
                   <div className="text-2xl font-bold text-primary">
                     {stat.number}
                   </div>
-                  <div className="text-sm text-neutral/70 font-medium">
+                  <div className="text-sm text-base-content/70 font-medium">
                     {stat.label}
                   </div>
                 </div>

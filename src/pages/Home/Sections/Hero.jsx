@@ -76,7 +76,7 @@ const Hero = () => {
               onSubmit={handleSearch}
               className="relative max-w-2xl mx-auto"
             >
-              <div className="flex items-center bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-transparent focus-within:border-primary transition-all duration-300">
+              <div className="flex items-center bg-base-100 rounded-2xl shadow-lg overflow-hidden border-2 border-transparent focus-within:border-primary transition-all duration-300">
                 <HiSearch className="w-6 h-6 text-neutral/50 ml-5 shrink-0" />
                 <input
                   type="text"

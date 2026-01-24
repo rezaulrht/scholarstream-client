@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useRole from "../hooks/useRole";
+import ThemeToggle from "../components/ThemeToggle/ThemeToggle";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import {
@@ -82,6 +83,9 @@ const DashboardLayout = () => {
               <HiOutlineHome className="h-5 w-5" />
               Home
             </Link>
+          </div>
+          <div className="flex-none pr-2">
+            <ThemeToggle />
           </div>
         </nav>
         {/* Page content here */}

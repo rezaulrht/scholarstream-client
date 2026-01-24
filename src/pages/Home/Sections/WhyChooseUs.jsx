@@ -98,7 +98,7 @@ const WhyChooseUs = () => {
                 key={index}
                 variants={item}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300"
+                className="bg-base-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-base-content/10"
               >
                 <div className="flex items-start gap-4">
                   <div
@@ -107,10 +107,10 @@ const WhyChooseUs = () => {
                     <Icon className={`w-7 h-7 ${feature.color}`} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-neutral mb-2">
+                    <h3 className="text-xl font-bold text-base-content mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-neutral/70 leading-relaxed">
+                    <p className="text-base-content/70 leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -126,7 +126,7 @@ const WhyChooseUs = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16 bg-white rounded-2xl p-8 md:p-12 shadow-lg max-w-4xl mx-auto"
+          className="mt-16 bg-base-100 rounded-2xl p-8 md:p-12 shadow-lg max-w-4xl mx-auto border border-base-content/10"
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {[
@@ -139,7 +139,7 @@ const WhyChooseUs = () => {
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
                   {stat.value}
                 </div>
-                <div className="text-sm md:text-base text-neutral/70">
+                <div className="text-sm md:text-base text-base-content/70">
                   {stat.label}
                 </div>
               </div>

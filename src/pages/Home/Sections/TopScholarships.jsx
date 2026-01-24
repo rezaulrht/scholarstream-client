@@ -34,7 +34,7 @@ const TopScholarships = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-base-100">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -43,7 +43,7 @@ const TopScholarships = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold text-neutral mb-4"
+            className="text-3xl md:text-4xl font-bold text-base-content mb-4"
           >
             Top <span className="text-primary">Scholarships</span>
           </motion.h2>
@@ -52,7 +52,7 @@ const TopScholarships = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-neutral/70 max-w-2xl mx-auto"
+            className="text-base-content/70 max-w-2xl mx-auto"
           >
             Discover the most sought-after scholarship opportunities from
             prestigious universities worldwide
@@ -96,20 +96,20 @@ const TopScholarships = () => {
 
                 {/* Content */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-neutral mb-2 line-clamp-2">
+                  <h3 className="text-xl font-bold text-base-content mb-2 line-clamp-2">
                     {scholarship.scholarshipName}
                   </h3>
 
                   <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-sm text-neutral/70">
+                    <div className="flex items-center gap-2 text-sm text-base-content/70">
                       <HiAcademicCap className="w-4 h-4 text-primary" />
                       <span>{scholarship.universityName}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-neutral/70">
+                    <div className="flex items-center gap-2 text-sm text-base-content/70">
                       <HiLocationMarker className="w-4 h-4 text-primary" />
                       <span>{scholarship.universityCountry}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-neutral/70">
+                    <div className="flex items-center gap-2 text-sm text-base-content/70">
                       <HiCalendar className="w-4 h-4 text-primary" />
                       <span>
                         Deadline:{" "}
@@ -120,9 +120,11 @@ const TopScholarships = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-neutral/10">
+                  <div className="flex items-center justify-between pt-4 border-t border-base-content/10">
                     <div>
-                      <p className="text-xs text-neutral/60">Award Amount</p>
+                      <p className="text-xs text-base-content/60">
+                        Award Amount
+                      </p>
                       <p className="text-lg font-bold text-primary">
                         ${scholarship.applicationFees}
                       </p>
@@ -149,7 +151,7 @@ const TopScholarships = () => {
         >
           <Link
             to="/all-scholarships"
-            className="inline-block px-8 py-4 bg-neutral text-white font-semibold rounded-xl hover:bg-primary hover:shadow-lg transition-all duration-300"
+            className="inline-block px-8 py-4 bg-primary text-primary-content font-semibold rounded-xl hover:bg-secondary hover:shadow-lg transition-all duration-300"
           >
             View All Scholarships
           </Link>

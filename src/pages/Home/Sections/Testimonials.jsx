@@ -19,14 +19,14 @@ const Testimonials = () => {
   });
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-base-100">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-neutral mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-base-content mb-4">
             Success <span className="text-primary">Stories</span>
           </h2>
-          <p className="text-neutral/70 max-w-2xl mx-auto">
+          <p className="text-base-content/70 max-w-2xl mx-auto">
             Hear from students who achieved their academic dreams through
             ScholarStream
           </p>
@@ -71,7 +71,7 @@ const Testimonials = () => {
                   </div>
 
                   {/* Testimonial Text */}
-                  <p className="text-neutral/80 mb-6 leading-relaxed line-clamp-5 flex-grow">
+                  <p className="text-base-content/80 mb-6 leading-relaxed line-clamp-5 flex-grow">
                     "{testimonial.reviewComment}"
                   </p>
 
@@ -83,17 +83,17 @@ const Testimonials = () => {
                   </div>
 
                   {/* Student Info */}
-                  <div className="flex items-center gap-4 pt-6 border-t border-neutral/10">
+                  <div className="flex items-center gap-4 pt-6 border-t border-base-content/10">
                     <img
                       src={testimonial.userImage}
                       alt={testimonial.userName}
                       className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
                     />
                     <div>
-                      <h4 className="font-bold text-neutral">
+                      <h4 className="font-bold text-base-content">
                         {testimonial.userName}
                       </h4>
-                      <p className="text-sm text-neutral/70">
+                      <p className="text-sm text-base-content/70">
                         {testimonial.universityName}
                       </p>
                     </div>

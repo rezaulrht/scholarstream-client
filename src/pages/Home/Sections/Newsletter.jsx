@@ -66,18 +66,18 @@ const Newsletter = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-2xl p-6 md:p-10"
+            className="bg-base-100 rounded-2xl shadow-2xl p-6 md:p-10"
           >
             <form onSubmit={handleSubmit} className="mb-6">
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <div className="flex-1 relative">
-                  <HiMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral/50" />
+                  <HiMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/50" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="w-full pl-12 pr-4 py-3 md:py-4 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors text-sm md:text-base"
+                    className="w-full pl-12 pr-4 py-3 md:py-4 border-2 border-base-content/20 bg-base-100 text-base-content rounded-xl focus:border-primary focus:outline-none transition-colors text-sm md:text-base"
                     disabled={isSubscribed}
                   />
                 </div>
@@ -86,7 +86,7 @@ const Newsletter = () => {
                   disabled={isSubscribed}
                   className={`px-6 md:px-8 py-3 md:py-4 font-semibold rounded-xl transition-all duration-300 text-sm md:text-base ${
                     isSubscribed
-                      ? "bg-success text-white cursor-not-allowed"
+                      ? "bg-success text-success-content cursor-not-allowed"
                       : "bg-primary text-primary-content hover:bg-secondary hover:scale-105"
                   }`}
                 >
@@ -113,14 +113,14 @@ const Newsletter = () => {
                   className="flex items-start gap-3"
                 >
                   <HiCheckCircle className="w-5 h-5 md:w-6 md:h-6 text-success shrink-0 mt-0.5" />
-                  <p className="text-sm md:text-base text-neutral/80">
+                  <p className="text-sm md:text-base text-base-content/80">
                     {benefit}
                   </p>
                 </motion.div>
               ))}
             </div>
 
-            <p className="text-xs md:text-sm text-neutral/60 text-center mt-6">
+            <p className="text-xs md:text-sm text-base-content/60 text-center mt-6">
               We respect your privacy. Unsubscribe at any time.
             </p>
           </motion.div>

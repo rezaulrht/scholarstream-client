@@ -48,7 +48,7 @@ const FinalCTA = () => {
             </Link>
             <Link
               to="/register"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-white text-neutral font-bold rounded-xl hover:bg-base-200 hover:shadow-xl transition-all duration-300 shadow-md text-lg border-2 border-neutral/10"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-base-100 text-base-content font-bold rounded-xl hover:bg-base-200 hover:shadow-xl transition-all duration-300 shadow-md text-lg border-2 border-neutral/10">
             >
               Create Free Account
             </Link>
@@ -70,7 +70,7 @@ const FinalCTA = () => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm"
+                className="flex items-center gap-2 bg-base-100/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
               >
                 <div className="w-2 h-2 bg-primary rounded-full"></div>
                 <span className="text-sm font-medium text-neutral">

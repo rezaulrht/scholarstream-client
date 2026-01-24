@@ -52,7 +52,7 @@ const FAQ = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold text-neutral mb-4"
+            className="text-3xl md:text-4xl font-bold text-base-content mb-4"
           >
             Frequently Asked <span className="text-primary">Questions</span>
           </motion.h2>
@@ -61,7 +61,7 @@ const FAQ = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-neutral/70 max-w-2xl mx-auto"
+            className="text-base-content/70 max-w-2xl mx-auto">
           >
             Find answers to common questions about scholarships and our platform
           </motion.p>
@@ -76,13 +76,13 @@ const FAQ = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-md overflow-hidden border border-neutral/10"
+              className="bg-base-100 rounded-xl shadow-md overflow-hidden border border-base-content/10"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-base-100 transition-colors duration-200"
+                className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-base-200 transition-colors duration-200"
               >
-                <span className="font-semibold text-neutral pr-8">
+                <span className="font-semibold text-base-content pr-8">
                   {faq.question}
                 </span>
                 <HiChevronDown
@@ -96,7 +96,7 @@ const FAQ = () => {
                   openIndex === index ? "max-h-96" : "max-h-0"
                 }`}
               >
-                <div className="px-6 pb-5 text-neutral/70 leading-relaxed">
+                <div className="px-6 pb-5 text-base-content/70 leading-relaxed">
                   {faq.answer}
                 </div>
               </div>
@@ -112,7 +112,7 @@ const FAQ = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <p className="text-neutral/70 mb-4">Still have questions?</p>
+          <p className="text-base-content/70 mb-4">Still have questions?</p>
           <a
             href="/contact"
             className="inline-block px-8 py-3 bg-primary text-primary-content font-semibold rounded-xl hover:bg-secondary hover:shadow-lg transition-all duration-300"

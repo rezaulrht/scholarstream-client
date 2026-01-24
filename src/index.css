@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default;
+  themes: light dark --default;
 }
 
 @plugin "daisyui/theme" {
@@ -44,6 +44,47 @@
   /* ERROR (muted red that matches earth tone theme) */
   --color-error: #c97a68;
   --color-error-content: #fdf4f2;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  /* BASE (Dark Background / Surface) */
+  --color-base-100: #1a1a16; /* main background - warm charcoal */
+  --color-base-200: #252520; /* slightly lighter */
+  --color-base-300: #2f2f28; /* even lighter */
+  --color-base-content: #e8e7e0; /* text on base - warm off-white */
+
+  /* PRIMARY (adjusted for dark mode) */
+  --color-primary: #a8ba8e; /* brighter sage for better contrast */
+  --color-primary-content: #1a1a16; /* dark text on primary */
+
+  /* SECONDARY (adjusted for dark mode) */
+  --color-secondary: #8a9c6f;
+  --color-secondary-content: #1a1a16;
+
+  /* ACCENT (adjusted) */
+  --color-accent: #b3c99f;
+  --color-accent-content: #1a1a16;
+
+  /* NEUTRAL (lighter in dark mode) */
+  --color-neutral: #d4d3c8;
+  --color-neutral-content: #1a1a16;
+
+  /* INFO (adjusted for dark mode) */
+  --color-info: #8dbab4;
+  --color-info-content: #0d1412;
+
+  /* SUCCESS (adjusted) */
+  --color-success: #7dba7c;
+  --color-success-content: #0f1a0f;
+
+  /* WARNING (adjusted) */
+  --color-warning: #e5ca7a;
+  --color-warning-content: #1a1610;
+
+  /* ERROR (adjusted) */
+  --color-error: #d68b78;
+  --color-error-content: #1a1210;
 }
 
 h1,

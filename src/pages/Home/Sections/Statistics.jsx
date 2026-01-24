@@ -73,10 +73,10 @@ const Statistics = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-4">
             Our Impact in Numbers
           </h2>
-          <p className="text-base md:text-lg text-neutral/70 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-base-content/70 max-w-2xl mx-auto">
             Join thousands of students who have achieved their academic dreams
             through our platform
           </p>
@@ -129,18 +129,18 @@ const StatCard = ({ stat, isVisible, delay }) => {
       initial={{ opacity: 0, y: 30 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 md:p-8 text-center"
+      className="bg-base-100 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 md:p-8 text-center border border-base-content/10"
     >
       <div
         className={`inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 ${stat.color} rounded-2xl mb-4`}
       >
         <Icon className="w-8 h-8 md:w-10 md:h-10" />
       </div>
-      <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral mb-2">
+      <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-2">
         {count.toLocaleString()}
         {stat.suffix}
       </div>
-      <p className="text-sm md:text-base text-neutral/70 font-medium">
+      <p className="text-sm md:text-base text-base-content/70 font-medium">
         {stat.label}
       </p>
     </motion.div>
