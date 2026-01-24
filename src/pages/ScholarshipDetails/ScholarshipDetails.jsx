@@ -22,7 +22,7 @@ const ScholarshipDetails = () => {
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const { role, roleLoading } = useRole();
+  const { role } = useRole();
 
   const { data: scholarship, isLoading } = useQuery({
     queryKey: ["scholarship", id],
