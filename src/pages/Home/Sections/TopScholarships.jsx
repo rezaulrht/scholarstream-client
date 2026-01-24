@@ -3,7 +3,7 @@ import { HiAcademicCap, HiCalendar, HiLocationMarker } from "react-icons/hi";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
-import Loading from "../../../components/Loading/Loading";
+import ScholarshipCardSkeleton from "../../../components/Skeletons/ScholarshipCardSkeleton";
 
 const TopScholarships = () => {
   const axios = useAxios();
@@ -17,10 +17,6 @@ const TopScholarships = () => {
   });
 
   const scholarships = data?.scholarships || [];
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   const container = {
     hidden: { opacity: 0 },
@@ -62,81 +58,87 @@ const TopScholarships = () => {
             prestigious universities worldwide
           </motion.p>
         </div>
-
-        {/* Scholarship Grid */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        >
-          {scholarships.map((scholarship) => (
-            <motion.div
-              key={scholarship._id}
-              variants={item}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="bg-base-100 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-neutral/10"
-            >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-base-200">
-                <img
-                  src={scholarship.universityImage}
-                  alt={scholarship.scholarshipName}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-4 right-4">
-                  <span className="px-3 py-1 bg-primary text-primary-content text-xs font-semibold rounded-full">
-                    {scholarship.scholarshipCategory}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-neutral mb-2 line-clamp-2">
-                  {scholarship.scholarshipName}
-                </h3>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-sm text-neutral/70">
-                    <HiAcademicCap className="w-4 h-4 text-primary" />
-                    <span>{scholarship.universityName}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral/70">
-                    <HiLocationMarker className="w-4 h-4 text-primary" />
-                    <span>{scholarship.universityCountry}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral/70">
-                    <HiCalendar className="w-4 h-4 text-primary" />
-                    <span>
-                      Deadline:{" "}
-                      {new Date(
-                        scholarship.applicationDeadline
-                      ).toLocaleDateString()}
+        {/* Scholarship Grid */}{" "}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, index) => (
+              <ScholarshipCardSkeleton key={index} />
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          >
+            {scholarships.map((scholarship) => (
+              <motion.div
+                key={scholarship._id}
+                variants={item}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className="bg-base-100 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-neutral/10"
+              >
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden bg-base-200">
+                  <img
+                    src={scholarship.universityImage}
+                    alt={scholarship.scholarshipName}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 bg-primary text-primary-content text-xs font-semibold rounded-full">
+                      {scholarship.scholarshipCategory}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-neutral/10">
-                  <div>
-                    <p className="text-xs text-neutral/60">Award Amount</p>
-                    <p className="text-lg font-bold text-primary">
-                      ${scholarship.applicationFees}
-                    </p>
-                  </div>
-                  <Link
-                    to={`/scholarships/${scholarship._id}`}
-                    className="px-4 py-2 bg-primary text-primary-content font-medium rounded-lg hover:bg-secondary transition-colors duration-300"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-neutral mb-2 line-clamp-2">
+                    {scholarship.scholarshipName}
+                  </h3>
 
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-neutral/70">
+                      <HiAcademicCap className="w-4 h-4 text-primary" />
+                      <span>{scholarship.universityName}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-neutral/70">
+                      <HiLocationMarker className="w-4 h-4 text-primary" />
+                      <span>{scholarship.universityCountry}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-neutral/70">
+                      <HiCalendar className="w-4 h-4 text-primary" />
+                      <span>
+                        Deadline:{" "}
+                        {new Date(
+                          scholarship.applicationDeadline,
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-neutral/10">
+                    <div>
+                      <p className="text-xs text-neutral/60">Award Amount</p>
+                      <p className="text-lg font-bold text-primary">
+                        ${scholarship.applicationFees}
+                      </p>
+                    </div>
+                    <Link
+                      to={`/scholarships/${scholarship._id}`}
+                      className="px-4 py-2 bg-primary text-primary-content font-medium rounded-lg hover:bg-secondary transition-colors duration-300"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
         {/* View All Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

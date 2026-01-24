@@ -1,12 +1,19 @@
 import { HiAcademicCap, HiLocationMarker, HiCalendar } from "react-icons/hi";
 import { Link } from "react-router";
+import ScholarshipCardSkeleton from "../../components/Skeletons/ScholarshipCardSkeleton";
 
 const Recommendation = ({ recommendations, isLoading, currentCategory }) => {
   if (isLoading) {
     return (
       <div className="mt-8 md:mt-12">
-        <div className="flex justify-center py-8">
-          <span className="loading loading-spinner loading-lg text-primary"></span>
+        <div className="mb-6">
+          <div className="skeleton h-8 w-48 mb-2"></div>
+          <div className="skeleton h-4 w-72"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, index) => (
+            <ScholarshipCardSkeleton key={index} />
+          ))}
         </div>
       </div>
     );
@@ -81,7 +88,7 @@ const Recommendation = ({ recommendations, isLoading, currentCategory }) => {
                   <span>
                     Deadline:{" "}
                     {new Date(
-                      scholarship.applicationDeadline
+                      scholarship.applicationDeadline,
                     ).toLocaleDateString()}
                   </span>
                 </div>

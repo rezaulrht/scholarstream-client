@@ -3,23 +3,23 @@ import { useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import ScholarshipCard from "../../components/ScholarshipCard/ScholarshipCard";
-import Loading from "../../components/Loading/Loading";
+import ScholarshipCardSkeleton from "../../components/Skeletons/ScholarshipCardSkeleton";
 import { HiSearch, HiFilter, HiSortAscending, HiX } from "react-icons/hi";
 
 const AllScholarships = () => {
   const axios = useAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("search") || ""
+    searchParams.get("search") || "",
   );
   const [country, setCountry] = useState(searchParams.get("country") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "");
   const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "");
   const [sortOrder, setSortOrder] = useState(
-    searchParams.get("sortOrder") || "asc"
+    searchParams.get("sortOrder") || "asc",
   );
   const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1
+    parseInt(searchParams.get("page")) || 1,
   );
   const limit = 6;
 
@@ -269,7 +269,13 @@ const AllScholarships = () => {
         </div>
 
         {/* Loading State */}
-        {isLoading && <Loading />}
+        {isLoading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, index) => (
+              <ScholarshipCardSkeleton key={index} />
+            ))}
+          </div>
+        )}
 
         {/* No Results */}
         {!isLoading && scholarships.length === 0 && (
