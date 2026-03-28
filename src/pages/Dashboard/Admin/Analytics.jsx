@@ -6,6 +6,7 @@ import {
   HiOutlineCurrencyDollar,
   HiOutlineAcademicCap,
   HiOutlineChartBar,
+  HiOutlineCheckCircle,
 } from "react-icons/hi2";
 import {
   BarChart,
@@ -13,6 +14,8 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -32,6 +35,28 @@ const Analytics = () => {
       return response.data;
     },
   });
+
+  // Fetch monthly trend data
+  const { data: trends } = useQuery({
+    queryKey: ["analytics-trends"],
+    queryFn: async () => {
+      const response = await axiosSecure.get("/analytics/trends");
+      return response.data;
+    },
+  });
+
+  const acceptanceRate =
+    analytics?.totalApplications > 0
+      ? ((analytics.acceptedApplications / analytics.totalApplications) * 100).toFixed(1)
+      : 0;
+
+  const formatMonth = (monthStr) => {
+    const [year, month] = monthStr.split("-");
+    return new Date(parseInt(year), parseInt(month) - 1).toLocaleDateString("en-US", {
+      month: "short",
+      year: "2-digit",
+    });
+  };
 
   // Colors for pie chart
   const COLORS = ["#97a87a", "#3f4430", "#c97a68", "#6ba96a", "#8b7355"];
@@ -53,7 +78,7 @@ const Analytics = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
         {/* Total Users */}
         <div className="stats shadow bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20">
           <div className="stat">
@@ -97,6 +122,23 @@ const Analytics = () => {
               ${analytics?.totalFeesCollected?.toFixed(2) || 0}
             </div>
             <div className="stat-desc">From paid applications</div>
+          </div>
+        </div>
+
+        {/* Acceptance Rate */}
+        <div className="stats shadow bg-linear-to-br from-info/10 to-info/5 border border-info/20">
+          <div className="stat">
+            <div className="stat-figure text-info">
+              <HiOutlineCheckCircle className="text-4xl" />
+            </div>
+            <div className="stat-title text-base-content/70">
+              Acceptance Rate
+            </div>
+            <div className="stat-value text-info">{acceptanceRate}%</div>
+            <div className="stat-desc">
+              {analytics?.acceptedApplications || 0} of{" "}
+              {analytics?.totalApplications || 0} applications
+            </div>
           </div>
         </div>
       </div>
@@ -183,6 +225,46 @@ const Analytics = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Monthly Trend Chart */}
+      <div className="mt-6 bg-base-100 rounded-2xl shadow-md p-6 border border-base-content/10">
+        <div className="flex items-center gap-2 mb-6">
+          <HiOutlineChartBar className="text-2xl text-primary" />
+          <h2 className="text-xl font-bold text-base-content">
+            Applications Over Time (Last 12 Months)
+          </h2>
+        </div>
+        {trends?.monthlyApplications?.length > 0 ? (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart
+              data={trends.monthlyApplications.map((d) => ({
+                ...d,
+                month: formatMonth(d.month),
+              }))}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="count"
+                stroke="#97a87a"
+                strokeWidth={2}
+                dot={{ r: 4 }}
+                activeDot={{ r: 6 }}
+                name="Applications"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex items-center justify-center h-[300px] text-neutral/50">
+            No trend data available yet
+          </div>
+        )}
       </div>
 
       {/* Additional Stats Table */}
