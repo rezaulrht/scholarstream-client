@@ -1,53 +1,51 @@
 import { motion } from "framer-motion";
-import { HiCalendar, HiArrowRight, HiClock, HiUser } from "react-icons/hi";
 import { Link } from "react-router";
-import { blogPosts } from "../../../data/blogData";
+import { HiCalendar, HiArrowRight, HiClock, HiUser } from "react-icons/hi";
+import { blogPosts } from "../../data/blogData";
 
-const BlogNews = () => {
-  const newsItems = blogPosts;
-
+const Blog = () => {
   return (
-    <section className="py-12 md:py-20 bg-base-100">
+    <div className="min-h-screen bg-base-100 py-12 md:py-20">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
           <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
             Latest Updates
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-4">
             News & Resources
-          </h2>
+          </h1>
           <p className="text-base md:text-lg text-base-content/70 max-w-2xl mx-auto">
             Stay updated with the latest scholarship news, application tips, and
             success stories from our community
           </p>
         </motion.div>
 
+        {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {newsItems.map((item, index) => (
+          {blogPosts.map((post, index) => (
             <motion.article
-              key={item.id}
+              key={post.id}
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-base-100 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+              className="bg-base-100 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-base-content/10"
             >
               {/* Image */}
               <div className="relative h-48 md:h-56 overflow-hidden">
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={post.image}
+                  alt={post.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-primary text-primary-content text-xs font-semibold rounded-full">
-                    {item.category}
+                    {post.category}
                   </span>
                 </div>
               </div>
@@ -58,22 +56,22 @@ const BlogNews = () => {
                 <div className="flex items-center gap-4 text-xs md:text-sm text-base-content/60 mb-3">
                   <div className="flex items-center gap-1.5">
                     <HiCalendar className="w-4 h-4" />
-                    <span>{item.date}</span>
+                    <span>{post.date}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <HiClock className="w-4 h-4" />
-                    <span>{item.readTime}</span>
+                    <span>{post.readTime}</span>
                   </div>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-lg md:text-xl font-bold text-base-content mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
+                <h2 className="text-lg md:text-xl font-bold text-base-content mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                  {post.title}
+                </h2>
 
                 {/* Excerpt */}
                 <p className="text-sm md:text-base text-base-content/70 mb-4 line-clamp-3">
-                  {item.excerpt}
+                  {post.excerpt}
                 </p>
 
                 {/* Footer */}
@@ -83,11 +81,11 @@ const BlogNews = () => {
                       <HiUser className="w-4 h-4 text-primary" />
                     </div>
                     <span className="text-sm font-medium text-base-content">
-                      {item.author}
+                      {post.author}
                     </span>
                   </div>
                   <Link
-                    to={`/blog/${item.slug}`}
+                    to={`/blog/${post.slug}`}
                     className="text-primary font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all group/btn"
                   >
                     Read More
@@ -98,26 +96,9 @@ const BlogNews = () => {
             </motion.article>
           ))}
         </div>
-
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-10 md:mt-12"
-        >
-          <Link
-            to="/blog"
-            className="px-8 py-3.5 bg-base-100 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-300 inline-flex items-center gap-2 group"
-          >
-            View All Articles
-            <HiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </motion.div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default BlogNews;
+export default Blog;

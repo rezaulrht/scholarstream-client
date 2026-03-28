@@ -26,6 +26,8 @@ import AdminRoute from "./AdminRoute";
 import Error404 from "../components/Error/Error404";
 import ModeratorRoute from "./ModeratorRoute";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
+import Blog from "../pages/Blog/Blog";
+import BlogPost from "../pages/Blog/BlogPost";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +45,14 @@ export const router = createBrowserRouter([
       {
         path: "/scholarships/:id",
         Component: ScholarshipDetails,
+      },
+      {
+        path: "/blog",
+        Component: Blog,
+      },
+      {
+        path: "/blog/:slug",
+        Component: BlogPost,
       },
     ],
   },
