@@ -11,7 +11,7 @@ import {
   HiOutlineShieldCheck,
   HiOutlineShieldExclamation,
   HiOutlineAcademicCap,
-  HiOutlineSearch,
+  HiMagnifyingGlass,
 } from "react-icons/hi2";
 
 const UserManagement = () => {
@@ -209,7 +209,7 @@ const UserManagement = () => {
 
       {/* Search Bar */}
       <div className="relative mb-4">
-        <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
+        <HiMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
         <input
           type="text"
           value={searchTerm}
