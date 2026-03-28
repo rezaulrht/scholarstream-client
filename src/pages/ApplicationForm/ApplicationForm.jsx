@@ -44,8 +44,51 @@ const ApplicationForm = () => {
     getValues,
   } = useForm();
 
+  const uploadDocuments = async (fileList) => {
+    if (!fileList || fileList.length === 0) return [];
+
+    const files = Array.from(fileList);
+
+    const ACCEPTED = ["application/pdf", "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "image/jpeg", "image/png"];
+    if (files.length > 5) throw new Error("Maximum 5 files allowed");
+    for (const file of files) {
+      if (file.size > 5 * 1024 * 1024) throw new Error(`${file.name} exceeds 5MB`);
+      if (!ACCEPTED.includes(file.type)) throw new Error(`${file.name} has an unsupported file type`);
+    }
+
+    const { data: urlPairs } = await axiosSecure.post("/upload-url", {
+      files: files.map((f) => ({ fileName: f.name, fileType: f.type })),
+    });
+
+    await Promise.all(
+      urlPairs.map(({ uploadUrl }, i) =>
+        fetch(uploadUrl, {
+          method: "PUT",
+          body: files[i],
+          headers: { "Content-Type": files[i].type },
+        }).then((res) => {
+          if (!res.ok) throw new Error(`Failed to upload ${files[i].name}`);
+        })
+      )
+    );
+
+    return urlPairs.map(({ fileUrl }) => fileUrl);
+  };
+
   const onSubmitPay = async (data) => {
     try {
+      let documentUrls = [];
+      if (data.documents?.length > 0) {
+        try {
+          documentUrls = await uploadDocuments(data.documents);
+        } catch (uploadError) {
+          toast.error(uploadError.message || "File upload failed. Please try again.");
+          return;
+        }
+      }
+
       const applicationData = {
         scholarshipId: scholarship._id,
         scholarshipName: scholarship.scholarshipName,
@@ -68,6 +111,7 @@ const ApplicationForm = () => {
         paymentStatus: "pending",
         applicationStatus: "pending",
         appliedAt: new Date(),
+        documentUrls,
       };
 
       const response = await axiosSecure.post("/applications", applicationData);
@@ -105,6 +149,16 @@ const ApplicationForm = () => {
     setIsSavingLater(true);
 
     try {
+      let documentUrls = [];
+      if (data.documents?.length > 0) {
+        try {
+          documentUrls = await uploadDocuments(data.documents);
+        } catch (uploadError) {
+          toast.error(uploadError.message || "File upload failed. Please try again.");
+          return;
+        }
+      }
+
       const applicationData = {
         scholarshipId: scholarship._id,
         userId: user?.uid,
@@ -129,6 +183,7 @@ const ApplicationForm = () => {
         gender: data.gender,
         currentUniversity: data.currentUniversity,
         cgpa: data.cgpa,
+        documentUrls,
       };
 
       const response = await axiosSecure.post("/applications", applicationData);
@@ -493,6 +548,7 @@ const ApplicationForm = () => {
                   {...register("documents")}
                   className="file-input file-input-bordered w-full"
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  multiple
                 />
                 <label className="label">
                   <span className="label-text-alt text-base-content/60 break-words">
