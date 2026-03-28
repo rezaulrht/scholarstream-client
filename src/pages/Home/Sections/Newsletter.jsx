@@ -2,12 +2,15 @@ import { motion } from "framer-motion";
 import { HiMail, HiCheckCircle } from "react-icons/hi";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useAxios from "../../../hooks/useAxios";
 
 const Newsletter = () => {
+  const axios = useAxios();
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -15,15 +18,22 @@ const Newsletter = () => {
       return;
     }
 
-    // Simulate subscription (in real app, this would call an API)
-    toast.success("Successfully subscribed to newsletter!");
-    setIsSubscribed(true);
-    setEmail("");
-
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSubscribed(false);
-    }, 3000);
+    setIsLoading(true);
+    try {
+      await axios.post("/newsletter/subscribe", { email });
+      toast.success("Successfully subscribed to newsletter!");
+      setIsSubscribed(true);
+      setEmail("");
+      setTimeout(() => setIsSubscribed(false), 3000);
+    } catch (error) {
+      if (error.response?.status === 409) {
+        toast.error("This email is already subscribed!");
+      } else {
+        toast.error("Subscription failed. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const benefits = [
@@ -83,11 +93,11 @@ const Newsletter = () => {
                 </div>
                 <button
                   type="submit"
-                  disabled={isSubscribed}
+                  disabled={isSubscribed || isLoading}
                   className={`px-6 md:px-8 py-3 md:py-4 font-semibold rounded-xl transition-all duration-300 text-sm md:text-base ${
                     isSubscribed
                       ? "bg-success text-success-content cursor-not-allowed"
-                      : "bg-primary text-primary-content hover:bg-secondary hover:scale-105"
+                      : "bg-primary text-primary-content hover:bg-secondary hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed"
                   }`}
                 >
                   {isSubscribed ? (
@@ -95,6 +105,8 @@ const Newsletter = () => {
                       <HiCheckCircle className="w-5 h-5" />
                       Subscribed
                     </span>
+                  ) : isLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
                   ) : (
                     "Subscribe Now"
                   )}
