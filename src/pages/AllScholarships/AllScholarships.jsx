@@ -25,6 +25,16 @@ const AllScholarships = () => {
   );
   const limit = 6;
 
+  // Fetch distinct countries from DB
+  const { data: countries = [] } = useQuery({
+    queryKey: ["scholarship-countries"],
+    queryFn: async () => {
+      const response = await axios.get("/scholarships/countries");
+      return response.data;
+    },
+    staleTime: 10 * 60 * 1000,
+  });
+
   // Debounce search input by 400ms
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -178,14 +188,9 @@ const AllScholarships = () => {
                 className="select select-bordered w-full"
               >
                 <option value="">All Countries</option>
-                <option value="USA">USA</option>
-                <option value="UK">UK</option>
-                <option value="Canada">Canada</option>
-                <option value="Australia">Australia</option>
-                <option value="Germany">Germany</option>
-                <option value="France">France</option>
-                <option value="Japan">Japan</option>
-                <option value="China">China</option>
+                {countries.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
               </select>
             </div>
 

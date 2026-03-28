@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import Loading from "../../../components/Loading/Loading";
@@ -25,19 +26,27 @@ const ManageApplications = () => {
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [feedbackAction, setFeedbackAction] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState("all");
+  const limit = 20;
 
-  // Fetch all applications with paid payment
+  // Fetch paid applications with pagination + status filter
   const {
-    data: applications = [],
+    data,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["moderator-applications"],
+    queryKey: ["moderator-applications", currentPage, statusFilter],
     queryFn: async () => {
-      const response = await axiosSecure.get("/applications/moderator");
+      const params = new URLSearchParams({ page: currentPage, limit });
+      if (statusFilter !== "all") params.set("status", statusFilter);
+      const response = await axiosSecure.get(`/applications/moderator?${params.toString()}`);
       return response.data;
     },
   });
+
+  const applications = data?.applications || [];
+  const totalPages = data?.totalPages || 1;
 
   // Open Details Modal
   const handleViewDetails = (application) => {
@@ -72,16 +81,9 @@ const ManageApplications = () => {
     }
 
     try {
-      if (feedback.trim()) {
-        await axiosSecure.patch(
-          `/applications/${selectedApplication._id}/feedback`,
-          { feedback },
-        );
-      }
-
       await axiosSecure.patch(
-        `/applications/${selectedApplication._id}/status`,
-        { applicationStatus: targetStatus },
+        `/applications/${selectedApplication._id}/review`,
+        { feedback: feedback.trim() || undefined, applicationStatus: targetStatus },
       );
 
       const statusMessages = {
@@ -195,6 +197,23 @@ const ManageApplications = () => {
           Review and manage student scholarship applications
         </p>
       </div>
+      {/* Status Filter */}
+      <div className="mb-4 flex items-center gap-3">
+        <label className="text-sm font-semibold text-base-content">Filter by Status:</label>
+        <select
+          value={statusFilter}
+          onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+          className="select select-bordered select-sm focus:outline-none focus:border-primary"
+        >
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="accepted">Accepted</option>
+          <option value="rejected">Rejected</option>
+          <option value="needs revision">Needs Revision</option>
+        </select>
+      </div>
+
       {/* Empty State */}
       {applications.length === 0 ? (
         <div className="bg-base-100 rounded-2xl shadow-md p-12 text-center border border-base-content/10">
@@ -446,6 +465,44 @@ const ManageApplications = () => {
           </div>
         </>
       )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 rounded-lg border-2 border-base-300 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            Previous
+          </button>
+          {[...Array(totalPages)].map((_, i) => {
+            const page = i + 1;
+            if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-4 py-2 rounded-lg border-2 transition-colors font-medium ${currentPage === page ? "bg-primary text-primary-content border-primary" : "border-base-300 hover:border-primary"}`}
+                >
+                  {page}
+                </button>
+              );
+            } else if (page === currentPage - 2 || page === currentPage + 2) {
+              return <span key={page} className="px-2 text-neutral/50">...</span>;
+            }
+            return null;
+          })}
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 rounded-lg border-2 border-base-300 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
       {/* Details Modal */}
       {showDetailsModal && selectedApplication && (
         <div className="modal modal-open">

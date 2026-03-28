@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
@@ -11,34 +11,52 @@ import {
   HiOutlineShieldCheck,
   HiOutlineShieldExclamation,
   HiOutlineAcademicCap,
+  HiOutlineSearch,
 } from "react-icons/hi2";
 
 const UserManagement = () => {
   const { user: currentUser } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [roleFilter, setRoleFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const debounceTimer = useRef(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [newRole, setNewRole] = useState("");
+  const limit = 20;
 
-  // Fetch all users
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setDebouncedSearch(value);
+      setCurrentPage(1);
+    }, 400);
+  };
+
+  // Fetch users with search + role filter + pagination
   const {
-    data: users = [],
+    data,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["all-users"],
+    queryKey: ["all-users", debouncedSearch, roleFilter, currentPage],
     queryFn: async () => {
-      const response = await axiosSecure.get("/users");
+      const params = new URLSearchParams({ page: currentPage, limit });
+      if (debouncedSearch) params.set("search", debouncedSearch);
+      if (roleFilter !== "all") params.set("role", roleFilter);
+      const response = await axiosSecure.get(`/users?${params.toString()}`);
       return response.data;
     },
   });
 
-  // Filter users by role
-  const filteredUsers =
-    roleFilter === "all"
-      ? users
-      : users.filter((user) => user.role === roleFilter);
+  const users = data?.users || [];
+  const totalPages = data?.totalPages || 1;
+  const totalCount = data?.totalCount || 0;
+  const filteredUsers = users;
 
   // Get role badge styling
   const getRoleBadge = (role) => {
@@ -189,6 +207,18 @@ const UserManagement = () => {
         </p>
       </div>
 
+      {/* Search Bar */}
+      <div className="relative mb-4">
+        <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-base-content/40" />
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search by name or email..."
+          className="w-full pl-12 pr-4 py-3 border-2 border-base-content/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
+        />
+      </div>
+
       {/* Filter & Stats */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         {/* Role Filter */}
@@ -198,19 +228,13 @@ const UserManagement = () => {
           </label>
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
+            onChange={(e) => { setRoleFilter(e.target.value); setCurrentPage(1); }}
             className="select select-bordered w-full md:w-64 focus:outline-none focus:border-primary"
           >
-            <option value="all">All Users ({users.length})</option>
-            <option value="student">
-              Students ({users.filter((u) => u.role === "student").length})
-            </option>
-            <option value="moderator">
-              Moderators ({users.filter((u) => u.role === "moderator").length})
-            </option>
-            <option value="admin">
-              Admins ({users.filter((u) => u.role === "admin").length})
-            </option>
+            <option value="all">All Users</option>
+            <option value="student">Students</option>
+            <option value="moderator">Moderators</option>
+            <option value="admin">Admins</option>
           </select>
         </div>
 
@@ -222,7 +246,7 @@ const UserManagement = () => {
             </div>
             <div className="stat-title text-xs">Showing</div>
             <div className="stat-value text-2xl text-primary">
-              {filteredUsers.length}
+              {totalCount}
             </div>
             <div className="stat-desc">
               {roleFilter === "all" ? "Total Users" : `${roleFilter}s`}
@@ -398,6 +422,43 @@ const UserManagement = () => {
             })}
           </div>
         </>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 rounded-lg border-2 border-base-300 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            Previous
+          </button>
+          {[...Array(totalPages)].map((_, i) => {
+            const page = i + 1;
+            if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-4 py-2 rounded-lg border-2 transition-colors font-medium ${currentPage === page ? "bg-primary text-primary-content border-primary" : "border-base-300 hover:border-primary"}`}
+                >
+                  {page}
+                </button>
+              );
+            } else if (page === currentPage - 2 || page === currentPage + 2) {
+              return <span key={page} className="px-2 text-neutral/50">...</span>;
+            }
+            return null;
+          })}
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 rounded-lg border-2 border-base-300 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            Next
+          </button>
+        </div>
       )}
 
       {/* Role Change Modal */}
