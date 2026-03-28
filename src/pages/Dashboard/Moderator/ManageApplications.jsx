@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import Loading from "../../../components/Loading/Loading";
@@ -17,6 +16,9 @@ import {
   HiOutlineCheckBadge,
   HiOutlineExclamationTriangle,
 } from "react-icons/hi2";
+import ApplicationDetailsModal from "./modals/ApplicationDetailsModal";
+import ApplicationFeedbackModal from "./modals/ApplicationFeedbackModal";
+import ApplicationStatusModal from "./modals/ApplicationStatusModal";
 
 const ManageApplications = () => {
   const axiosSecure = useAxiosSecure();
@@ -31,16 +33,14 @@ const ManageApplications = () => {
   const limit = 20;
 
   // Fetch paid applications with pagination + status filter
-  const {
-    data,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["moderator-applications", currentPage, statusFilter],
     queryFn: async () => {
       const params = new URLSearchParams({ page: currentPage, limit });
       if (statusFilter !== "all") params.set("status", statusFilter);
-      const response = await axiosSecure.get(`/applications/moderator?${params.toString()}`);
+      const response = await axiosSecure.get(
+        `/applications/moderator?${params.toString()}`,
+      );
       return response.data;
     },
   });
@@ -121,7 +121,7 @@ const ManageApplications = () => {
     }
   };
 
-  // Update Status to Processing
+  // Update Status
   const handleUpdateStatus = async (applicationId, newStatus) => {
     try {
       const result = await Swal.fire({
@@ -157,8 +157,8 @@ const ManageApplications = () => {
     }
   };
 
-  // Cancel/Reject Application - Opens feedback modal with reject action
-  const handleCancelApplication = async (application) => {
+  // Cancel/Reject — opens feedback modal with reject action pre-selected
+  const handleCancelApplication = (application) => {
     setSelectedApplication(application);
     setFeedbackAction("reject");
     setFeedback("");
@@ -197,12 +197,18 @@ const ManageApplications = () => {
           Review and manage student scholarship applications
         </p>
       </div>
+
       {/* Status Filter */}
       <div className="mb-4 flex items-center gap-3">
-        <label className="text-sm font-semibold text-base-content">Filter by Status:</label>
+        <label className="text-sm font-semibold text-base-content">
+          Filter by Status:
+        </label>
         <select
           value={statusFilter}
-          onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setCurrentPage(1);
+          }}
           className="select select-bordered select-sm focus:outline-none focus:border-primary"
         >
           <option value="all">All</option>
@@ -264,9 +270,7 @@ const ManageApplications = () => {
                       <td>{application.universityName}</td>
                       <td>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${getStatusClass(
-                            application.applicationStatus,
-                          )}`}
+                          className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${getStatusClass(application.applicationStatus)}`}
                         >
                           {application.applicationStatus === "accepted" ? (
                             <HiOutlineCheckCircle className="text-sm" />
@@ -320,7 +324,8 @@ const ManageApplications = () => {
                             </button>
                           )}
                           {(application.applicationStatus === "pending" ||
-                            application.applicationStatus === "processing") && (
+                            application.applicationStatus ===
+                              "processing") && (
                             <button
                               onClick={() => {
                                 setSelectedApplication(application);
@@ -333,7 +338,8 @@ const ManageApplications = () => {
                             </button>
                           )}
                           {(application.applicationStatus === "pending" ||
-                            application.applicationStatus === "processing") && (
+                            application.applicationStatus ===
+                              "processing") && (
                             <button
                               onClick={() =>
                                 handleCancelApplication(application)
@@ -370,9 +376,7 @@ const ManageApplications = () => {
                     </p>
                   </div>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusClass(
-                      application.applicationStatus,
-                    )}`}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusClass(application.applicationStatus)}`}
                   >
                     {application.applicationStatus === "accepted" ? (
                       <HiOutlineCheckCircle className="text-sm" />
@@ -478,18 +482,33 @@ const ManageApplications = () => {
           </button>
           {[...Array(totalPages)].map((_, i) => {
             const page = i + 1;
-            if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+            if (
+              page === 1 ||
+              page === totalPages ||
+              (page >= currentPage - 1 && page <= currentPage + 1)
+            ) {
               return (
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`px-4 py-2 rounded-lg border-2 transition-colors font-medium ${currentPage === page ? "bg-primary text-primary-content border-primary" : "border-base-300 hover:border-primary"}`}
+                  className={`px-4 py-2 rounded-lg border-2 transition-colors font-medium ${
+                    currentPage === page
+                      ? "bg-primary text-primary-content border-primary"
+                      : "border-base-300 hover:border-primary"
+                  }`}
                 >
                   {page}
                 </button>
               );
-            } else if (page === currentPage - 2 || page === currentPage + 2) {
-              return <span key={page} className="px-2 text-neutral/50">...</span>;
+            } else if (
+              page === currentPage - 2 ||
+              page === currentPage + 2
+            ) {
+              return (
+                <span key={page} className="px-2 text-neutral/50">
+                  ...
+                </span>
+              );
             }
             return null;
           })}
@@ -503,357 +522,39 @@ const ManageApplications = () => {
         </div>
       )}
 
-      {/* Details Modal */}
+      {/* Modals */}
       {showDetailsModal && selectedApplication && (
-        <div className="modal modal-open">
-          <div className="modal-box max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="font-bold text-lg md:text-xl text-base-content mb-4">
-              Application Details
-            </h3>
-            <div className="space-y-4">
-              {/* Scholarship Info */}
-              <div className="bg-primary/5 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-base-content mb-3 text-sm md:text-base">
-                  Scholarship Information
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <span className="text-base-content/60">
-                      Scholarship Name:
-                    </span>
-                    <p className="font-medium text-base-content">
-                      {selectedApplication.scholarshipName}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">University:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.universityName}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Degree:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.degree}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Category:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.scholarshipCategory}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Subject:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.subjectCategory}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Applicant Info */}
-              <div className="bg-base-200/50 rounded-lg p-3 md:p-4">
-                <h4 className="font-semibold text-base-content mb-3 text-sm md:text-base">
-                  Applicant Information
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <span className="text-neutral/60">Name:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.userName}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Email:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.userEmail}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Phone:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.phone}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Date of Birth:</span>
-                    <p className="font-medium text-neutral">
-                      {new Date(
-                        selectedApplication.dateOfBirth,
-                      ).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Gender:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.gender}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">Current University:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.currentUniversity}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-neutral/60">CGPA:</span>
-                    <p className="font-medium text-neutral">
-                      {selectedApplication.cgpa}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Financial & Status Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div>
-                  <span className="text-neutral/60">Application Fees:</span>
-                  <p className="font-medium text-neutral">
-                    ${selectedApplication.applicationFees}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-neutral/60">Service Charge:</span>
-                  <p className="font-medium text-neutral">
-                    ${selectedApplication.serviceCharge}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-neutral/60">Total Amount:</span>
-                  <p className="font-medium text-neutral">
-                    ${selectedApplication.totalAmount}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-neutral/60">Applied Date:</span>
-                  <p className="font-medium text-neutral">
-                    {new Date(
-                      selectedApplication.appliedAt,
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-neutral/60">Application Status:</span>
-                  <p className="font-medium text-neutral capitalize">
-                    {selectedApplication.applicationStatus}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-neutral/60">Payment Status:</span>
-                  <p className="font-medium text-neutral capitalize">
-                    {selectedApplication.paymentStatus}
-                  </p>
-                </div>
-              </div>
-
-              {/* Feedback */}
-              {selectedApplication.feedback && (
-                <div className="bg-warning/5 rounded-lg p-3 md:p-4">
-                  <h4 className="font-semibold text-neutral mb-2 text-sm md:text-base">
-                    Feedback from Moderator
-                  </h4>
-                  <p className="text-sm text-neutral/80">
-                    {selectedApplication.feedback}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="modal-action">
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="btn btn-sm md:btn-md bg-primary text-primary-content hover:bg-secondary"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-          <div
-            className="modal-backdrop"
-            onClick={() => setShowDetailsModal(false)}
-          ></div>
-        </div>
+        <ApplicationDetailsModal
+          application={selectedApplication}
+          onClose={() => setShowDetailsModal(false)}
+        />
       )}
-      {/* Feedback Modal */}
       {showFeedbackModal && selectedApplication && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-xl text-neutral mb-4">
-              {feedbackAction === "accept" && "Accept Application"}
-              {feedbackAction === "reject" && "Reject Application"}
-              {feedbackAction === "revision" && "Request Revision"}
-            </h3>
-            <p className="text-sm text-neutral/70 mb-4">
-              {feedbackAction === "accept" && (
-                <>Add an optional congratulatory message for </>
-              )}
-              {feedbackAction === "reject" && (
-                <>Provide rejection reason for </>
-              )}
-              {feedbackAction === "revision" && (
-                <>Explain what needs to be revised for </>
-              )}
-              <span className="font-semibold">
-                {selectedApplication.userName}
-              </span>
-              's application to{" "}
-              <span className="font-semibold">
-                {selectedApplication.scholarshipName}
-              </span>
-              {feedbackAction === "reject" && (
-                <span className="block mt-2 text-error font-semibold">
-                  * Feedback is required for rejection
-                </span>
-              )}
-              {feedbackAction === "revision" && (
-                <span className="block mt-2 text-orange-600 font-semibold">
-                  * Feedback is required to request revision
-                </span>
-              )}
-            </p>
-            <textarea
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              className="textarea textarea-bordered w-full h-32 focus:border-primary focus:outline-none"
-              placeholder={
-                feedbackAction === "accept"
-                  ? "Enter congratulatory message (optional)..."
-                  : feedbackAction === "reject"
-                    ? "Explain why the application is being rejected (required)..."
-                    : "Explain what needs to be improved or corrected (required)..."
-              }
-            ></textarea>
-            <div className="modal-action">
-              <button
-                onClick={() => {
-                  setShowFeedbackModal(false);
-                  setFeedback("");
-                  setFeedbackAction(null);
-                }}
-                className="btn btn-ghost"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmitFeedback}
-                className={`btn ${
-                  feedbackAction === "accept"
-                    ? "bg-success text-success-content hover:bg-success/80"
-                    : feedbackAction === "reject"
-                      ? "bg-error text-error-content hover:bg-error/80"
-                      : "bg-primary text-primary-content hover:bg-secondary"
-                }`}
-              >
-                {feedbackAction === "accept" && "Accept Application"}
-                {feedbackAction === "reject" && "Reject Application"}
-                {feedbackAction === "revision" && "Request Revision"}
-              </button>
-            </div>
-          </div>
-          <div
-            className="modal-backdrop"
-            onClick={() => {
-              setShowFeedbackModal(false);
-              setFeedback("");
-              setFeedbackAction(null);
-            }}
-          ></div>
-        </div>
+        <ApplicationFeedbackModal
+          application={selectedApplication}
+          feedback={feedback}
+          setFeedback={setFeedback}
+          feedbackAction={feedbackAction}
+          onSubmit={handleSubmitFeedback}
+          onClose={() => {
+            setShowFeedbackModal(false);
+            setFeedback("");
+            setFeedbackAction(null);
+          }}
+        />
       )}
-      {/* Status Update Modal */}
       {showStatusModal && selectedApplication && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg md:text-xl text-neutral mb-4">
-              Update Application Status
-            </h3>
-            <p className="text-sm text-neutral/70 mb-6">
-              Change status for{" "}
-              <span className="font-semibold">
-                {selectedApplication.userName}
-              </span>
-              's application
-            </p>
-            <div className="space-y-3">
-              {selectedApplication.applicationStatus === "pending" && (
-                <button
-                  onClick={() => {
-                    handleUpdateStatus(selectedApplication._id, "processing");
-                    setShowStatusModal(false);
-                  }}
-                  className="btn btn-block bg-info/10 text-info hover:bg-info hover:text-info-content border-info/30"
-                >
-                  <HiOutlineCheckCircle className="w-5 h-5" />
-                  Mark as Processing
-                </button>
-              )}
-              {selectedApplication.applicationStatus === "processing" && (
-                <>
-                  <button
-                    onClick={() => {
-                      setShowStatusModal(false);
-                      setFeedbackAction("accept");
-                      setFeedback("");
-                      handleOpenFeedback(selectedApplication);
-                    }}
-                    className="btn btn-block bg-success/10 text-success hover:bg-success hover:text-success-content border-success/30"
-                  >
-                    <HiOutlineCheckCircle className="w-5 h-5" />
-                    Accept Application
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowStatusModal(false);
-                      setFeedbackAction("reject");
-                      setFeedback("");
-                      handleOpenFeedback(selectedApplication);
-                    }}
-                    className="btn btn-block bg-error/10 text-error hover:bg-error hover:text-error-content border-error/30"
-                  >
-                    <HiOutlineXCircle className="w-5 h-5" />
-                    Reject Application
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowStatusModal(false);
-                      setFeedbackAction("revision");
-                      setFeedback("");
-                      handleOpenFeedback(selectedApplication);
-                    }}
-                    className="btn btn-block bg-orange-500/10 text-orange-600 hover:bg-orange-500 hover:text-white border-orange-500/30"
-                  >
-                    <HiOutlineExclamationTriangle className="w-5 h-5" />
-                    Request Revision
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleUpdateStatus(selectedApplication._id, "pending");
-                      setShowStatusModal(false);
-                    }}
-                    className="btn btn-block bg-base-300 text-neutral hover:bg-base-200 border-neutral/30"
-                  >
-                    <HiOutlineClock className="w-5 h-5" />
-                    Send Back to Pending
-                  </button>
-                </>
-              )}
-            </div>
-            <div className="modal-action">
-              <button
-                onClick={() => setShowStatusModal(false)}
-                className="btn btn-ghost"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-          <div
-            className="modal-backdrop"
-            onClick={() => setShowStatusModal(false)}
-          ></div>
-        </div>
-      )}{" "}
+        <ApplicationStatusModal
+          application={selectedApplication}
+          onClose={() => setShowStatusModal(false)}
+          onUpdateStatus={handleUpdateStatus}
+          onSwitchToFeedback={(action) => {
+            setShowStatusModal(false);
+            setFeedbackAction(action);
+            handleOpenFeedback(selectedApplication);
+          }}
+        />
+      )}
     </div>
   );
 };
