@@ -273,7 +273,7 @@ const UserManagement = () => {
                               {user.photoURL ? (
                                 <img
                                   src={user.photoURL}
-                                  alt={user.name}
+                                  alt={user.displayName}
                                   className="object-cover"
                                   referrerPolicy="no-referrer"
                                 />
@@ -285,7 +285,7 @@ const UserManagement = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="font-medium">{user.name || "N/A"}</td>
+                        <td className="font-medium">{user.displayName || "N/A"}</td>
                         <td className="text-sm text-neutral/70">
                           {user.email}
                         </td>
@@ -343,7 +343,7 @@ const UserManagement = () => {
                         {user.photoURL ? (
                           <img
                             src={user.photoURL}
-                            alt={user.name}
+                            alt={user.displayName}
                             className="object-cover"
                             referrerPolicy="no-referrer"
                           />
@@ -356,7 +356,7 @@ const UserManagement = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-base-content text-lg">
-                        {user.name || "N/A"}
+                        {user.displayName || "N/A"}
                       </h3>
                       <p className="text-sm text-base-content/70 break-all">
                         {user.email}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
@@ -12,6 +12,8 @@ const AllScholarships = () => {
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || "",
   );
+  const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
+  const debounceTimer = useRef(null);
   const [country, setCountry] = useState(searchParams.get("country") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "");
   const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "");
@@ -23,11 +25,22 @@ const AllScholarships = () => {
   );
   const limit = 6;
 
+  // Debounce search input by 400ms
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setDebouncedSearch(value);
+      setCurrentPage(1);
+    }, 400);
+  };
+
   // Fetch scholarships with filters
   const { data, isLoading, refetch, isError } = useQuery({
     queryKey: [
       "scholarships",
-      searchTerm,
+      debouncedSearch,
       country,
       category,
       sortBy,
@@ -40,7 +53,7 @@ const AllScholarships = () => {
         limit,
       });
 
-      if (searchTerm) params.append("search", searchTerm);
+      if (debouncedSearch) params.append("search", debouncedSearch);
       if (country) params.append("country", country);
       if (category) params.append("category", category);
       if (sortBy) {
@@ -60,7 +73,7 @@ const AllScholarships = () => {
   // Update URL params when filters change
   useEffect(() => {
     const params = new URLSearchParams();
-    if (searchTerm) params.set("search", searchTerm);
+    if (debouncedSearch) params.set("search", debouncedSearch);
     if (country) params.set("country", country);
     if (category) params.set("category", category);
     if (sortBy) params.set("sortBy", sortBy);
@@ -68,7 +81,7 @@ const AllScholarships = () => {
     if (currentPage > 1) params.set("page", currentPage);
     setSearchParams(params);
   }, [
-    searchTerm,
+    debouncedSearch,
     country,
     category,
     sortBy,
@@ -84,16 +97,13 @@ const AllScholarships = () => {
 
   const handleReset = () => {
     setSearchTerm("");
+    setDebouncedSearch("");
     setCountry("");
     setCategory("");
     setSortBy("");
     setSortOrder("asc");
     setCurrentPage(1);
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   if (isError) {
     return (
@@ -137,7 +147,7 @@ const AllScholarships = () => {
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search by scholarship name, university, or degree..."
               className="w-full pl-12 pr-24 py-3 border-2 border-neutral/20 rounded-xl focus:border-primary focus:outline-none transition-colors"
             />

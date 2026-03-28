@@ -127,7 +127,7 @@ const ScholarshipDetails = () => {
       return;
     }
     
-    navigate(`/apply/${id}`, {
+    navigate(`/dashboard/apply/${id}`, {
       state: {
         scholarship: scholarship,
       },

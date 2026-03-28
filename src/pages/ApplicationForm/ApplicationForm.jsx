@@ -65,7 +65,7 @@ const ApplicationForm = () => {
         serviceCharge: scholarship.serviceCharge,
         totalAmount:
           (scholarship.applicationFees || 0) + (scholarship.serviceCharge || 0),
-        paymentStatus: "unpaid",
+        paymentStatus: "pending",
         applicationStatus: "pending",
         appliedAt: new Date(),
       };
@@ -73,7 +73,7 @@ const ApplicationForm = () => {
       const response = await axiosSecure.post("/applications", applicationData);
 
       if (response.data.insertedId) {
-        navigate(`/checkout/${response.data.insertedId}`, {
+        navigate(`/dashboard/checkout/${response.data.insertedId}`, {
           state: {
             application: {
               _id: response.data.insertedId,
@@ -121,7 +121,7 @@ const ApplicationForm = () => {
         totalAmount:
           (scholarship.applicationFees || 0) + (scholarship.serviceCharge || 0),
         applicationStatus: "pending",
-        paymentStatus: "unpaid",
+        paymentStatus: "pending",
         appliedAt: new Date(),
         feedback: "",
         phone: data.phone,

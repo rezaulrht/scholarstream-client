@@ -44,22 +44,6 @@ export const router = createBrowserRouter([
         path: "/scholarships/:id",
         Component: ScholarshipDetails,
       },
-      {
-        path: "/apply/:id",
-        element: (
-          <ProtectedRoute>
-            <ApplicationForm />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/checkout/:applicationId",
-        element: (
-          <ProtectedRoute>
-            <Checkout />
-          </ProtectedRoute>
-        ),
-      },
     ],
   },
   {
@@ -151,6 +135,14 @@ export const router = createBrowserRouter([
             <ManageScholarship></ManageScholarship>
           </AdminRoute>
         ),
+      },
+      {
+        path: "apply/:id",
+        element: <ApplicationForm />,
+      },
+      {
+        path: "checkout/:applicationId",
+        element: <Checkout />,
       },
       {
         path: "payment-success",

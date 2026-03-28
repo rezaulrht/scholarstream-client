@@ -11,7 +11,9 @@ const useRole = () => {
         queryFn: async () => {
             const response = await axiosSecure.get(`/user/${user?.email}/role`);
             return response.data?.role || 'student';
-        }
+        },
+        staleTime: 5 * 60 * 1000,
+        enabled: !!user?.email,
     })
 
 

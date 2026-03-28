@@ -104,17 +104,9 @@ const MyApplications = () => {
   };
 
   const handlePay = (application) => {
-    const applicationId =
-      typeof application._id === "object"
-        ? application._id.$oid || application._id.toString()
-        : application._id;
-
-    navigate(`/checkout/${applicationId}`, {
+    navigate(`/dashboard/checkout/${application._id}`, {
       state: {
-        application: {
-          ...application,
-          _id: applicationId,
-        },
+        application,
       },
     });
   };

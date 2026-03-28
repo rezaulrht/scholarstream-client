@@ -47,21 +47,14 @@ const Checkout = () => {
 
     setIsProcessing(true);
     try {
-      const applicationId =
-        typeof application._id === "object"
-          ? application._id.$oid || application._id.toString()
-          : application._id;
-
       const paymentInfo = {
-        applicationId: applicationId,
+        applicationId: application._id,
         scholarshipId: application.scholarshipId,
         scholarshipName: application.scholarshipName,
         universityName: application.universityName,
         userEmail: user?.email,
         totalAmount: application.totalAmount,
       };
-
-      console.log("Payment info:", paymentInfo);
 
       const response = await axiosSecure.post(
         "/create-checkout-session",
