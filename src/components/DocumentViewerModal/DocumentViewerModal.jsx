@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HiOutlineX, HiOutlineExternalLink } from "react-icons/hi";
+import { HiOutlineX, HiOutlineExternalLink, HiOutlineDocument, HiOutlinePhotograph, HiOutlineDocumentText, HiOutlinePaperClip } from "react-icons/hi";
 
 // R2 key format: applications/{email}/{Date.now()}-{randomHex}-{originalName}
 // Raw last segment: "1748000000000-a1b2c3d4-transcript.pdf"
@@ -17,10 +17,18 @@ const getFileType = (filename) => {
   return "other";
 };
 
-const FILE_ICONS = { pdf: "📄", image: "🖼️", word: "📝", other: "📎" };
+const getFileIcon = (type, className = "text-xl") => {
+  switch (type) {
+    case "pdf":   return <HiOutlineDocument className={className} />;
+    case "image": return <HiOutlinePhotograph className={className} />;
+    case "word":  return <HiOutlineDocumentText className={className} />;
+    default:      return <HiOutlinePaperClip className={className} />;
+  }
+};
+
 const FILE_LABELS = { pdf: "PDF", image: "Image", word: "Word", other: "File" };
 
-const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
+const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title = "" }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -36,6 +44,7 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
   });
 
   const active = files[activeIndex];
+  const fileCountLabel = `${files.length} ${files.length === 1 ? "file" : "files"}`;
 
   return (
     <div className="modal modal-open">
@@ -43,7 +52,7 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-base-content/10 bg-primary/5 flex-shrink-0">
           <h3 className="font-bold text-lg text-base-content truncate">
-            📎 Supporting Documents — {title}
+            <HiOutlinePaperClip className="inline-block mr-1" /> Supporting Documents — {title}
           </h3>
           <button onClick={onClose} className="btn btn-sm btn-ghost btn-circle flex-shrink-0">
             <HiOutlineX className="text-lg" />
@@ -55,11 +64,11 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
           {/* Sidebar */}
           <div className="w-56 flex-shrink-0 border-r border-base-content/10 overflow-y-auto bg-base-200/50 p-2">
             <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider px-2 py-2">
-              {files.length} {files.length === 1 ? "file" : "files"}
+              {fileCountLabel}
             </p>
             {files.map((file, i) => (
               <button
-                key={i}
+                key={file.url}
                 onClick={() => setActiveIndex(i)}
                 className={`w-full flex items-start gap-2 px-3 py-2 rounded-lg text-left transition-colors mb-1 ${
                   i === activeIndex
@@ -67,7 +76,7 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
                     : "hover:bg-base-content/5 text-base-content"
                 }`}
               >
-                <span className="text-xl mt-0.5 flex-shrink-0">{FILE_ICONS[file.type]}</span>
+                <span className="mt-0.5 flex-shrink-0">{getFileIcon(file.type)}</span>
                 <div className="min-w-0">
                   <p className="text-xs font-semibold truncate">{file.filename}</p>
                   <p className="text-xs text-base-content/50">{FILE_LABELS[file.type]}</p>
@@ -111,7 +120,7 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
               )}
               {active.type === "other" && (
                 <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-base-content/50">
-                  <span className="text-6xl">📎</span>
+                  {getFileIcon("other", "text-6xl")}
                   <p className="text-sm">Preview not available for this file type.</p>
                   <a
                     href={active.url}
@@ -130,17 +139,17 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title }) => {
         {/* Mobile: file list, open in new tab */}
         <div className="lg:hidden flex-1 overflow-y-auto p-4 space-y-3">
           <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider mb-3">
-            {files.length} {files.length === 1 ? "file" : "files"}
+            {fileCountLabel}
           </p>
-          {files.map((file, i) => (
+          {files.map((file) => (
             <a
-              key={i}
+              key={file.url}
               href={file.url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-3 rounded-xl bg-base-200 border border-base-content/10 hover:bg-primary/10 hover:border-primary/30 transition-colors"
             >
-              <span className="text-2xl">{FILE_ICONS[file.type]}</span>
+              <span className="text-2xl">{getFileIcon(file.type, "text-2xl")}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-base-content truncate">{file.filename}</p>
                 <p className="text-xs text-base-content/50">{FILE_LABELS[file.type]}</p>
