@@ -10,6 +10,7 @@ import {
   HiOutlineXCircle,
   HiOutlineCheckBadge,
   HiOutlineExclamationTriangle,
+  HiOutlinePaperClip,
 } from "react-icons/hi2";
 
 const MobileView = ({
@@ -22,6 +23,7 @@ const MobileView = ({
   handleDelete,
   setReviewData,
   setShowReviewModal,
+  onViewDocs,
 }) => {
   return (
     <div className="lg:hidden space-y-4">
@@ -126,6 +128,14 @@ const MobileView = ({
                 </div>
               )}
             </div>
+            {app.documentUrls?.length > 0 && (
+              <button
+                onClick={() => onViewDocs(app)}
+                className="btn btn-sm btn-ghost w-full border border-primary/20 text-primary hover:bg-primary/10 mb-2"
+              >
+                <HiOutlinePaperClip className="text-sm" /> {app.documentUrls.length} supporting {app.documentUrls.length === 1 ? "document" : "documents"}
+              </button>
+            )}
             <div className="card-actions justify-end mt-4">
               <button
                 onClick={() => {
