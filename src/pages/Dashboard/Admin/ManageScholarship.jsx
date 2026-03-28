@@ -58,7 +58,7 @@ const ManageScholarship = () => {
     try {
       let universityImageURL = selectedScholarship.universityImage;
 
-      if (data.universityImage && data.universityImage[0]) {
+      if (data.universityImage?.[0] instanceof File) {
         const uploadToast = toast.loading("Uploading new image...");
         const imgbb_api = import.meta.env.VITE_IMGBB_API_KEY;
         const formData = new FormData();
