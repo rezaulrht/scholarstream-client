@@ -52,7 +52,7 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title = "" })
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-base-content/10 bg-primary/5 flex-shrink-0">
           <h3 className="font-bold text-lg text-base-content truncate">
-            <HiOutlinePaperClip className="inline-block mr-1" /> Supporting Documents — {title}
+            <HiOutlinePaperClip className="inline-block align-middle mr-1" /> Supporting Documents — {title}
           </h3>
           <button onClick={onClose} className="btn btn-sm btn-ghost btn-circle flex-shrink-0">
             <HiOutlineX className="text-lg" />
@@ -120,7 +120,7 @@ const DocumentViewerModal = ({ isOpen, onClose, documentUrls = [], title = "" })
               )}
               {active.type === "other" && (
                 <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-base-content/50">
-                  {getFileIcon("other", "text-6xl")}
+                  <HiOutlinePaperClip className="text-6xl" />
                   <p className="text-sm">Preview not available for this file type.</p>
                   <a
                     href={active.url}
