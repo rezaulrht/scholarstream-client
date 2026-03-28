@@ -40,6 +40,11 @@ const ManageApplications = () => {
     setShowDocModal(true);
   };
 
+  const closeDocViewer = () => {
+    setShowDocModal(false);
+    setDocViewerApp(null);
+  };
+
   const limit = 20;
 
   // Fetch paid applications with pagination + status filter
@@ -267,6 +272,8 @@ const ManageApplications = () => {
                     <HiOutlineCog className="text-sm" />
                   ) : application.applicationStatus === "rejected" ? (
                     <HiOutlineXCircle className="text-sm" />
+                  ) : application.applicationStatus === "needs revision" ? (
+                    <HiOutlineExclamationTriangle className="text-sm" />
                   ) : (
                     <HiOutlineClock className="text-sm" />
                   )}
@@ -433,14 +440,13 @@ const ManageApplications = () => {
         </div>
       )}
 
+      {/* Modals */}
       <DocumentViewerModal
         isOpen={showDocModal}
-        onClose={() => { setShowDocModal(false); setDocViewerApp(null); }}
+        onClose={closeDocViewer}
         documentUrls={docViewerApp?.documentUrls ?? []}
         title={docViewerApp?.scholarshipName ?? ""}
       />
-
-      {/* Modals */}
       {showDetailsModal && selectedApplication && (
         <ApplicationDetailsModal
           application={selectedApplication}
