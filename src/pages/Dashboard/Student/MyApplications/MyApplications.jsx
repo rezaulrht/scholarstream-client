@@ -17,6 +17,7 @@ import {
   HiOutlineXCircle,
   HiOutlineCheckBadge,
   HiOutlineExclamationTriangle,
+  HiOutlinePaperClip,
 } from "react-icons/hi2";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
@@ -347,8 +348,9 @@ const MyApplications = () => {
                     <button
                       onClick={() => openDocViewer(app)}
                       className="badge bg-primary/15 text-primary border-primary/30 cursor-pointer hover:bg-primary/25 gap-1"
+                      title="View Documents"
                     >
-                      📎 {app.documentUrls.length} {app.documentUrls.length === 1 ? "file" : "files"}
+                      <HiOutlinePaperClip className="text-sm" /> {app.documentUrls.length} {app.documentUrls.length === 1 ? "file" : "files"}
                     </button>
                   ) : (
                     <span className="italic text-neutral/40 text-sm">—</span>
@@ -474,14 +476,12 @@ const MyApplications = () => {
       />
 
       {/* Document Viewer Modal */}
-      {showDocModal && docViewerApp && (
-        <DocumentViewerModal
-          isOpen={showDocModal}
-          onClose={() => setShowDocModal(false)}
-          documentUrls={docViewerApp.documentUrls}
-          title={docViewerApp.scholarshipName}
-        />
-      )}
+      <DocumentViewerModal
+        isOpen={showDocModal}
+        onClose={() => { setShowDocModal(false); setDocViewerApp(null); }}
+        documentUrls={docViewerApp?.documentUrls ?? []}
+        title={docViewerApp?.scholarshipName ?? ""}
+      />
     </div>
   );
 };
