@@ -23,6 +23,7 @@ import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import AddReviewModal from "./AddReviewModal";
 import EditApplicationModal from "./EditApplicationModal";
 import MobileView from "./MobileView";
+import DocumentViewerModal from "../../../../components/DocumentViewerModal/DocumentViewerModal";
 
 const MyApplications = () => {
   const { user } = useAuth();
@@ -33,6 +34,14 @@ const MyApplications = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
+
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [docViewerApp, setDocViewerApp] = useState(null);
+
+  const openDocViewer = (app) => {
+    setDocViewerApp(app);
+    setShowDocModal(true);
+  };
 
   const {
     data: applications = [],
@@ -243,6 +252,7 @@ const MyApplications = () => {
               <th className="text-base-content font-semibold">Status</th>
               <th className="text-base-content font-semibold">Payment</th>
               <th className="text-base-content font-semibold">Feedback</th>
+              <th className="text-base-content font-semibold">Docs</th>
               <th className="text-base-content font-semibold">Actions</th>
             </tr>
           </thead>
@@ -330,6 +340,18 @@ const MyApplications = () => {
                     <span className="italic text-neutral/40">
                       No feedback yet
                     </span>
+                  )}
+                </td>
+                <td>
+                  {app.documentUrls?.length > 0 ? (
+                    <button
+                      onClick={() => openDocViewer(app)}
+                      className="badge bg-primary/15 text-primary border-primary/30 cursor-pointer hover:bg-primary/25 gap-1"
+                    >
+                      📎 {app.documentUrls.length} {app.documentUrls.length === 1 ? "file" : "files"}
+                    </button>
+                  ) : (
+                    <span className="italic text-neutral/40 text-sm">—</span>
                   )}
                 </td>
                 <td>
@@ -423,6 +445,7 @@ const MyApplications = () => {
         handleDelete={handleDelete}
         setReviewData={setReviewData}
         setShowReviewModal={setShowReviewModal}
+        onViewDocs={openDocViewer}
       />
 
       {/* Details Modal */}
@@ -449,6 +472,16 @@ const MyApplications = () => {
         onClose={() => setShowEditModal(false)}
         onSuccess={handleEditSuccess}
       />
+
+      {/* Document Viewer Modal */}
+      {showDocModal && docViewerApp && (
+        <DocumentViewerModal
+          isOpen={showDocModal}
+          onClose={() => setShowDocModal(false)}
+          documentUrls={docViewerApp.documentUrls}
+          title={docViewerApp.scholarshipName}
+        />
+      )}
     </div>
   );
 };
