@@ -62,16 +62,25 @@ const ApplicationForm = () => {
       files: files.map((f) => ({ fileName: f.name, fileType: f.type })),
     });
 
+    if (!Array.isArray(urlPairs) || urlPairs.length !== files.length) {
+      throw new Error("Unexpected response from upload server");
+    }
+
     await Promise.all(
-      urlPairs.map(({ uploadUrl }, i) =>
-        fetch(uploadUrl, {
+      urlPairs.map(({ uploadUrl }, i) => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30000);
+        return fetch(uploadUrl, {
           method: "PUT",
           body: files[i],
           headers: { "Content-Type": files[i].type },
-        }).then((res) => {
-          if (!res.ok) throw new Error(`Failed to upload ${files[i].name}`);
+          signal: controller.signal,
         })
-      )
+          .then((res) => {
+            if (!res.ok) throw new Error(`Failed to upload ${files[i].name}`);
+          })
+          .finally(() => clearTimeout(timeout));
+      })
     );
 
     return urlPairs.map(({ fileUrl }) => fileUrl);
