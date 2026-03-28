@@ -11,6 +11,7 @@ import {
   HiOutlineClipboardList,
   HiOutlineClock,
   HiOutlineCog,
+  HiOutlinePaperClip,
 } from "react-icons/hi";
 import {
   HiOutlineCheckBadge,
@@ -19,6 +20,7 @@ import {
 import ApplicationDetailsModal from "./modals/ApplicationDetailsModal";
 import ApplicationFeedbackModal from "./modals/ApplicationFeedbackModal";
 import ApplicationStatusModal from "./modals/ApplicationStatusModal";
+import DocumentViewerModal from "../../../components/DocumentViewerModal/DocumentViewerModal";
 
 const ManageApplications = () => {
   const axiosSecure = useAxiosSecure();
@@ -30,6 +32,14 @@ const ManageApplications = () => {
   const [feedbackAction, setFeedbackAction] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("all");
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [docViewerApp, setDocViewerApp] = useState(null);
+
+  const openDocViewer = (app) => {
+    setDocViewerApp(app);
+    setShowDocModal(true);
+  };
+
   const limit = 20;
 
   // Fetch paid applications with pagination + status filter
@@ -232,242 +242,143 @@ const ManageApplications = () => {
           </p>
         </div>
       ) : (
-        <>
-          {/* Desktop Table View */}
-          <div className="hidden lg:block bg-base-100 rounded-2xl shadow-md border border-base-content/10">
-            <div className="overflow-x-auto overflow-y-visible">
-              <table className="table">
-                <thead className="bg-primary/5">
-                  <tr>
-                    <th className="text-base-content font-semibold">
-                      Applicant Name
-                    </th>
-                    <th className="text-base-content font-semibold">
-                      Applicant Email
-                    </th>
-                    <th className="text-base-content font-semibold">
-                      University Name
-                    </th>
-                    <th className="text-base-content font-semibold">
-                      Application Status
-                    </th>
-                    <th className="text-base-content font-semibold">
-                      Payment Status
-                    </th>
-                    <th className="text-base-content font-semibold">
-                      Feedback
-                    </th>
-                    <th className="text-base-content font-semibold text-center">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {applications.map((application) => (
-                    <tr key={application._id} className="hover:bg-base-200/50">
-                      <td className="font-medium">{application.userName}</td>
-                      <td className="text-sm">{application.userEmail}</td>
-                      <td>{application.universityName}</td>
-                      <td>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${getStatusClass(application.applicationStatus)}`}
-                        >
-                          {application.applicationStatus === "accepted" ? (
-                            <HiOutlineCheckCircle className="text-sm" />
-                          ) : application.applicationStatus === "processing" ? (
-                            <HiOutlineCog className="text-sm" />
-                          ) : application.applicationStatus === "rejected" ? (
-                            <HiOutlineXCircle className="text-sm" />
-                          ) : (
-                            <HiOutlineClock className="text-sm" />
-                          )}
-                          {application.applicationStatus}
-                        </span>
-                      </td>
-                      <td>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 w-fit ${
-                            application.paymentStatus === "paid"
-                              ? "bg-success/20 text-success border-success/30"
-                              : "bg-warning/20 text-warning border-warning/30"
-                          }`}
-                        >
-                          {application.paymentStatus === "paid" ? (
-                            <HiOutlineCheckBadge className="text-sm" />
-                          ) : (
-                            <HiOutlineExclamationTriangle className="text-sm" />
-                          )}
-                          {application.paymentStatus}
-                        </span>
-                      </td>
-                      <td className="max-w-xs truncate text-sm text-base-content/70">
-                        {application.feedback || "No feedback yet"}
-                      </td>
-                      <td className="relative">
-                        <div className="flex items-center justify-center gap-2">
-                          <button
-                            onClick={() => handleViewDetails(application)}
-                            className="btn btn-sm btn-ghost text-primary hover:bg-primary/10"
-                            title="View Details"
-                          >
-                            <HiOutlineEye className="w-5 h-5" />
-                          </button>
-                          {(application.applicationStatus === "processing" ||
-                            application.applicationStatus ===
-                              "needs revision") && (
-                            <button
-                              onClick={() => handleOpenFeedback(application)}
-                              className="btn btn-sm btn-ghost text-info hover:bg-info/10"
-                              title="Update Feedback"
-                            >
-                              <HiOutlineChatAlt2 className="w-5 h-5" />
-                            </button>
-                          )}
-                          {(application.applicationStatus === "pending" ||
-                            application.applicationStatus ===
-                              "processing") && (
-                            <button
-                              onClick={() => {
-                                setSelectedApplication(application);
-                                setShowStatusModal(true);
-                              }}
-                              className="btn btn-sm btn-ghost text-success hover:bg-success/10"
-                              title="Update Status"
-                            >
-                              <HiOutlineCheckCircle className="w-5 h-5" />
-                            </button>
-                          )}
-                          {(application.applicationStatus === "pending" ||
-                            application.applicationStatus ===
-                              "processing") && (
-                            <button
-                              onClick={() =>
-                                handleCancelApplication(application)
-                              }
-                              className="btn btn-sm btn-ghost text-error hover:bg-error/10"
-                              title="Reject Application"
-                            >
-                              <HiOutlineXCircle className="w-5 h-5" />
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {applications.map((application) => (
+            <div
+              key={application._id}
+              className="bg-base-100 rounded-2xl shadow-md border border-base-content/10 p-5 flex flex-col gap-4"
+            >
+              {/* Card Header */}
+              <div className="flex justify-between items-start gap-2">
+                <div className="min-w-0">
+                  <h3 className="font-bold text-base-content text-base truncate">
+                    {application.userName}
+                  </h3>
+                  <p className="text-xs text-base-content/60 truncate">
+                    {application.userEmail}
+                  </p>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 flex-shrink-0 ${getStatusClass(application.applicationStatus)}`}
+                >
+                  {application.applicationStatus === "accepted" ? (
+                    <HiOutlineCheckCircle className="text-sm" />
+                  ) : application.applicationStatus === "processing" ? (
+                    <HiOutlineCog className="text-sm" />
+                  ) : application.applicationStatus === "rejected" ? (
+                    <HiOutlineXCircle className="text-sm" />
+                  ) : (
+                    <HiOutlineClock className="text-sm" />
+                  )}
+                  {application.applicationStatus}
+                </span>
+              </div>
 
-          {/* Mobile Card View */}
-          <div className="lg:hidden space-y-4">
-            {applications.map((application) => (
-              <div
-                key={application._id}
-                className="bg-base-100 rounded-xl shadow-md p-5 space-y-4 overflow-visible border border-base-content/10"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-bold text-base-content text-lg">
-                      {application.userName}
-                    </h3>
-                    <p className="text-sm text-base-content/70">
-                      {application.userEmail}
-                    </p>
-                  </div>
+              {/* Card Info Grid */}
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <p className="text-xs text-base-content/50">Scholarship</p>
+                  <p className="font-medium text-base-content truncate">
+                    {application.scholarshipName}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-base-content/50">University</p>
+                  <p className="font-medium text-base-content truncate">
+                    {application.universityName}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-base-content/50">CGPA</p>
+                  <p className="font-medium text-base-content">
+                    {application.cgpa ?? "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-base-content/50">Payment</p>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusClass(application.applicationStatus)}`}
+                    className={`px-2 py-0.5 rounded-full text-xs font-semibold border inline-flex items-center gap-1 ${
+                      application.paymentStatus === "paid"
+                        ? "bg-success/20 text-success border-success/30"
+                        : "bg-warning/20 text-warning border-warning/30"
+                    }`}
                   >
-                    {application.applicationStatus === "accepted" ? (
-                      <HiOutlineCheckCircle className="text-sm" />
-                    ) : application.applicationStatus === "processing" ? (
-                      <HiOutlineCog className="text-sm" />
-                    ) : application.applicationStatus === "rejected" ? (
-                      <HiOutlineXCircle className="text-sm" />
+                    {application.paymentStatus === "paid" ? (
+                      <HiOutlineCheckBadge className="text-sm" />
                     ) : (
-                      <HiOutlineClock className="text-sm" />
+                      <HiOutlineExclamationTriangle className="text-sm" />
                     )}
-                    {application.applicationStatus}
+                    {application.paymentStatus}
                   </span>
                 </div>
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-base-content/70">University:</span>
-                    <span className="font-medium text-base-content">
-                      {application.universityName}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-base-content/70">Payment:</span>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${
-                        application.paymentStatus === "paid"
-                          ? "bg-success/20 text-success border-success/30"
-                          : "bg-warning/20 text-warning border-warning/30"
-                      }`}
-                    >
-                      {application.paymentStatus === "paid" ? (
-                        <HiOutlineCheckBadge className="text-sm" />
-                      ) : (
-                        <HiOutlineExclamationTriangle className="text-sm" />
-                      )}
-                      {application.paymentStatus}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-base-content/70">Feedback:</span>
-                    <span className="font-medium text-base-content text-right max-w-[60%] truncate">
-                      {application.feedback || "No feedback yet"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral/10 relative">
-                  <button
-                    onClick={() => handleViewDetails(application)}
-                    className="btn btn-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-content border-0 flex-1"
-                  >
-                    <HiOutlineEye className="w-4 h-4" />
-                    Details
-                  </button>
-                  {application.applicationStatus === "processing" && (
-                    <button
-                      onClick={() => handleOpenFeedback(application)}
-                      className="btn btn-sm bg-info/10 text-info hover:bg-info hover:text-info-content border-0 flex-1"
-                    >
-                      <HiOutlineChatAlt2 className="w-4 h-4" />
-                      Feedback
-                    </button>
-                  )}
-                  {(application.applicationStatus === "pending" ||
-                    application.applicationStatus === "processing") && (
-                    <button
-                      onClick={() => {
-                        setSelectedApplication(application);
-                        setShowStatusModal(true);
-                      }}
-                      className="btn btn-sm bg-success/10 text-success hover:bg-success hover:text-success-content border-0 flex-1"
-                    >
-                      <HiOutlineCheckCircle className="w-4 h-4" />
-                      Status
-                    </button>
-                  )}
-                  {(application.applicationStatus === "pending" ||
-                    application.applicationStatus === "processing") && (
-                    <button
-                      onClick={() => handleCancelApplication(application)}
-                      className="btn btn-sm bg-error/10 text-error hover:bg-error hover:text-error-content border-0 flex-1"
-                    >
-                      <HiOutlineXCircle className="w-4 h-4" />
-                      Reject
-                    </button>
-                  )}
-                </div>
               </div>
-            ))}
-          </div>
-        </>
+
+              {/* Docs Bar */}
+              {application.documentUrls?.length > 0 ? (
+                <button
+                  onClick={() => openDocViewer(application)}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm font-medium hover:bg-primary/15 transition-colors"
+                >
+                  <HiOutlinePaperClip className="flex-shrink-0" />
+                  {application.documentUrls.length} supporting{" "}
+                  {application.documentUrls.length === 1
+                    ? "document"
+                    : "documents"}{" "}
+                  — <span className="underline">view files</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-base-200/50 border border-base-content/10 text-base-content/40 text-sm">
+                  <HiOutlinePaperClip className="flex-shrink-0" />
+                  No documents attached
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-2 pt-2 border-t border-base-content/10">
+                <button
+                  onClick={() => handleViewDetails(application)}
+                  className="btn btn-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-content border-0"
+                >
+                  <HiOutlineEye className="w-4 h-4" />
+                  Details
+                </button>
+                {(application.applicationStatus === "processing" ||
+                  application.applicationStatus === "needs revision") && (
+                  <button
+                    onClick={() => handleOpenFeedback(application)}
+                    className="btn btn-sm bg-info/10 text-info hover:bg-info hover:text-info-content border-0"
+                  >
+                    <HiOutlineChatAlt2 className="w-4 h-4" />
+                    Feedback
+                  </button>
+                )}
+                {(application.applicationStatus === "pending" ||
+                  application.applicationStatus === "processing") && (
+                  <button
+                    onClick={() => {
+                      setSelectedApplication(application);
+                      setShowStatusModal(true);
+                    }}
+                    className="btn btn-sm bg-success/10 text-success hover:bg-success hover:text-success-content border-0"
+                  >
+                    <HiOutlineCheckCircle className="w-4 h-4" />
+                    Status
+                  </button>
+                )}
+                {(application.applicationStatus === "pending" ||
+                  application.applicationStatus === "processing") && (
+                  <button
+                    onClick={() => handleCancelApplication(application)}
+                    className="btn btn-sm bg-error/10 text-error hover:bg-error hover:text-error-content border-0"
+                  >
+                    <HiOutlineXCircle className="w-4 h-4" />
+                    Reject
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Pagination */}
@@ -521,6 +432,13 @@ const ManageApplications = () => {
           </button>
         </div>
       )}
+
+      <DocumentViewerModal
+        isOpen={showDocModal}
+        onClose={() => { setShowDocModal(false); setDocViewerApp(null); }}
+        documentUrls={docViewerApp?.documentUrls ?? []}
+        title={docViewerApp?.scholarshipName ?? ""}
+      />
 
       {/* Modals */}
       {showDetailsModal && selectedApplication && (
