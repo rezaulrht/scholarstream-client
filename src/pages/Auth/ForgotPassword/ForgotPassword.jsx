@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { HiMail, HiArrowLeft } from "react-icons/hi";
 import Logo from "../../../components/Logo/Logo";
 import { useForm } from "react-hook-form";
-import useAuth from "../../../hooks/useAuth";
+import useAxios from "../../../hooks/useAxios";
 import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
@@ -13,26 +13,23 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm();
   const [emailSent, setEmailSent] = useState(false);
-  const { resetPassword } = useAuth();
+  const axios = useAxios();
 
-  const handleResetPassword = (data) => {
+  const handleResetPassword = async (data) => {
     const loadingToast = toast.loading("Sending reset link...");
-    resetPassword(data.email)
-      .then(() => {
-        toast.dismiss(loadingToast);
-        toast.success("Password reset email sent! Check your inbox.");
-        setEmailSent(true);
-      })
-      .catch((error) => {
-        toast.dismiss(loadingToast);
-        if (error.code === "auth/user-not-found") {
-          toast.error("No account found with this email!");
-        } else if (error.code === "auth/invalid-email") {
-          toast.error("Invalid email address!");
-        } else {
-          toast.error("Failed to send reset email. Please try again!");
-        }
-      });
+    try {
+      await axios.post("/forgot-password", { email: data.email });
+      toast.dismiss(loadingToast);
+      toast.success("Password reset email sent! Check your inbox.");
+      setEmailSent(true);
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      if (error.response?.status === 400) {
+        toast.error("Invalid email address!");
+      } else {
+        toast.error("Failed to send reset email. Please try again!");
+      }
+    }
   };
 
   return (
